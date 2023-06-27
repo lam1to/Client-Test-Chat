@@ -36,8 +36,18 @@
     width: 100%;
     justify-content: center;
 }
+.block_auth_variant_avtor:hover{
+    border-bottom: 1px solid #AA76D2;
+    transition: 1s;
+}
+.block_auth_variant_avtor a:hover{
+   color: #6EFFB1;
+   transition: 1s;
+}
+
 .block_auth_variant_avtor a{
     color: #AA76D2;
+    transition: 1s;
 }
 
 .block_auth_variant_avtor:not(:last-child){
@@ -85,7 +95,7 @@
 .block_input::placeholder{
     color: #6EFFB1;
 }
-.block-inputLitl{
+.block_inputLitl{
     background-color: #0E0B1D;
     border: none;
     border-bottom: 2px solid #AA76D2 ;
@@ -102,6 +112,9 @@
     color: #6EFFB1;
     outline: none;
 }
+.block_inputLitl::placeholder{
+    color: #6EFFB1;
+}
 .block_button {
     margin-top: 34px;
     height: 53px;
@@ -112,8 +125,8 @@
     align-items: center;
     justify-content: center;
     /* identical to box height */
-    color: #6EFFB1;
-    background-color: #AA76D2;
+    color:  #AA76D2;
+    background-color: #6EFFB1;
     transition: 1s;
 }
 
@@ -125,8 +138,8 @@
     justify-content: space-between;
 }
 .block_button:hover{
-    color:  #AA76D2;
-    background-color: #6EFFB1;
+    color:   #6EFFB1;
+    background-color: #AA76D2;
     transition: 1s;
 }
 
