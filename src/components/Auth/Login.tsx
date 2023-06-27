@@ -1,11 +1,21 @@
 import React, { FC, useState } from "react";
-import { Link } from "react-router-dom";
-import { LOGIN_ROUTE, REGISTR_ROUTE } from "../../utils/const";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { CHAT_ROUTE, LOGIN_ROUTE, REGISTR_ROUTE } from "../../utils/const";
 import styles from "../../styles/auth.module.css";
+import { IuserLogin } from "../../types/IUser";
+import { login } from "../../http/user.services";
 
 const Login: FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [user, setUser] = useState<IuserLogin>({
+    email: "",
+    password: "",
+  } as IuserLogin);
+  const navigate = useNavigate();
+  const loginF = async () => {
+    const data = await login(user);
+    console.log("login data = ", data);
+    navigate(CHAT_ROUTE);
+  };
   return (
     <div className={styles.block_auth}>
       <div className="block-auth-container _container">
@@ -23,22 +33,28 @@ const Login: FC = () => {
           <form className={styles.block_auth_block_form}>
             <input
               name="Username"
-              value={email}
+              value={user.email}
               type="text"
               placeholder="Email"
               className={styles.block_input}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) =>
+                setUser((prev) => ({ ...prev, email: e.target.value }))
+              }
             />
             <input
               type="password"
-              value={password}
+              value={user.password}
               name="Password"
               placeholder="Пароль"
               className={styles.block_input}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) =>
+                setUser((prev) => ({ ...prev, password: e.target.value }))
+              }
             />
             <Link to={""}>
-              <div className={styles.block_button}>Войти</div>
+              <div className={styles.block_button} onClick={loginF}>
+                Войти
+              </div>
             </Link>
           </form>
         </div>
