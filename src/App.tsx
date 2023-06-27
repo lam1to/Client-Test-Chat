@@ -1,8 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { BrowserRouter } from 'react-router-dom';
-import AppRoute from './components/Routing/AppRoute';
-import NavBar from './components/NavBar';
+import React from "react";
+import PropTypes from "prop-types";
+import { BrowserRouter } from "react-router-dom";
+import AppRoute from "./components/Routing/AppRoute";
+import NavBar from "./components/NavBar";
+import "./styles/global.css";
 
 const App = () => {
   return (

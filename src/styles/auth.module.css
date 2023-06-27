@@ -1,0 +1,134 @@
+.block_auth{
+    flex: 1 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 148px;
+    margin-top: 160px;
+    background-color: #0E0B1D;
+}
+
+.wrapperL{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.headerL{
+    flex: 0 0 auto;
+}
+
+.auth_select_varinat {
+    display: flex;
+    justify-content: space-between;
+}
+.block_auth_variant_avtor {
+    font-family: 'Mak';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 36px;
+    /* identical to box height */
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #AA76D2;
+    width: 100%;
+    justify-content: center;
+}
+.block_auth_variant_avtor a{
+    color: #AA76D2;
+}
+
+.block_auth_variant_avtor:not(:last-child){
+    margin-right: 40px;
+}
+._activ_logreg {
+    border-bottom: 1px solid #AA76D2;
+    padding: 0px 4px;
+}
+._activ_logreg a {
+    color: #6EFFB1;
+}
+
+.block_auth_form {
+    margin-top: 88px;
+    display: flex;
+    justify-content: center;
+}
+.block_auth_formR{
+    margin-top: 80px;
+    display: flex;
+    justify-content: center;
+}
+.block_auth_block_form {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+}
+.block_input {
+    background-color: #0E0B1D;
+    border: none;
+    border-bottom: 2px solid #AA76D2 ;
+    padding-left: 10px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    /* identical to box height */
+    display: flex;
+    align-items: center;
+    height: 50px;
+    margin-bottom: 10px;
+    color: #6EFFB1;
+    outline: none;
+}
+.block_input::placeholder{
+    color: #6EFFB1;
+}
+.block-inputLitl{
+    background-color: #0E0B1D;
+    border: none;
+    border-bottom: 2px solid #AA76D2 ;
+    padding-left: 10px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    /* identical to box height */
+    display: flex;
+    align-items: center;
+    height: 50px;
+    margin-bottom: 10px;
+    width: 150px;
+    color: #6EFFB1;
+    outline: none;
+}
+.block_button {
+    margin-top: 34px;
+    height: 53px;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* identical to box height */
+    color: #6EFFB1;
+    background-color: #AA76D2;
+    transition: 1s;
+}
+
+.marginB{
+    margin-bottom: 100px;
+}
+.block_auth_fi{
+    display: flex;
+    justify-content: space-between;
+}
+.block_button:hover{
+    color:  #AA76D2;
+    background-color: #6EFFB1;
+    transition: 1s;
+}
+
+
+/* login end */

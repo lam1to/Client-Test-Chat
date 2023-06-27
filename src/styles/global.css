@@ -1,0 +1,77 @@
+*,
+*::before,
+::after{
+    padding: 0;
+    margin: 0;
+    bottom: 0;
+    box-sizing: 0;
+}
+a{
+    text-decoration: none;
+}
+ul,ol,li{
+    list-style: none;
+}
+img{
+    vertical-align: top;
+
+}
+h1,h2,h3,h4,h5,h6{
+    font-weight: inherit;
+    font-size:inherit;
+}
+
+input,
+button,
+textarea,
+select {
+font: inherit;
+}
+
+/* @font-face {
+	font-family: 'Mak'; 
+	src: local('Mak'),
+		url(../font/MAK-bold.otf); 
+} */
+body { 
+    margin: 0;   /* Remove body margins */
+    font-family: 'Montserrat';
+    background-color: #0E0B1D;
+    height: 100%;
+}
+html{
+    height: 100%;
+}
+
+.a{
+    color: aqua;
+}
+
+._container{
+    max-width: 1130px;
+    margin: 0px auto;
+    /* padding: 0px 15px; */
+    box-sizing: content-box;
+}
+.wrapper{
+    overflow: hidden;
+}
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+
+.basket_title{
+    margin-bottom: 100px;
+}
+ol, ul {
+    padding-left: 0;
+}
