@@ -2,8 +2,9 @@ import React, { Component, FC } from "react";
 import { Route, BrowserRouter, Routes, Navigate } from "react-router-dom";
 import { privateRoutes, publicRoutes } from "./Routes";
 import { LOGIN_ROUTE } from "../../utils/const";
+import { useAppSelector } from "../../Hooks/redux";
 const AppRoute: FC = () => {
-  const isAuth = true;
+  const { isAuth } = useAppSelector((state) => state.userReducer);
   return (
     <Routes>
       {isAuth &&

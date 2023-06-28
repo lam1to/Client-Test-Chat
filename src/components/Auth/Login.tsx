@@ -1,9 +1,11 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { CHAT_ROUTE, LOGIN_ROUTE, REGISTR_ROUTE } from "../../utils/const";
 import styles from "../../styles/auth.module.css";
-import { IuserLogin } from "../../types/IUser";
-import { login } from "../../http/user.services";
+import { IuserForState, IuserLogin } from "../../types/IUser";
+import { check, login } from "../../http/user.services";
+import { useAppDispatch, useAppSelector } from "../../Hooks/redux";
+import { UserSlice } from "../../store/Reducers/UserSlice";
 
 const Login: FC = () => {
   const [user, setUser] = useState<IuserLogin>({
@@ -11,11 +13,24 @@ const Login: FC = () => {
     password: "",
   } as IuserLogin);
   const navigate = useNavigate();
+
+  const { isAuth } = useAppSelector((state) => state.userReducer);
+  console.log("isAuth =", isAuth);
+  const { SetUser } = UserSlice.actions;
+  const dispatch = useAppDispatch();
+
   const loginF = async () => {
-    const data = await login(user);
-    console.log("login data = ", data);
+    const getUser: IuserForState = await login(user);
+    console.log("login data = ", getUser);
+    console.log("auth = ", isAuth);
+    dispatch(SetUser(getUser));
+    console.log("auth = ", isAuth);
     navigate(CHAT_ROUTE);
   };
+
+  useEffect(() => {
+    check();
+  }, []);
   return (
     <div className={styles.block_auth}>
       <div className="block-auth-container _container">
