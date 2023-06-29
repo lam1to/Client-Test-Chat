@@ -18,5 +18,5 @@ export interface IChatUser {
 }
 
 export interface IAllChatWithUser extends IChat {
-  users: IuserChat[] | undefined;
+  users: IuserChat[];
 }

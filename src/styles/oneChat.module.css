@@ -1,0 +1,46 @@
+.name{
+    color: aqua;
+}
+.chatrow{
+    overflow: auto;
+    height: 80.5vh;
+}
+::-webkit-scrollbar-thumb {
+    background: none;
+}
+.onechat_block{
+    display: flex;
+    height: 85px;
+    transition: 1s;
+}
+.onechat_block:hover{
+    background-color: #0E0B1D;
+    transition: 0.5s;
+}
+
+.onechat_block_img img{
+    width: 65px;
+    border-radius: 50%;
+}
+.onechat_block_img{
+    margin: 0px 25px 0px 15px;
+    display: flex;
+    align-items: center;
+    
+}
+.onechat_container{
+    width: 100%;
+    background: none;
+     border: none;
+     padding: 0;
+     cursor: pointer;
+    /* margin-bottom: 10px; */
+}
+.onechat_block_name{
+    margin-top: 10px;
+    color: #6EFFB1;
+    font-size: 18px;
+}
+.onechat_block_name_block{
+    display: inline;
+}

@@ -2,18 +2,10 @@ import React, { FC, useEffect, useState } from "react";
 import iconAllMessage from "../../public/chat.png";
 import st from "../../styles/chat.module.css";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../Hooks/redux";
-import { findCharForUser } from "../../http/chat.services";
-import { IAllChatWithUser } from "../../types/IChat";
-import { IuserChat } from "../../types/IUser";
+import ChatRow from "./ChatRow";
+import ChatSearch from "./ChatSearch";
 
 const Chat: FC = () => {
-  const [data, setData] = useState<IAllChatWithUser[]>();
-  useEffect(() => {
-    findCharForUser().then((data) => setData(data));
-    console.log("data in chat = ", data);
-  }, []);
-
   return (
     <div>
       <div className={st.chat}>
@@ -28,22 +20,9 @@ const Chat: FC = () => {
         </div>
         <div className={st.main_block}>
           <div className={st.all_chat_block}>
-            <form className={st.block_chat_search_form}>
-              <input
-                type="text"
-                // value={user.password}
-                name="search"
-                placeholder="Search users"
-                className={st.chat_search_input}
-                // onChange={(e) =>
-                //   setUser((prev) => ({ ...prev, password: e.target.value }))
-                // }
-              />
-            </form>
+            <ChatSearch />
             <div className="all_chat_block_users">
-              {data?.map((one) => (
-                <div>{one.users?.map((users) => users.name)}</div>
-              ))}
+              <ChatRow />
             </div>
           </div>
           <div className={st.main_chat}>

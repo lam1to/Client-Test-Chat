@@ -20,7 +20,8 @@
 .block_chat_search_form{
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
 }
 .chat_search_input{
     margin: 10px;
@@ -58,4 +59,69 @@
 .main_chat{
     width: 100%;
     background-color: #1A1037;
+}
+.list_user{
+    overflow: auto;
+    height: 80vh;
+    background-color: #4E4370;
+}
+::-webkit-scrollbar-thumb {
+    background: none;
+}
+.block_list_user_true{
+    /* display: none; */
+}
+.block_list_user_false{
+    display: none;
+}
+.block_list_user{
+    width: 100%;
+    position: absolute;
+    top:70px;
+
+}
+
+.onechat_block{
+    display: flex;
+    height: 85px;
+    transition: 1s;
+}
+.onechat_block:hover{
+    background-color: #0E0B1D;
+    transition: 0.5s;
+}
+
+.onechat_block_img img{
+    width: 65px;
+    border-radius: 50%;
+}
+.onechat_block_img{
+    margin: 0px 25px 0px 15px;
+    display: flex;
+    align-items: center;
+    
+}
+.onechat_container{
+    width: 100%;
+    background: none;
+     border: none;
+     padding: 0;
+     cursor: pointer;
+    /* margin-bottom: 10px; */
+}
+.onechat_block_name{
+    margin-top: 10px;
+    color: #6EFFB1;
+    font-size: 18px;
+}
+.onechat_block_name_block{
+    display: inline;
+}
+
+.search_button{
+    width: 100%;
+    background: none;
+     border: none;
+     padding: 0;
+     cursor: pointer;
 }
