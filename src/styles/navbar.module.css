@@ -5,11 +5,35 @@
 }
 .navbar_container{
     height: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 .navbar_title{
-    color: #6EFFB1;
     font-size: 35px;
     height: 100%;
     display: flex;
     align-items: center;
 }
+.navbar_exit{
+    font-size: 25px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.link_button{
+    color: #6EFFB1;
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    transition: 1s;
+}
+.link_button:hover{
+    color: #AA76D2;
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    transition: 1s;
+}
+

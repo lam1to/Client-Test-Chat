@@ -7,9 +7,16 @@ export interface Iuser {
 export interface IuserLogin extends Omit<Iuser, "name" | "lastName"> {}
 
 export interface IuserForState extends Omit<Iuser, "password"> {
+  user: any;
   id: string;
   accessToken: string;
   refreshToken: string;
+}
+export interface IuserChat extends Iuser {
+  avatarPath: string;
+  id: string;
+  createdAt: string;
+  updateAt: string;
 }
 
 export enum EUserActionTypes {

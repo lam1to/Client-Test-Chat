@@ -16,6 +16,10 @@ export const UserSlice = createSlice({
       state.user = action.payload;
       state.isAuth = true;
     },
+    SetUserN(state, action: PayloadAction<IuserForState>) {
+      state.user = action.payload;
+      state.isAuth = false;
+    },
   },
 });
 

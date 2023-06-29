@@ -3,7 +3,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { CHAT_ROUTE, LOGIN_ROUTE, REGISTR_ROUTE } from "../../utils/const";
 import styles from "../../styles/auth.module.css";
 import { IuserForState, IuserLogin } from "../../types/IUser";
-import { check, login } from "../../http/user.services";
+import { login } from "../../http/user.services";
 import { useAppDispatch, useAppSelector } from "../../Hooks/redux";
 import { UserSlice } from "../../store/Reducers/UserSlice";
 
@@ -15,10 +15,12 @@ const Login: FC = () => {
   const navigate = useNavigate();
 
   const { isAuth } = useAppSelector((state) => state.userReducer);
-  console.log("isAuth =", isAuth);
   const { SetUser } = UserSlice.actions;
   const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    console.log("isAuth in login = ", isAuth);
+  }, [isAuth]);
   const loginF = async () => {
     const getUser: IuserForState = await login(user);
     console.log("login data = ", getUser);
@@ -28,9 +30,6 @@ const Login: FC = () => {
     navigate(CHAT_ROUTE);
   };
 
-  useEffect(() => {
-    check();
-  }, []);
   return (
     <div className={styles.block_auth}>
       <div className="block-auth-container _container">

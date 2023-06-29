@@ -10,16 +10,17 @@ import { UserSlice } from "./store/Reducers/UserSlice";
 import Loader from "./components/Loading/Loader";
 
 const App = () => {
-  const { user } = useAppSelector((state) => state.userReducer);
   const { SetUser, SetIsAuth } = UserSlice.actions;
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
-    check()
-      .then((data) => {
-        dispatch(SetUser(data));
-      })
-      .finally(() => setLoading(false));
+    if (localStorage.getItem("token") !== null) {
+      check()
+        .then((data) => {
+          dispatch(SetUser(data));
+        })
+        .finally(() => setLoading(false));
+    }
   }, []);
   if (loading) {
     return <Loader />;

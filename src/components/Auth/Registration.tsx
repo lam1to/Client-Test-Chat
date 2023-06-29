@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/auth.module.css";
 import { registration } from "../../http/user.services";
 import { Iuser } from "../../types/IUser";
+import { useAppDispatch, useAppSelector } from "../../Hooks/redux";
+import { UserSlice } from "../../store/Reducers/UserSlice";
 
 const Registration: FC = () => {
   const [user, setUser] = useState<Iuser>({
@@ -13,8 +15,13 @@ const Registration: FC = () => {
     password: "",
   } as Iuser);
   const navigate = useNavigate();
+  const { isAuth } = useAppSelector((state) => state.userReducer);
+  const { SetUser } = UserSlice.actions;
+  const dispatch = useAppDispatch();
   const registrationF = async () => {
     const data = await registration(user);
+    dispatch(SetUser(data));
+    console.log("isAuth =", isAuth);
     console.log("component data = ", data);
     navigate(CHAT_ROUTE);
   };
