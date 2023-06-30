@@ -20,6 +20,8 @@ const App = () => {
           dispatch(SetUser(data));
         })
         .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
     }
   }, []);
   if (loading) {

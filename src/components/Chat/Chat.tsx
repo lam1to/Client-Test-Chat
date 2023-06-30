@@ -1,11 +1,38 @@
-import React, { FC, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import iconAllMessage from "../../public/chat.png";
 import st from "../../styles/chat.module.css";
 import { Link } from "react-router-dom";
 import ChatRow from "./ChatRow";
 import ChatSearch from "./ChatSearch";
+import MainChat from "./MainChat";
+import { findCharForUser } from "../../http/chat.services";
+import { IAllChatWithUser } from "../../types/IChat";
+import { IuserChat } from "../../types/IUser";
 
 const Chat: FC = () => {
+  const [chats, setChats] = useState<IAllChatWithUser[]>(
+    [] as IAllChatWithUser[]
+  );
+  const [selectChats, setSelectChats] = useState<IAllChatWithUser>(
+    {} as IAllChatWithUser
+  );
+  const [reren, setreren] = useState<IuserChat>({} as IuserChat);
+  useEffect(() => {
+    getChat();
+    console.log("chat измефывфвфы");
+  }, [reren]);
+  const getChat = async () => {
+    await findCharForUser().then((data) => setChats(data));
+  };
+  // useEffect(() => {
+  //   console.log("in parANt", selectChats);
+  // }, [selectChats]);
   return (
     <div>
       <div className={st.chat}>
@@ -20,16 +47,13 @@ const Chat: FC = () => {
         </div>
         <div className={st.main_block}>
           <div className={st.all_chat_block}>
-            <ChatSearch />
+            <ChatSearch setReren={setreren} />
             <div className="all_chat_block_users">
-              <ChatRow />
+              <ChatRow {...{ chats, selectChats, setSelectChats }} />
             </div>
           </div>
-          <div className={st.main_chat}>
-            <div className="main_chat_header">header</div>
-            <div className="main_chat_content">content</div>
-            <div className="main_chat_input">input</div>
-          </div>
+
+          <MainChat chat={selectChats} />
         </div>
       </div>
     </div>

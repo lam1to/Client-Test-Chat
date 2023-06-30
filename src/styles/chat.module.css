@@ -69,7 +69,7 @@
     background: none;
 }
 .block_list_user_true{
-    /* display: none; */
+    display: block;
 }
 .block_list_user_false{
     display: none;
