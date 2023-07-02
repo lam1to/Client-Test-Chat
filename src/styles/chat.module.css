@@ -8,7 +8,7 @@
     display: flex;
     justify-content: center;
     padding: 40px;
-    border-right: 5px solid #AA76D2;
+    border-right: 1px solid #AA76D2;
     
 }
 .func_row{
@@ -22,6 +22,38 @@
     display: flex;
     flex-wrap: wrap;
     position: relative;
+}
+.button_create{
+    width: 85%;
+    height: 40px;
+    background: black;
+	color: #6EFFB1;
+    font-weight: 800;
+    font-size: 15px;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	outline: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding-left: 30px;
+    transition: 1s;
+}
+.button_create:hover {
+    color: #AA76D2;
+    transition: 1s;
+}
+.block_create{
+    display: flex;
+}
+.block_create_counter{
+    background-color: black;
+    color: #6EFFB1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 0 auto;
 }
 .chat_search_input{
     margin: 10px;
@@ -86,6 +118,23 @@
     height: 85px;
     transition: 1s;
 }
+.onechat_block_select{
+    background-color: #0E0B1D;
+}
+.block_user{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: start;
+}
+.selectUser{
+    flex: 1 0 auto;
+    display: flex;
+    justify-content: center;
+    color: #6EFFB1;
+    margin-top: 8px;
+
+}
 .onechat_block:hover{
     background-color: #0E0B1D;
     transition: 0.5s;
@@ -124,4 +173,25 @@
      border: none;
      padding: 0;
      cursor: pointer;
+}
+
+.oneuser_block_name{
+    margin-top: 20px;
+    color: #6EFFB1;
+    font-size: 16px;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    width: 100%;
+    word-break:break-all;
+}
+.oneuser_block_img{
+    margin: 0px 15px 0px 15px;
+    display: flex;
+    align-items: center;
+}
+
+.oneuser_block_img img{
+    width: 65px;
+    border-radius: 50%;
 }

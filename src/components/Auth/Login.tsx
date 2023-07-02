@@ -18,15 +18,10 @@ const Login: FC = () => {
   const { SetUser } = UserSlice.actions;
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    console.log("isAuth in login = ", isAuth);
-  }, [isAuth]);
+  useEffect(() => {}, [isAuth]);
   const loginF = async () => {
     const getUser: IuserForState = await login(user);
-    console.log("login data = ", getUser);
-    console.log("auth = ", isAuth);
     dispatch(SetUser(getUser));
-    console.log("auth = ", isAuth);
     navigate(CHAT_ROUTE);
   };
 

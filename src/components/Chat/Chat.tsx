@@ -22,17 +22,14 @@ const Chat: FC = () => {
   const [selectChats, setSelectChats] = useState<IAllChatWithUser>(
     {} as IAllChatWithUser
   );
-  const [reren, setreren] = useState<IuserChat>({} as IuserChat);
+  const [reren, setreren] = useState<boolean>(false);
   useEffect(() => {
     getChat();
-    console.log("chat измефывфвфы");
+    setreren(false);
   }, [reren]);
   const getChat = async () => {
     await findCharForUser().then((data) => setChats(data));
   };
-  // useEffect(() => {
-  //   console.log("in parANt", selectChats);
-  // }, [selectChats]);
   return (
     <div>
       <div className={st.chat}>

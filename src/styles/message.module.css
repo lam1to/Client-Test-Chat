@@ -1,0 +1,85 @@
+
+.one_message{
+    width: 100%;
+    overflow: hidden;
+}
+
+.message_block_self{
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    margin-bottom: 5px;
+}
+.message_block_other{
+    width: 95%;
+    display: flex;
+    justify-content: start;
+    margin: 0px 0px 10px 25px;
+}
+.message_container{
+    width: 50%;
+
+}
+.message_container_self{
+    display: flex;
+    justify-content: end;
+}
+.message_content_self{
+    border: 3px solid #0E0B1D;
+    border-radius: 10px;
+    width: auto;
+    word-break: break-all;
+    display: inline-block;
+    font-size: 20px;
+    padding: 10px;
+    color: #0E0B1D;
+    background-color: #6EFFB1;
+    transition: 1s;
+}
+.message_content_self:hover{
+    color: black;
+    transition: 1s;
+    background-color: #00d764;
+    border: 3px solid #0E0B1D;
+}
+.message_content_other{
+    border: 3px solid black;
+    border-radius: 10px;
+    width: auto;
+    word-break: break-all;
+    display: inline-block;
+    font-size: 20px;
+    padding: 10px;
+    color: #6EFFB1;
+    background-color: #0E0B1D;
+    transition: 1s;
+}
+.message_content_other:hover{
+    color: #45f798;
+    transition: 1s;
+    background-color: black;
+    border: 3px solid #0E0B1D;
+}
+
+.row_message{
+    height: 70vh;
+    overflow: auto;
+}
+.message_content_time{
+    color: #bbffdb;
+    font-size: 10px;
+    display: flex;
+    justify-content: end;
+    margin-top: 5px;
+}
+.message_who_send{
+    margin:0px 0px 3px 8px;
+    color: #464444;
+}
+.message_content_time_self{
+    color: black;
+    font-size: 10px;
+    display: flex;
+    justify-content: end;
+    margin-top: 5px;
+}

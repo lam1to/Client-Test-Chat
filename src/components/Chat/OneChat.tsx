@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction } from "react";
+import React, { Dispatch, FC, SetStateAction, useEffect } from "react";
 import { IAllChatWithUser } from "../../types/IChat";
 import st from "../../styles/oneChat.module.css";
 
@@ -15,7 +15,9 @@ const OneChat: FC<PropsOneChat> = (oneChat) => {
       <div className={st.onechat}>
         <div className={st.onechat_block}>
           <div className={st.onechat_block_img}>
-            <img src={oneChat.oneChat.users[0].avatarPath} alt="" />
+            {oneChat.oneChat.users[0] && (
+              <img src={`${oneChat.oneChat.users[0].avatarPath}`} />
+            )}
           </div>
           <div className={st.onechat_block_name}>
             {oneChat.oneChat.users?.map((one, i) => (

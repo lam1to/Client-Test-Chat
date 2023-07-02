@@ -1,18 +1,35 @@
 import React, { FC, useEffect, useState } from "react";
 import st from "../../styles/mainChat.module.css";
 import { IAllChatWithUser } from "../../types/IChat";
+import io from "socket.io-client";
+import { IMessage } from "../../types/IMessage";
+import ChatRowMessage from "./ChatRowMessage";
+import { useAppSelector } from "../../Hooks/redux";
+import { getAllMessageForChat } from "../../http/chat.services";
+import MainChatInput from "./MainChatInput";
 
 export interface PropsMainChat {
   chat: IAllChatWithUser;
 }
+const socket = io("http://localhost:4200/chatSocket");
 const MainChat: FC<PropsMainChat> = ({ chat }) => {
-  const [isEmpty, setIsEmpty] = useState<boolean>(true);
+  const [messages, SetMessages] = useState<IMessage[]>([]);
   useEffect(() => {
-    setIsEmpty(Object.keys(chat).length === 0);
-  }, [chat, isEmpty]);
+    socket.on(`message${chat.id}`, (content) => {
+      SetMessages((messages) => [...messages, content]);
+    });
+    getMessages();
+  }, [chat]);
+  const getMessages = async () => {
+    if (chat.id) {
+      await getAllMessageForChat(chat.id).then((data) => SetMessages(data));
+    }
+    console.log("messages in mainChat = ", messages);
+  };
+
   return (
     <div className={st.main_chat_container}>
-      {!isEmpty ? (
+      {chat.id ? (
         <div className={st.main_chat}>
           <div className={st.main_chat_header}>
             <div className={st.main_chat_header_name}>
@@ -27,17 +44,10 @@ const MainChat: FC<PropsMainChat> = ({ chat }) => {
               ))}
             </div>
           </div>
-          <div className={st.main_chat_content}>a</div>
-          <div className={st.main_chat_input}>
-            <form action="" className={st.main_chat_form}>
-              <input
-                placeholder="Введите сообщение "
-                type="text"
-                className={st.main_chat_form_input}
-              />
-              <button className={st.main_chat_form_button}>Отправить</button>
-            </form>
+          <div className={st.main_chat_content}>
+            <ChatRowMessage users={chat.users} messages={messages} />
           </div>
+          <MainChatInput socket={socket} chatId={chat.id} />
         </div>
       ) : (
         <div className={st.emptyChat}>Чат не открыт</div>

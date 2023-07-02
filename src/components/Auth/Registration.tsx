@@ -21,8 +21,6 @@ const Registration: FC = () => {
   const registrationF = async () => {
     const data = await registration(user);
     dispatch(SetUser(data));
-    console.log("isAuth =", isAuth);
-    console.log("component data = ", data);
     navigate(CHAT_ROUTE);
   };
   return (

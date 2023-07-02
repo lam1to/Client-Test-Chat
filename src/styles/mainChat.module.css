@@ -1,19 +1,26 @@
 .main_chat{
-    width: 100%;
+    width: 98%;
     display: flex;
     flex-direction: column;
     height: 90vh;
 }
 .main_chat_container{
     width: 100%;
+    background-color: #1A1037;
+}
+.main_chat_header_name_block{
+    /* display: inline; */
+
+    
 }
 .main_chat_header_name_block{
     display: inline;
 }
 .main_chat_header{
-    width: 100%;
+    width: 98%;
+    
     background-color: #0E0B1D;
-    height: 40px;
+    height: 100px;
     display: flex;
     align-items: center;
     padding-left: 100px;
@@ -24,6 +31,7 @@
 }
 .main_chat_content{
     flex: 1 1 auto;
+    margin-top: 20px;
 }
 .main_chat_input{
 }
@@ -48,6 +56,9 @@
     margin-bottom: 10px;
     color: #6EFFB1;
     outline: none;
+}
+.main_chat_form_input::placeholder{
+    color: #bbffdb;
 }
 .main_chat_form_button{
     width: 10%;
