@@ -34,7 +34,6 @@ const ChatSearch: FC<PropsChatSearch> = ({ setReren }) => {
     setIsSearch(false);
     setReren(true);
   };
-  const [style, setStyle] = useState<string>(st.onechat_block);
   const [count, setCount] = useState<string[]>([]);
   return (
     <form className={st.block_chat_search_form}>

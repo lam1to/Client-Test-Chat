@@ -14,6 +14,7 @@ const App = () => {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
+    // localStorage.clear();
     if (localStorage.getItem("token") !== null) {
       check()
         .then((data) => {

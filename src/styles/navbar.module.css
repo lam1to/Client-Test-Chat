@@ -37,3 +37,14 @@
     transition: 1s;
 }
 
+.navbar_name{
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    color: #6EFFB1;
+}
+.navbar_block_name_exit{
+    display: flex;
+    width: 58%;
+    justify-content: space-between;
+}

@@ -8,20 +8,17 @@ import React, {
 import st from "../../styles/mainChat.module.css";
 import { Socket } from "socket.io-client";
 import { useAppSelector } from "../../Hooks/redux";
-import EmojiPicker from "emoji-picker-react";
-import { EmojiStyle } from "emoji-picker-react";
-import { Theme } from "emoji-picker-react";
-import stickerPng from "../../public/png-transparent-iphone-emoji-smiley-computer-icons-sick-transformed.png";
+import MainChatEmoji from "./MainChatEmoji";
+
 export interface PropsMainChatInput {
   socket: Socket;
   chatId: string;
 }
 
 const MainChatInput: FC<PropsMainChatInput> = ({ socket, chatId }) => {
-  const { user } = useAppSelector((state) => state.userReducer);
   const [content, setContent] = useState<string>("");
   useEffect(() => {}, []);
-
+  const { user } = useAppSelector((state) => state.userReducer);
   const createMessageF = async () => {
     socket.emit("createGateway", {
       userId: user.user.id,
@@ -48,18 +45,7 @@ const MainChatInput: FC<PropsMainChatInput> = ({ socket, chatId }) => {
             }
           }}
         />
-        <div className={st.stickers}>
-          <div className={st.stickers_img}>
-            <img src={stickerPng} alt="" />
-          </div>
-          <div className={st.stickers_block}>
-            <EmojiPicker
-              emojiStyle={EmojiStyle.APPLE}
-              onEmojiClick={(e) => setContent(`${content} ${e.emoji}`)}
-              theme={Theme.DARK}
-            />
-          </div>
-        </div>
+        {/* <MainChatEmoji content={content} setContent={setContent} /> */}
         <button
           onClick={() => createMessageF()}
           type="button"

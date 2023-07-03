@@ -1,5 +1,5 @@
 .main_chat{
-    width: 98%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     height: 90vh;
@@ -8,33 +8,15 @@
     width: 100%;
     background-color: #1A1037;
 }
-.main_chat_header_name_block{
-    /* display: inline; */
 
-    
-}
-.main_chat_header_name_block{
-    display: inline;
-}
-.main_chat_header{
-    width: 98%;
-    
-    background-color: #0E0B1D;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    padding-left: 100px;
-}
-.main_chat_header_name{
-    color: #6EFFB1;
-    font-size: 20px;
-}
 .main_chat_content{
     flex: 1 1 auto;
     margin-top: 20px;
+    margin-right: 20px;
 }
 .main_chat_input{
 }
+
 .main_chat_form{
     display: flex;
 }
@@ -61,7 +43,7 @@
     color: #bbffdb;
 }
 .main_chat_form_button{
-    width: 10%;
+    flex: 1 0 auto;
     background: none;
 	color: #6EFFB1;
     font-size: 20px;
@@ -82,6 +64,7 @@
     font-size: 40px;
     color: #6EFFB1;
 }
+/* Stickers start */
 .stickers{
     /* display: none; */
     position: relative;
@@ -100,4 +83,76 @@
 }
 .stickers_img img{
     width: 25px;
+}
+/* Stickers end */
+
+/* Header */
+.main_chat_header_name_block{
+    /* display: inline; */
+
+    
+}
+.main_chat_header_name_block{
+    display: inline;
+}
+.main_chat_header{
+    width: 100%;
+    /* justify-content: space-between; */
+    background-color: #0E0B1D;
+    height: 100px;
+    display: flex;
+    align-items: center;
+
+}
+.main_chat_header_name{
+    color: #6EFFB1;
+    font-size: 20px;
+    padding-left: 100px;
+}
+.main_chat_header_search{
+        flex: 1 0 auto;
+        display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.main_chat_header_search_block:hover .main_chat_header_search_block_input{
+    right: -10px;
+    transition: 1s;
+}
+.main_chat_header_search_block{
+    margin-right: 20px;
+    transition: 1s;
+    display: flex;
+    justify-content: end;
+    position: relative;
+}
+.main_chat_header_search_block_input{
+    position: absolute;
+    right: -250px;
+    top: -10px;
+    transition: 1s;
+    transform: matrix();
+}
+.main_chat_header_search_input{
+    transition: 1s;
+    margin: 10px 0px 0px 10px;
+    background-color: #6EFFB1;
+    border: none;
+    border-radius: 15px;
+    padding-left: 20px;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    height: 30px;
+    margin-bottom: 10px;
+    color: #1A1037;
+    outline: none;
+    border: #6EFFB1;
+}
+
+.main_chat_header_search_input::placeholder{
+    color: #1A1037;
 }

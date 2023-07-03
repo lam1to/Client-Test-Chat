@@ -8,7 +8,7 @@ import { IuserForState } from "../types/IUser";
 const NavBar: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isAuth } = useAppSelector((state) => state.userReducer);
+  const { user, isAuth } = useAppSelector((state) => state.userReducer);
   const { SetIsAuth, SetUserN } = UserSlice.actions;
   const exit = () => {
     dispatch(SetUserN({} as IuserForState));
@@ -27,10 +27,15 @@ const NavBar: FC = () => {
             </button>
           </div>
           {isAuth && (
-            <div className={styles.navbar_exit}>
-              <button onClick={() => exit()} className={styles.link_button}>
-                Выход
-              </button>
+            <div className={styles.navbar_block_name_exit}>
+              <div className={styles.navbar_name}>
+                {"Здравствуйте " + user.user.name}
+              </div>
+              <div className={styles.navbar_exit}>
+                <button onClick={() => exit()} className={styles.link_button}>
+                  Выход
+                </button>
+              </div>
             </div>
           )}
         </div>
