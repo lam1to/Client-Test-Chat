@@ -8,6 +8,10 @@ import React, {
 import st from "../../styles/mainChat.module.css";
 import { Socket } from "socket.io-client";
 import { useAppSelector } from "../../Hooks/redux";
+import EmojiPicker from "emoji-picker-react";
+import { EmojiStyle } from "emoji-picker-react";
+import { Theme } from "emoji-picker-react";
+import stickerPng from "../../public/png-transparent-iphone-emoji-smiley-computer-icons-sick-transformed.png";
 export interface PropsMainChatInput {
   socket: Socket;
   chatId: string;
@@ -44,6 +48,18 @@ const MainChatInput: FC<PropsMainChatInput> = ({ socket, chatId }) => {
             }
           }}
         />
+        <div className={st.stickers}>
+          <div className={st.stickers_img}>
+            <img src={stickerPng} alt="" />
+          </div>
+          <div className={st.stickers_block}>
+            <EmojiPicker
+              emojiStyle={EmojiStyle.APPLE}
+              onEmojiClick={(e) => setContent(`${content} ${e.emoji}`)}
+              theme={Theme.DARK}
+            />
+          </div>
+        </div>
         <button
           onClick={() => createMessageF()}
           type="button"
