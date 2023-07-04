@@ -1,32 +1,23 @@
-import React, {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import React, { Dispatch, FC, SetStateAction, useEffect } from "react";
 import { IAllChatWithUser } from "../../types/IChat";
-import { findCharForUser } from "../../http/chat.services";
 import OneChat from "./OneChat";
 import st from "../../styles/oneChat.module.css";
+import { useAppSelector } from "../../Hooks/redux";
 
 export interface PoropsChatRow {
   chats: IAllChatWithUser[];
-  selectChats: IAllChatWithUser;
   setSelectChats: Dispatch<SetStateAction<IAllChatWithUser>>;
 }
-const ChatRow: FC<PoropsChatRow> = (chats) => {
+const ChatRow: FC<PoropsChatRow> = ({ chats, setSelectChats }) => {
+  const { user } = useAppSelector((state) => state.userReducer);
   useEffect(() => {
-    console.log("chats изменились");
-  }, [chats.chats]);
+    console.log("chats изменились в chatRow");
+  }, []);
   return (
     <div>
       <div className={st.chatrow}>
-        {chats.chats?.map((one) => (
-          <OneChat
-            key={one.id}
-            {...{ oneChat: one, setSelectChats: chats.setSelectChats }}
-          />
+        {chats?.map((one, i) => (
+          <OneChat key={i} oneChat={one} setSelectChats={setSelectChats} />
         ))}
       </div>
     </div>

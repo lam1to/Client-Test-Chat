@@ -1,10 +1,4 @@
-import React, {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import React, { FC, useEffect, useState } from "react";
 import iconAllMessage from "../../public/chat.png";
 import st from "../../styles/chat.module.css";
 import { Link } from "react-router-dom";
@@ -13,7 +7,10 @@ import ChatSearch from "./ChatSearch";
 import MainChat from "./MainChat";
 import { findCharForUser } from "../../http/chat.services";
 import { IAllChatWithUser } from "../../types/IChat";
-import { IuserChat } from "../../types/IUser";
+import { io } from "socket.io-client";
+import { useAppSelector } from "../../Hooks/redux";
+
+const socket = io("http://localhost:4200/chatSocket");
 
 const Chat: FC = () => {
   const [chats, setChats] = useState<IAllChatWithUser[]>(
@@ -22,11 +19,14 @@ const Chat: FC = () => {
   const [selectChats, setSelectChats] = useState<IAllChatWithUser>(
     {} as IAllChatWithUser
   );
-  const [reren, setreren] = useState<boolean>(false);
+  const { user } = useAppSelector((state) => state.userReducer);
   useEffect(() => {
+    socket.on(`chatCreate${user.user.id}`, (content) => {
+      console.log("получили вот это = ", content);
+      setChats((chats) => [...chats, content]);
+    });
     getChat();
-    setreren(false);
-  }, [reren]);
+  }, [chats.length]);
   const getChat = async () => {
     await findCharForUser().then((data) => setChats(data));
   };
@@ -44,13 +44,12 @@ const Chat: FC = () => {
         </div>
         <div className={st.main_block}>
           <div className={st.all_chat_block}>
-            <ChatSearch setReren={setreren} />
+            <ChatSearch socket={socket} />
             <div className="all_chat_block_users">
-              <ChatRow {...{ chats, selectChats, setSelectChats }} />
+              <ChatRow chats={chats} setSelectChats={setSelectChats} />
             </div>
           </div>
-
-          <MainChat chat={selectChats} />
+          <MainChat socket={socket} chat={selectChats} />
         </div>
       </div>
     </div>

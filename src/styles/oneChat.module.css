@@ -5,7 +5,7 @@
     overflow: auto;
     height: 80.5vh;
 }
-::-webkit-scrollbar-thumb {
+.chatrow::-webkit-scrollbar-thumb {
     background: none;
 }
 .onechat_block{
@@ -40,7 +40,36 @@
     margin-top: 10px;
     color: #6EFFB1;
     font-size: 18px;
+    display: flex;
+    justify-content: start;
 }
 .onechat_block_name_block{
     display: inline;
+}
+/* remove */
+.onechat_remove_block{
+    display: flex;
+    justify-content: end;
+    margin-top: 20px;
+    margin-right: 10px;
+}
+.onechat_block_name_remove{
+    flex: 1 0 auto;
+}
+.position{
+    position: relative;
+}
+.onechat_remove_block:hover .onechat_remove_block_drop_down{
+    display: block;
+}
+.onechat_remove_block:hover .oneChat_remove_block_img{
+    opacity: 0;
+}
+.onechat_remove_block_drop_down{
+    position: absolute;
+    color: #6EFFB1;
+    font-size: 20px;
+    right: -7px;
+    bottom: 0;
+    display: none;
 }

@@ -1,21 +1,14 @@
-import React, {
-  ChangeEvent,
-  Dispatch,
-  FC,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import React, { FC, useEffect, useState } from "react";
 import st from "../../styles/chat.module.css";
 import { IuserChat } from "../../types/IUser";
 import { getAllUsers } from "../../http/user.services";
-import { createChat } from "../../http/chat.services";
 import { useAppSelector } from "../../Hooks/redux";
+import { Socket } from "socket.io-client";
 export interface PropsChatSearch {
-  setReren: Dispatch<SetStateAction<boolean>>;
+  socket: Socket;
 }
 
-const ChatSearch: FC<PropsChatSearch> = ({ setReren }) => {
+const ChatSearch: FC<PropsChatSearch> = ({ socket }) => {
   const [search, setSearch] = useState<string>("");
   const [users, setUsers] = useState<IuserChat[]>();
   const [isSearch, setIsSearch] = useState<boolean>(false);
@@ -30,9 +23,13 @@ const ChatSearch: FC<PropsChatSearch> = ({ setReren }) => {
     );
   });
   const createChatF = () => {
-    const chat = createChat([...count, user.user.id]);
-    setIsSearch(false);
-    setReren(true);
+    if (count.length > 0) {
+      socket.emit("createChat", {
+        idUsers: [...count, user.user.id],
+      });
+      setCount([]);
+      setIsSearch(false);
+    }
   };
   const [count, setCount] = useState<string[]>([]);
   return (

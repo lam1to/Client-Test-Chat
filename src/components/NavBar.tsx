@@ -29,7 +29,7 @@ const NavBar: FC = () => {
           {isAuth && (
             <div className={styles.navbar_block_name_exit}>
               <div className={styles.navbar_name}>
-                {"Здравствуйте " + user.user.name}
+                {"Welcome back " + user.user.name}
               </div>
               <div className={styles.navbar_exit}>
                 <button onClick={() => exit()} className={styles.link_button}>

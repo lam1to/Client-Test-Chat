@@ -5,3 +5,8 @@ export interface IMessage {
   userId: string;
   createdAt: string;
 }
+
+export interface ImessageState {
+  isRead: boolean;
+  message: IMessage;
+}

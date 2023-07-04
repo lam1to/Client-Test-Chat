@@ -1,5 +1,4 @@
-import React, { FC, useEffect } from "react";
-import { IChat } from "../../types/IChat";
+import React, { FC } from "react";
 import { IMessage } from "../../types/IMessage";
 import st from "../../styles/message.module.css";
 import { useAppSelector } from "../../Hooks/redux";
@@ -13,9 +12,6 @@ interface PropsOneMessage {
 const ChatMessage: FC<PropsOneMessage> = ({ message, userWho }) => {
   const time = message.createdAt.slice(11, 16);
   const { user } = useAppSelector((state) => state.userReducer);
-  useEffect(() => {
-    console.log(userWho);
-  }, []);
   return (
     <div className={st.one_message}>
       {user.user.id == message.userId ? (
@@ -47,6 +43,3 @@ const ChatMessage: FC<PropsOneMessage> = ({ message, userWho }) => {
 };
 
 export default ChatMessage;
-function useEffert(arg0: () => void, arg1: never[]) {
-  throw new Error("Function not implemented.");
-}

@@ -1,10 +1,4 @@
-import React, {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import React, { FC, useEffect, useState } from "react";
 import st from "../../styles/mainChat.module.css";
 import { Socket } from "socket.io-client";
 import { useAppSelector } from "../../Hooks/redux";

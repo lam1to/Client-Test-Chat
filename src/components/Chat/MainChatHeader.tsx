@@ -1,9 +1,7 @@
 import React, { Dispatch, FC, SetStateAction } from "react";
 import st from "../../styles/mainChat.module.css";
-import { IuserChat } from "../../types/IUser";
 import { IAllChatWithUser } from "../../types/IChat";
 import searchPngg from "../../public/search_symbol.png";
-import { compose } from "redux";
 
 interface PropsMainChatHeader {
   chat: IAllChatWithUser;

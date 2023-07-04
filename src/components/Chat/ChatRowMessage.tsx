@@ -1,10 +1,4 @@
-import React, {
-  FC,
-  LegacyRef,
-  MutableRefObject,
-  useEffect,
-  useRef,
-} from "react";
+import React, { FC, useEffect, useRef } from "react";
 import { IMessage } from "../../types/IMessage";
 import st from "../../styles/message.module.css";
 
