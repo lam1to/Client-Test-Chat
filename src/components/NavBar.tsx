@@ -15,30 +15,28 @@ const NavBar: FC = () => {
     localStorage.removeItem("token");
   };
   return (
-    <div>
-      <div className={styles.navbar}>
-        <div className={`${styles.navbar_container} _container`}>
-          <div className={styles.navbar_title}>
-            <button
-              onClick={() => navigate(CHAT_ROUTE)}
-              className={styles.link_button}
-            >
-              TestChat
-            </button>
-          </div>
-          {isAuth && (
-            <div className={styles.navbar_block_name_exit}>
-              <div className={styles.navbar_name}>
-                {"Welcome back " + user.user.name}
-              </div>
-              <div className={styles.navbar_exit}>
-                <button onClick={() => exit()} className={styles.link_button}>
-                  Выход
-                </button>
-              </div>
-            </div>
-          )}
+    <div className={styles.navbar}>
+      <div className={`${styles.navbar_container} _container`}>
+        <div className={styles.navbar_title}>
+          <button
+            onClick={() => navigate(CHAT_ROUTE)}
+            className={styles.link_button}
+          >
+            TestChat
+          </button>
         </div>
+        {isAuth && (
+          <div className={styles.navbar_block_name_exit}>
+            <div className={styles.navbar_name}>
+              {"Welcome back " + user.user.name}
+            </div>
+            <div className={styles.navbar_exit}>
+              <button onClick={() => exit()} className={styles.link_button}>
+                Выход
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

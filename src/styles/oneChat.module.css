@@ -2,8 +2,7 @@
     color: aqua;
 }
 .chatrow{
-    overflow: auto;
-    height: 80.5vh;
+    height: 100%;
 }
 .chatrow::-webkit-scrollbar-thumb {
     background: none;
@@ -12,6 +11,9 @@
     display: flex;
     height: 85px;
     transition: 1s;
+    width: 100%;
+    position: relative;
+    z-index: 2;
 }
 .onechat_block:hover{
     background-color: #0E0B1D;
@@ -34,7 +36,6 @@
      border: none;
      padding: 0;
      cursor: pointer;
-    /* margin-bottom: 10px; */
 }
 .onechat_block_name{
     margin-top: 10px;
@@ -42,34 +43,65 @@
     font-size: 18px;
     display: flex;
     justify-content: start;
+    flex-wrap: wrap;
+    transition: 1s;
+    
 }
-.onechat_block_name_block{
-    display: inline;
-}
+
 /* remove */
 .onechat_remove_block{
-    display: flex;
-    justify-content: end;
-    margin-top: 20px;
-    margin-right: 10px;
+    position: absolute;
+    z-index: 4;
+   right: 10px;
+   bottom: 10px;
 }
 .onechat_block_name_remove{
-    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-right: 10px;
 }
 .position{
     position: relative;
 }
-.onechat_remove_block:hover .onechat_remove_block_drop_down{
-    display: block;
-}
-.onechat_remove_block:hover .oneChat_remove_block_img{
-    opacity: 0;
-}
+
 .onechat_remove_block_drop_down{
     position: absolute;
-    color: #6EFFB1;
+    color: #AA76D2;
     font-size: 20px;
-    right: -7px;
-    bottom: 0;
-    display: none;
+    right: -86px;
+    background-color: #0E0B1D;
+    cursor: pointer;
+}
+.onechat_remove_block_drop_down_item:hover{
+    background-color: black;
+    transition: 1s;
+    
+}
+
+
+@media (max-width:1000px) {
+    .onechat_block_name{
+        font-size: 16px;
+        transition: 1s;
+    }
+    .onechat_block_img img{
+        width: 55px;
+        transition: 1s;
+    }
+    .onechat_block_img{
+        margin: 0px 15px 0px 15px;
+        transition: 1s;
+    }
+    .onechat_block{
+        height: 75px;
+        transition: 1s;
+    }
+}
+
+@media (max-width:550px) {
+    .onechat_remove_block_drop_down{
+        right: -4px;
+        bottom: 20px;
+    }
 }

@@ -38,9 +38,11 @@ body {
     font-family: 'Montserrat';
     background-color: #0E0B1D;
     height: 100%;
+    width: 100%;
 }
 html{
     height: 100%;
+    width: 100%;
 }
 
 .a{
@@ -74,4 +76,27 @@ html {
 }
 ol, ul {
     padding-left: 0;
+}
+
+body {
+    margin: 0;
+    font-family: 'Montserrat';
+    background-color: #0E0B1D;
+    height: 100%;
+}
+*, *::before, ::after {
+    padding: 0;
+    margin: 0;
+    bottom: 0;
+    box-sizing: 0;
+}
+*, *::before, ::after {
+    padding: 0;
+    margin: 0;
+    bottom: 0;
+    box-sizing: 0;
+}
+::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
 }

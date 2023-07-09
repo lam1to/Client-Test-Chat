@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction } from "react";
+import React, { Dispatch, FC, SetStateAction, useState } from "react";
 import st from "../../styles/mainChat.module.css";
 import { IAllChatWithUser } from "../../types/IChat";
 import searchPngg from "../../public/search_symbol.png";
@@ -14,6 +14,7 @@ const MainChatHeader: FC<PropsMainChatHeader> = ({
   filter,
   setFilter,
 }) => {
+  const [isFilter, setIsFilter] = useState<boolean>(false);
   return (
     <div className={st.main_chat_header}>
       <div className={st.main_chat_header_name}>
@@ -28,8 +29,15 @@ const MainChatHeader: FC<PropsMainChatHeader> = ({
         ))}
       </div>
       <div className={st.main_chat_header_search}>
-        <div className={st.main_chat_header_search_block}>
+        <div
+          onClick={() => {
+            isFilter ? setIsFilter(false) : setIsFilter(true);
+          }}
+          className={st.main_chat_header_search_block}
+        >
           <img className={st.main_chat_header_search_img} src={searchPngg} />
+        </div>
+        {isFilter && (
           <div className={st.main_chat_header_search_block_input}>
             <input
               placeholder="Поиск сообщений"
@@ -39,7 +47,7 @@ const MainChatHeader: FC<PropsMainChatHeader> = ({
               type="text"
             />
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

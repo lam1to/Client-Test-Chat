@@ -1,4 +1,10 @@
-import React, { FC, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import st from "../../styles/chat.module.css";
 import { IuserChat } from "../../types/IUser";
 import { getAllUsers } from "../../http/user.services";
@@ -6,9 +12,10 @@ import { useAppSelector } from "../../Hooks/redux";
 import { Socket } from "socket.io-client";
 export interface PropsChatSearch {
   socket: Socket;
+  setHidden?: Dispatch<SetStateAction<boolean>>;
 }
 
-const ChatSearch: FC<PropsChatSearch> = ({ socket }) => {
+const ChatSearch: FC<PropsChatSearch> = ({ socket, setHidden }) => {
   const [search, setSearch] = useState<string>("");
   const [users, setUsers] = useState<IuserChat[]>();
   const [isSearch, setIsSearch] = useState<boolean>(false);
@@ -29,6 +36,7 @@ const ChatSearch: FC<PropsChatSearch> = ({ socket }) => {
       });
       setCount([]);
       setIsSearch(false);
+      if (setHidden) setHidden(true);
     }
   };
   const [count, setCount] = useState<string[]>([]);

@@ -13,16 +13,18 @@ export interface PropsMainChat {
   socket: Socket;
 }
 const MainChat: FC<PropsMainChat> = ({ chat, socket }) => {
-  // const dispatch = useAppDispatch();
-  // const { SetMessage } = MessageSlice.actions;
   const [messages, SetMessages] = useState<IMessage[]>([]);
 
   useEffect(() => {
-    socket.on(`message${chat.id}`, (content) => {
-      SetMessages((messages) => [...messages, content]);
+    socket.on(`message${chat.id}`, (content: IMessage) => {
+      SetMessages((messages) => {
+        if (content.id === messages[messages.length - 1].id) {
+          return messages;
+        }
+        return [...messages, content];
+      });
     });
     getMessages();
-    // dispatch(SetMessage(messages[messages.length - 1]));
   }, [chat]);
 
   const getMessages = async () => {
@@ -30,8 +32,6 @@ const MainChat: FC<PropsMainChat> = ({ chat, socket }) => {
       await getAllMessageForChat(chat.id).then((data) => SetMessages(data));
     }
   };
-
-  // dispatch(SetMessage(messages[messages.length - 1]));
   const [filter, setFilter] = useState<string>("");
 
   const FilterMessages = (): IMessage[] => {

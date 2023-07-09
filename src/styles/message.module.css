@@ -1,3 +1,7 @@
+.row_message{
+    height: 70vh;
+    overflow: auto;
+}
 
 .one_message{
     width: 100%;
@@ -28,6 +32,7 @@
     border: 3px solid #0E0B1D;
     border-radius: 10px;
     width: auto;
+    min-width: 40px;
     word-break: break-all;
     display: inline-block;
     font-size: 20px;
@@ -46,6 +51,7 @@
     border: 3px solid black;
     border-radius: 10px;
     width: auto;
+    min-width: 40px;
     word-break: break-all;
     display: inline-block;
     font-size: 20px;
@@ -61,10 +67,7 @@
     border: 3px solid #0E0B1D;
 }
 
-.row_message{
-    height: 70vh;
-    overflow: auto;
-}
+
 .message_content_time{
     color: #bbffdb;
     font-size: 10px;
@@ -82,4 +85,23 @@
     display: flex;
     justify-content: end;
     margin-top: 5px;
+}
+
+/* media */
+@media (max-width:900px){
+    .message_content_other{
+        font-size: 18px;
+    }
+    .message_content_self{
+        font-size: 18px;
+    }
+}
+
+@media (max-width:500px){
+    .message_content_other{
+        font-size: 16px;
+    }
+    .message_content_self{
+        font-size: 16px;
+    }
 }

@@ -7,16 +7,15 @@
     height: 100%;
     display: flex;
     justify-content: space-between;
+    padding: 0px 10px 0px 10px;
 }
 .navbar_title{
     font-size: 35px;
-    height: 100%;
     display: flex;
     align-items: center;
 }
 .navbar_exit{
     font-size: 25px;
-    height: 100%;
     display: flex;
     align-items: center;
 }
@@ -47,4 +46,42 @@
     display: flex;
     width: 58%;
     justify-content: space-between;
+}
+
+@media (max-width:800px) {
+    .navbar_title{
+        font-size: 30px;
+    }
+    .navbar_name{
+        font-size: 16px;
+    }
+    .navbar_exit{
+        font-size: 22px;
+    }
+    .navbar_block_name_exit{
+        width: 62%;
+    }
+}
+@media (max-width:600px) {
+    .navbar_title{
+        font-size: 25px;
+    }
+    .navbar_name{
+        font-size: 14px;
+        word-break: break-all;
+    }
+    .navbar_exit{
+        font-size: 20px;
+    }
+    .navbar_block_name_exit{
+       
+        width: 66%;
+    }
+}
+@media (max-width:450px) {
+    .navbar_block_name_exit{
+        flex-wrap: wrap-reverse;
+        justify-content: center;
+        width: 53%;
+    }
 }
