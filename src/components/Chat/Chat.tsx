@@ -8,6 +8,7 @@ import { io } from "socket.io-client";
 import { useAppSelector } from "../../Hooks/redux";
 import ChatSideMenu from "./ChatSideMenu";
 import ChatSideMenuHiden from "./ChatSideMenuHiden";
+import { useOutsideClick } from "outsideclick-react";
 
 const socket = io("http://localhost:4200/chatSocket");
 
@@ -36,7 +37,8 @@ const Chat: FC = () => {
   const getChat = async () => {
     await findCharForUser().then((data) => setChats(data));
   };
-  const [hidden, setHidden] = useState<boolean>(false);
+  const [hidden, setHidden] = useState<boolean>(true);
+
   return (
     <div className={st.chat}>
       <div className={st.func_block}>

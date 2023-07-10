@@ -112,6 +112,7 @@
     width: 100%;
     position: absolute;
     top:70px;
+    z-index: 12;
 
 }
 
@@ -120,7 +121,6 @@
     height: 85px;
     transition: 1s;
     width: 100%;
-    /* position: relative; */
 }
 .onechat_block_select{
     background-color: #0E0B1D;
@@ -299,4 +299,20 @@ div {
     .all_chat_block_hidden_activ{
         width: 100vw;
     }
+}
+
+/* test */
+
+.dropdown_container{
+    padding: 20px;
+    margin: 40px;
+    color: white;
+}
+
+.dropdown_trigger{
+cursor: pointer;
+}
+.dropdown_menu{
+    border: 2px solid #6EFFB1;
+    padding-top:10px;
 }

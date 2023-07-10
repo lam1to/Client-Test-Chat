@@ -10,6 +10,7 @@ import { IuserChat } from "../../types/IUser";
 import { getAllUsers } from "../../http/user.services";
 import { useAppSelector } from "../../Hooks/redux";
 import { Socket } from "socket.io-client";
+import { useOutsideClick } from "outsideclick-react";
 export interface PropsChatSearch {
   socket: Socket;
   setHidden?: Dispatch<SetStateAction<boolean>>;
@@ -40,6 +41,10 @@ const ChatSearch: FC<PropsChatSearch> = ({ socket, setHidden }) => {
     }
   };
   const [count, setCount] = useState<string[]>([]);
+  const handleOutsideClick = () => {
+    setIsSearch(false);
+  };
+  const ref = useOutsideClick(handleOutsideClick);
   return (
     <form className={st.block_chat_search_form}>
       <input
@@ -53,6 +58,7 @@ const ChatSearch: FC<PropsChatSearch> = ({ socket, setHidden }) => {
         onClick={() => (isSearch ? setIsSearch(false) : setIsSearch(true))}
       />
       <div
+        ref={ref}
         className={`${
           isSearch === true ? st.block_list_user_true : st.block_list_user_false
         } ${st.block_list_user}`}

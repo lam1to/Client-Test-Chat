@@ -2,6 +2,7 @@ import React, { Dispatch, FC, SetStateAction, useState } from "react";
 import st from "../../styles/mainChat.module.css";
 import { IAllChatWithUser } from "../../types/IChat";
 import searchPngg from "../../public/search_symbol.png";
+import { useOutsideClick } from "outsideclick-react";
 
 interface PropsMainChatHeader {
   chat: IAllChatWithUser;
@@ -15,6 +16,10 @@ const MainChatHeader: FC<PropsMainChatHeader> = ({
   setFilter,
 }) => {
   const [isFilter, setIsFilter] = useState<boolean>(false);
+  const handleOutsideClick = () => {
+    setIsFilter(false);
+  };
+  const ref = useOutsideClick(handleOutsideClick);
   return (
     <div className={st.main_chat_header}>
       <div className={st.main_chat_header_name}>
@@ -28,7 +33,7 @@ const MainChatHeader: FC<PropsMainChatHeader> = ({
           </div>
         ))}
       </div>
-      <div className={st.main_chat_header_search}>
+      <div ref={ref} className={st.main_chat_header_search}>
         <div
           onClick={() => {
             isFilter ? setIsFilter(false) : setIsFilter(true);

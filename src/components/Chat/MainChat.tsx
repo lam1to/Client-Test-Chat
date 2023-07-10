@@ -7,6 +7,7 @@ import ChatRowMessage from "./ChatRowMessage";
 import { getAllMessageForChat } from "../../http/chat.services";
 import MainChatInput from "./MainChatInput";
 import MainChatHeader from "./MainChatHeader";
+import Loader from "../Loading/Loader";
 
 export interface PropsMainChat {
   chat: IAllChatWithUser;
@@ -16,20 +17,26 @@ const MainChat: FC<PropsMainChat> = ({ chat, socket }) => {
   const [messages, SetMessages] = useState<IMessage[]>([]);
 
   useEffect(() => {
+    getMessages();
     socket.on(`message${chat.id}`, (content: IMessage) => {
       SetMessages((messages) => {
-        if (content.id === messages[messages.length - 1].id) {
+        if (
+          messages.length > 0 &&
+          content.id === messages[messages.length - 1].id
+        ) {
           return messages;
         }
         return [...messages, content];
       });
     });
-    getMessages();
   }, [chat]);
-
+  const [loading, setLoading] = useState<boolean>(true);
   const getMessages = async () => {
     if (chat.id) {
-      await getAllMessageForChat(chat.id).then((data) => SetMessages(data));
+      await getAllMessageForChat(chat.id).then((data) => {
+        SetMessages(data);
+        setLoading(false);
+      });
     }
   };
   const [filter, setFilter] = useState<string>("");
@@ -52,7 +59,11 @@ const MainChat: FC<PropsMainChat> = ({ chat, socket }) => {
         <div className={st.main_chat}>
           <MainChatHeader filter={filter} setFilter={setFilter} chat={chat} />
           <div className={st.main_chat_content}>
-            <ChatRowMessage users={chat.users} messages={FilterMessages()} />
+            {loading ? (
+              <Loader />
+            ) : (
+              <ChatRowMessage users={chat.users} messages={FilterMessages()} />
+            )}
           </div>
           <MainChatInput socket={socket} chatId={chat.id} />
         </div>

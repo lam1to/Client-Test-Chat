@@ -14,6 +14,7 @@
     width: 100%;
     position: relative;
     z-index: 2;
+    cursor: pointer;
 }
 .onechat_block:hover{
     background-color: #0E0B1D;

@@ -3,6 +3,7 @@ import { IAllChatWithUser } from "../../types/IChat";
 import st from "../../styles/oneChat.module.css";
 import dotsImg from "../../public/more.png";
 import { Socket } from "socket.io-client";
+import { useOutsideClick } from "outsideclick-react";
 
 export interface PropsOneChat {
   oneChat: IAllChatWithUser;
@@ -22,6 +23,10 @@ const OneChat: FC<PropsOneChat> = ({
     if (setHidden) setHidden(true);
   };
   const [isDropDown, setIsDropDown] = useState<boolean>(false);
+  const handleOutsideClick = () => {
+    setIsDropDown(false);
+  };
+  const ref = useOutsideClick(handleOutsideClick);
   return (
     <div
       onClick={() => {
@@ -46,6 +51,7 @@ const OneChat: FC<PropsOneChat> = ({
           ))}
         </div>
         <div
+          ref={ref}
           onClick={(e) => {
             isDropDown ? setIsDropDown(false) : setIsDropDown(true);
             e.stopPropagation();
