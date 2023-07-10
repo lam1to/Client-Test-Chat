@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from "react";
+import React, { FC, useEffect, useRef, Dispatch, SetStateAction } from "react";
 import st from "../../styles/mainChat.module.css";
 import { Socket } from "socket.io-client";
 import { useAppSelector } from "../../Hooks/redux";
@@ -6,14 +6,26 @@ import stickerPng from "../../public/png-transparent-iphone-emoji-smiley-compute
 import Picker from "emoji-picker-react";
 import { Theme } from "emoji-picker-react";
 import { EmojiStyle } from "emoji-picker-react";
-
+import { IMessage } from "../../types/IMessage";
+import pencilImg from "../../public/pencil.png";
+import { IuserChat } from "../../types/IUser";
 export interface PropsMainChatInput {
   socket: Socket;
   chatId: string;
+  contentRef: React.MutableRefObject<HTMLInputElement>;
+  editMessage: IMessage;
+  setEditMessage: Dispatch<SetStateAction<IMessage>>;
+  users: IuserChat[];
 }
 
-const MainChatInput: FC<PropsMainChatInput> = ({ socket, chatId }) => {
-  const contentRef = useRef<HTMLInputElement>({} as HTMLInputElement);
+const MainChatInput: FC<PropsMainChatInput> = ({
+  socket,
+  chatId,
+  contentRef,
+  editMessage,
+  setEditMessage,
+  users,
+}) => {
   useEffect(() => {}, []);
   const { user } = useAppSelector((state) => state.userReducer);
   const createMessageF = async () => {
@@ -24,8 +36,46 @@ const MainChatInput: FC<PropsMainChatInput> = ({ socket, chatId }) => {
     });
     contentRef.current.value = "";
   };
+  const editMessageF = () => {
+    setEditMessage({} as IMessage);
+    console.log("edit in input");
+    socket.emit("updateMessage", {
+      messageId: editMessage.id,
+      content: contentRef.current?.value,
+      usersId: [
+        user.user.id,
+        ...users.map((oneUser) => {
+          return oneUser.id;
+        }),
+      ],
+    });
+    contentRef.current.value = "";
+  };
+  console.log(Object.keys(editMessage).length === 0);
   return (
     <div className={st.main_chat_input}>
+      {Object.keys(editMessage).length !== 0 && (
+        <div className={st.main_chat_input_edit_block}>
+          <div className={st.main_chat_input_edit_container}>
+            <div className={st.main_chat_input_edit_img}>
+              <img src={pencilImg} alt="" />
+            </div>
+            <div className={st.main_chat_input_edit_title}>
+              {"Редактирование: " + editMessage.content}
+            </div>
+          </div>
+          <div
+            onClick={() => {
+              setEditMessage({} as IMessage);
+              contentRef.current.value = "";
+            }}
+            className={st.main_chat_input_edit_close}
+          >
+            Close
+          </div>
+        </div>
+      )}
+
       <div className={st.main_chat_form}>
         <input
           placeholder="Введите сообщение "
@@ -34,11 +84,13 @@ const MainChatInput: FC<PropsMainChatInput> = ({ socket, chatId }) => {
           ref={contentRef}
           onKeyDown={(e) => {
             if (e.code === "Enter") {
-              createMessageF();
+              Object.keys(editMessage).length !== 0
+                ? editMessageF()
+                : createMessageF();
             }
           }}
         />
-        <div className={st.stickers}>
+        {/* <div className={st.stickers}>
           <div className={st.stickers_img}>
             <img src={stickerPng} alt="" />
           </div>
@@ -55,9 +107,13 @@ const MainChatInput: FC<PropsMainChatInput> = ({ socket, chatId }) => {
               theme={Theme.DARK}
             />
           </div>
-        </div>
+        </div> */}
         <button
-          onClick={() => createMessageF()}
+          onClick={() => {
+            Object.keys(editMessage).length !== 0
+              ? editMessageF()
+              : createMessageF();
+          }}
           type="button"
           className={st.main_chat_form_button}
         >

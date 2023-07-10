@@ -43,10 +43,11 @@ const ChatSearch: FC<PropsChatSearch> = ({ socket, setHidden }) => {
   const [count, setCount] = useState<string[]>([]);
   const handleOutsideClick = () => {
     setIsSearch(false);
+    setCount([]);
   };
   const ref = useOutsideClick(handleOutsideClick);
   return (
-    <form className={st.block_chat_search_form}>
+    <form ref={ref} className={st.block_chat_search_form}>
       <input
         autoComplete="off"
         type="text"
@@ -58,7 +59,6 @@ const ChatSearch: FC<PropsChatSearch> = ({ socket, setHidden }) => {
         onClick={() => (isSearch ? setIsSearch(false) : setIsSearch(true))}
       />
       <div
-        ref={ref}
         className={`${
           isSearch === true ? st.block_list_user_true : st.block_list_user_false
         } ${st.block_list_user}`}

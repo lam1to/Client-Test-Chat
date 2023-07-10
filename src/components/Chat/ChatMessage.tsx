@@ -1,17 +1,62 @@
-import React, { FC } from "react";
+import React, { Dispatch, FC, SetStateAction, useState } from "react";
 import { IMessage } from "../../types/IMessage";
 import st from "../../styles/message.module.css";
 import { useAppSelector } from "../../Hooks/redux";
 import { IuserChat } from "../../types/IUser";
+import { useOutsideClick } from "outsideclick-react";
 
 interface PropsOneMessage {
   message: IMessage;
   userWho: IuserChat;
+  setOverflow: Dispatch<SetStateAction<string>>;
+  contentRef: React.MutableRefObject<HTMLInputElement>;
+  removeMessage: (idMessage: string) => void;
+  setEditMessage: Dispatch<SetStateAction<IMessage>>;
+}
+interface Position {
+  x: number;
+  y: number;
 }
 
-const ChatMessage: FC<PropsOneMessage> = ({ message, userWho }) => {
+const ChatMessage: FC<PropsOneMessage> = ({
+  message,
+  userWho,
+  setOverflow,
+  contentRef,
+  removeMessage,
+  setEditMessage,
+}) => {
   const time = message.createdAt.slice(11, 16);
   const { user } = useAppSelector((state) => state.userReducer);
+  const [dropDown, setDropDown] = useState<boolean>(false);
+  const handleOutsideClick = () => {
+    setDropDown(false);
+    setOverflow("auto");
+  };
+  const [xYPosistion, setXyPosistion] = useState<Position>({ x: 0, y: 0 });
+  const onVisible = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+    setOverflow("hidden");
+    const positionChange = {
+      x: e.pageX,
+      y: e.pageY,
+    };
+    setXyPosistion(positionChange);
+    setDropDown(dropDown ? false : true);
+  };
+  const ref = useOutsideClick(handleOutsideClick);
+  const editF = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+    setOverflow("auto");
+    contentRef.current.focus();
+    contentRef.current.value = message.content;
+    setEditMessage(message);
+  };
+  const deleteF = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+    e.stopPropagation();
+    setOverflow("auto");
+    removeMessage(message.id);
+    setDropDown(false);
+  };
   return (
     <div className={st.one_message}>
       {user.user.id == message.userId ? (
@@ -19,9 +64,37 @@ const ChatMessage: FC<PropsOneMessage> = ({ message, userWho }) => {
           <div
             className={`${st.message_container} ${st.message_container_self}`}
           >
-            <div className={st.message_content_self}>
+            <div
+              onContextMenu={onVisible}
+              ref={ref}
+              onClick={(e) => {
+                onVisible(e);
+              }}
+              className={st.message_content_self}
+            >
               <div>{message.content}</div>
               <div className={st.message_content_time_self}>{time}</div>
+              {dropDown && (
+                <div
+                  style={{ top: xYPosistion.y, left: xYPosistion.x - 100 }}
+                  className={st.message_block_dropdown}
+                >
+                  <ul className={st.message_block_dropdown_row}>
+                    <li
+                      onClick={editF}
+                      className={st.message_block_dropdown_item}
+                    >
+                      edit
+                    </li>
+                    <li
+                      onClick={deleteF}
+                      className={st.message_block_dropdown_item}
+                    >
+                      delete
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -31,9 +104,37 @@ const ChatMessage: FC<PropsOneMessage> = ({ message, userWho }) => {
             {userWho && (
               <div className={st.message_who_send}>{userWho.name}</div>
             )}
-            <div className={st.message_content_other}>
+            <div
+              onContextMenu={onVisible}
+              ref={ref}
+              onClick={(e) => {
+                onVisible(e);
+              }}
+              className={st.message_content_other}
+            >
               <div>{message.content}</div>
               <div className={st.message_content_time}>{time}</div>
+              {dropDown && (
+                <div
+                  style={{ top: xYPosistion.y, left: xYPosistion.x }}
+                  className={st.message_block_dropdown}
+                >
+                  <ul className={st.message_block_dropdown_row}>
+                    {/* <li
+                      onClick={editF}
+                      className={st.message_block_dropdown_item}
+                    >
+                      edit
+                    </li> */}
+                    <li
+                      onClick={deleteF}
+                      className={st.message_block_dropdown_item}
+                    >
+                      delete
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>

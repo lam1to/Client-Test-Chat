@@ -102,6 +102,10 @@
 /* header comp end */
 
 /* main chat input comp start */
+.main_chat_input{
+    margin-bottom: 10px;
+    position: relative;
+}
 .main_chat_form{
     display: flex;
 }
@@ -139,6 +143,48 @@
     justify-content: center;
     margin-right: 10px;
 }
+
+/* edit block start */
+.main_chat_input_edit_block{
+    position: absolute;
+    top: -22px;
+    left: 0;
+    height: 30px;
+    z-index: 15;
+    background-color: #160E2D;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.main_chat_input_edit_container{
+    display: flex;
+}
+.main_chat_input_edit_img{
+    margin: 0px 10px 0px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 2px solid #AA76D2;
+    padding-right: 10px;
+}
+
+.main_chat_input_edit_title{
+    color: #6EFFB1;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+}
+.main_chat_input_edit_close{
+    color: red;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+    
+}
+/* edit block end */
+
 /* Stickers start */
 .stickers{
     /* display: none; */
@@ -196,6 +242,14 @@
         padding-left: 40px;
         transition: 1s;
     }
+    .main_chat_input_edit_title{
+        font-size: 18px;
+        transition: 1s;
+    }
+    .main_chat_input_edit_close{
+        font-size: 16px; 
+        transition: 1s;
+    }
 }
 
 
@@ -211,11 +265,38 @@
     .main_chat_header_name{
         font-size: 16px;
     }
+    .main_chat_input_edit_title{
+        font-size: 16px;
+        transition: 1s;
+    }
+    .main_chat_input_edit_close{
+        font-size: 14px;
+        transition: 1s;
+    }
+    .main_chat_input_edit_img{
+        padding-right: 8px;
+        transition: 1s;
+    }
+    .main_chat_input_edit_img img{
+        width: 14px;
+    }
 }
 @media (max-width:500px) {
     .main_chat_form_button{
         font-size: 3vw;
     }
 
+    .main_chat_input_edit_title{
+        font-size: 14px;
+        transition: 1s;
+    }
+    .main_chat_input_edit_close{
+        font-size: 12px;
+        transition: 1s;
+    }
+    .main_chat_input_edit_block{
+        top: -32px;
+        padding: 5px 0px 5px 0px;
+    }
 }
 /* media end */

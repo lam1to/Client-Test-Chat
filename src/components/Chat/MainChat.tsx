@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import st from "../../styles/mainChat.module.css";
 import { IAllChatWithUser } from "../../types/IChat";
 import { Socket } from "socket.io-client";
@@ -8,6 +8,7 @@ import { getAllMessageForChat } from "../../http/chat.services";
 import MainChatInput from "./MainChatInput";
 import MainChatHeader from "./MainChatHeader";
 import Loader from "../Loading/Loader";
+import { useAppSelector } from "../../Hooks/redux";
 
 export interface PropsMainChat {
   chat: IAllChatWithUser;
@@ -15,7 +16,7 @@ export interface PropsMainChat {
 }
 const MainChat: FC<PropsMainChat> = ({ chat, socket }) => {
   const [messages, SetMessages] = useState<IMessage[]>([]);
-
+  const { user } = useAppSelector((state) => state.userReducer);
   useEffect(() => {
     getMessages();
     socket.on(`message${chat.id}`, (content: IMessage) => {
@@ -28,6 +29,27 @@ const MainChat: FC<PropsMainChat> = ({ chat, socket }) => {
         }
         return [...messages, content];
       });
+    });
+    socket.on(`messageDelete${user.user.id}`, (content: IMessage) => {
+      SetMessages((messages) =>
+        messages.filter((oneMessage) => {
+          return oneMessage.id !== content.id;
+        })
+      );
+    });
+
+    socket.on(`messageUpdate${user.user.id}`, (content: IMessage) => {
+      console.log(
+        "messages = ",
+        messages.map((oneMessage) =>
+          oneMessage.id === content.id ? content : oneMessage
+        )
+      );
+      SetMessages(
+        messages.map((oneMessage) =>
+          oneMessage.id === content.id ? content : oneMessage
+        )
+      );
     });
   }, [chat]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -52,7 +74,8 @@ const MainChat: FC<PropsMainChat> = ({ chat, socket }) => {
     }
     return messages;
   };
-
+  const contentRef = useRef<HTMLInputElement>({} as HTMLInputElement);
+  const [editMessage, setEditMessage] = useState<IMessage>({} as IMessage);
   return (
     <div className={st.main_chat_container}>
       {chat.id ? (
@@ -62,10 +85,23 @@ const MainChat: FC<PropsMainChat> = ({ chat, socket }) => {
             {loading ? (
               <Loader />
             ) : (
-              <ChatRowMessage users={chat.users} messages={FilterMessages()} />
+              <ChatRowMessage
+                setEditMessage={setEditMessage}
+                socket={socket}
+                contentRef={contentRef}
+                users={chat.users}
+                messages={FilterMessages()}
+              />
             )}
           </div>
-          <MainChatInput socket={socket} chatId={chat.id} />
+          <MainChatInput
+            setEditMessage={setEditMessage}
+            editMessage={editMessage}
+            contentRef={contentRef}
+            socket={socket}
+            chatId={chat.id}
+            users={chat.users}
+          />
         </div>
       ) : (
         <div className={st.emptyChat}>Чат не открыт</div>
