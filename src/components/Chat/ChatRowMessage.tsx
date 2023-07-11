@@ -37,15 +37,10 @@ const ChatRowMessage: FC<PropsRowImessage> = ({
   };
   const { user } = useAppSelector((state) => state.userReducer);
   const [overflow, setOverflow] = useState<string>("auto");
-  const removeMessage = (idMessage: string) => {
+  const removeMessage = (message: IMessage) => {
     socket.emit("deleteMessage", {
-      messageId: idMessage,
-      usersId: [
-        user.user.id,
-        ...users.map((oneUser) => {
-          return oneUser.id;
-        }),
-      ],
+      messageId: message.id,
+      chatId: message.chatId,
     });
   };
   return (

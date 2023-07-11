@@ -22,7 +22,12 @@ const Chat: FC = () => {
   const { user } = useAppSelector((state) => state.userReducer);
   useEffect(() => {
     socket.on(`chatCreate${user.user.id}`, (content) => {
-      setChats((chats) => [...chats, content]);
+      setChats((chats) => {
+        if (content.id !== chats[chats.length - 1].id) {
+          return [...chats, content];
+        }
+        return chats;
+      });
     });
     socket.on(`chatDelete${user.user.id}`, (deleteChat: IChat) => {
       setChats((chats) =>
@@ -33,12 +38,11 @@ const Chat: FC = () => {
       setSelectChats({} as IAllChatWithUser);
     });
     getChat();
-  }, [chats.length]);
+  }, []);
   const getChat = async () => {
     await findCharForUser().then((data) => setChats(data));
   };
   const [hidden, setHidden] = useState<boolean>(true);
-
   return (
     <div className={st.chat}>
       <div className={st.func_block}>

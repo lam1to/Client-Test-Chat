@@ -15,7 +15,6 @@ export interface PropsMainChatInput {
   contentRef: React.MutableRefObject<HTMLInputElement>;
   editMessage: IMessage;
   setEditMessage: Dispatch<SetStateAction<IMessage>>;
-  users: IuserChat[];
 }
 
 const MainChatInput: FC<PropsMainChatInput> = ({
@@ -24,7 +23,6 @@ const MainChatInput: FC<PropsMainChatInput> = ({
   contentRef,
   editMessage,
   setEditMessage,
-  users,
 }) => {
   useEffect(() => {}, []);
   const { user } = useAppSelector((state) => state.userReducer);
@@ -37,21 +35,14 @@ const MainChatInput: FC<PropsMainChatInput> = ({
     contentRef.current.value = "";
   };
   const editMessageF = () => {
-    setEditMessage({} as IMessage);
-    console.log("edit in input");
     socket.emit("updateMessage", {
       messageId: editMessage.id,
       content: contentRef.current?.value,
-      usersId: [
-        user.user.id,
-        ...users.map((oneUser) => {
-          return oneUser.id;
-        }),
-      ],
+      chatId: chatId,
     });
+    setEditMessage({} as IMessage);
     contentRef.current.value = "";
   };
-  console.log(Object.keys(editMessage).length === 0);
   return (
     <div className={st.main_chat_input}>
       {Object.keys(editMessage).length !== 0 && (

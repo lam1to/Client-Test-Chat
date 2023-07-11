@@ -19,7 +19,7 @@ const MainChat: FC<PropsMainChat> = ({ chat, socket }) => {
   const { user } = useAppSelector((state) => state.userReducer);
   useEffect(() => {
     getMessages();
-    socket.on(`message${chat.id}`, (content: IMessage) => {
+    socket.on(`message${chat.id}`, async (content: IMessage) => {
       SetMessages((messages) => {
         if (
           messages.length > 0 &&
@@ -30,7 +30,7 @@ const MainChat: FC<PropsMainChat> = ({ chat, socket }) => {
         return [...messages, content];
       });
     });
-    socket.on(`messageDelete${user.user.id}`, (content: IMessage) => {
+    socket.on(`messageDelete${chat.id}`, (content: IMessage) => {
       SetMessages((messages) =>
         messages.filter((oneMessage) => {
           return oneMessage.id !== content.id;
@@ -38,14 +38,8 @@ const MainChat: FC<PropsMainChat> = ({ chat, socket }) => {
       );
     });
 
-    socket.on(`messageUpdate${user.user.id}`, (content: IMessage) => {
-      console.log(
-        "messages = ",
-        messages.map((oneMessage) =>
-          oneMessage.id === content.id ? content : oneMessage
-        )
-      );
-      SetMessages(
+    socket.on(`messageUpdate${chat.id}`, (content: IMessage) => {
+      SetMessages((messages) =>
         messages.map((oneMessage) =>
           oneMessage.id === content.id ? content : oneMessage
         )
@@ -100,7 +94,6 @@ const MainChat: FC<PropsMainChat> = ({ chat, socket }) => {
             contentRef={contentRef}
             socket={socket}
             chatId={chat.id}
-            users={chat.users}
           />
         </div>
       ) : (

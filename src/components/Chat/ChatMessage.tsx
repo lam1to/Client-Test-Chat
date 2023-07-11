@@ -1,4 +1,10 @@
-import React, { Dispatch, FC, SetStateAction, useState } from "react";
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { IMessage } from "../../types/IMessage";
 import st from "../../styles/message.module.css";
 import { useAppSelector } from "../../Hooks/redux";
@@ -10,7 +16,7 @@ interface PropsOneMessage {
   userWho: IuserChat;
   setOverflow: Dispatch<SetStateAction<string>>;
   contentRef: React.MutableRefObject<HTMLInputElement>;
-  removeMessage: (idMessage: string) => void;
+  removeMessage: (message: IMessage) => void;
   setEditMessage: Dispatch<SetStateAction<IMessage>>;
 }
 interface Position {
@@ -34,6 +40,7 @@ const ChatMessage: FC<PropsOneMessage> = ({
     setOverflow("auto");
   };
   const [xYPosistion, setXyPosistion] = useState<Position>({ x: 0, y: 0 });
+
   const onVisible = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
     setOverflow("hidden");
@@ -45,16 +52,20 @@ const ChatMessage: FC<PropsOneMessage> = ({
     setDropDown(dropDown ? false : true);
   };
   const ref = useOutsideClick(handleOutsideClick);
+  // useEffect(() => {
+  //   console.log("В компоненте одного сообщения, message =", message);
+  // }, [message]);
   const editF = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     setOverflow("auto");
     contentRef.current.focus();
     contentRef.current.value = message.content;
     setEditMessage(message);
   };
+
   const deleteF = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     e.stopPropagation();
     setOverflow("auto");
-    removeMessage(message.id);
+    removeMessage(message);
     setDropDown(false);
   };
   return (

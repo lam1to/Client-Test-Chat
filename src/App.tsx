@@ -22,7 +22,7 @@ const App = () => {
         })
         .finally(() => setLoading(false));
     } else {
-      setLoading(true);
+      setLoading(false);
     }
   }, []);
   if (loading) {
