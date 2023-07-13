@@ -10,6 +10,7 @@ import st from "../../styles/message.module.css";
 import { useAppSelector } from "../../Hooks/redux";
 import { IuserChat } from "../../types/IUser";
 import { useOutsideClick } from "outsideclick-react";
+import { selectUser } from "../../store/Reducers/UserSlice";
 
 interface PropsOneMessage {
   message: IMessage;
@@ -33,7 +34,7 @@ const ChatMessage: FC<PropsOneMessage> = ({
   setEditMessage,
 }) => {
   const time = message.createdAt.slice(11, 16);
-  const { user } = useAppSelector((state) => state.userReducer);
+  const user = useAppSelector(selectUser);
   const [dropDown, setDropDown] = useState<boolean>(false);
   const handleOutsideClick = () => {
     setDropDown(false);
@@ -52,9 +53,6 @@ const ChatMessage: FC<PropsOneMessage> = ({
     setDropDown(dropDown ? false : true);
   };
   const ref = useOutsideClick(handleOutsideClick);
-  // useEffect(() => {
-  //   console.log("В компоненте одного сообщения, message =", message);
-  // }, [message]);
   const editF = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     setOverflow("auto");
     contentRef.current.focus();

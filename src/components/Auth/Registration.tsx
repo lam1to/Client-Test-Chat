@@ -1,10 +1,10 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, SyntheticEvent, useEffect, useState } from "react";
 import { CHAT_ROUTE, LOGIN_ROUTE, REGISTR_ROUTE } from "../../utils/const";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/auth.module.css";
 import { registration } from "../../http/user.services";
 import { Iuser } from "../../types/IUser";
-import { useAppDispatch, useAppSelector } from "../../Hooks/redux";
+import { useAppDispatch } from "../../Hooks/redux";
 import { UserSlice } from "../../store/Reducers/UserSlice";
 
 const Registration: FC = () => {
@@ -15,10 +15,10 @@ const Registration: FC = () => {
     password: "",
   } as Iuser);
   const navigate = useNavigate();
-  const { isAuth } = useAppSelector((state) => state.userReducer);
   const { SetUser } = UserSlice.actions;
   const dispatch = useAppDispatch();
-  const registrationF = async () => {
+  const registrationF = async (e: SyntheticEvent) => {
+    e.preventDefault();
     const data = await registration(user);
     dispatch(SetUser(data));
     navigate(CHAT_ROUTE);
@@ -76,11 +76,13 @@ const Registration: FC = () => {
                 setUser((prev) => ({ ...prev, password: e.target.value }))
               }
             />
-            <Link to={""}>
-              <div className={`${styles.block_button}`} onClick={registrationF}>
-                Зарегистрироваться{" "}
-              </div>
-            </Link>
+            <button
+              className={`${styles.block_button}`}
+              type="submit"
+              onClick={registrationF}
+            >
+              Войти
+            </button>
           </form>
         </div>
       </div>

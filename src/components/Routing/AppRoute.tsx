@@ -3,11 +3,9 @@ import { Route, BrowserRouter, Routes, Navigate } from "react-router-dom";
 import { privateRoutes, publicRoutes } from "./Routes";
 import { LOGIN_ROUTE } from "../../utils/const";
 import { useAppSelector } from "../../Hooks/redux";
+import { selectIsAuth } from "../../store/Reducers/UserSlice";
 const AppRoute: FC = () => {
-  const { isAuth } = useAppSelector((state) => state.userReducer);
-  useEffect(() => {
-    console.log("isAuth in router ", isAuth);
-  }, [isAuth]);
+  const isAuth = useAppSelector(selectIsAuth);
   return (
     <Routes>
       {isAuth &&

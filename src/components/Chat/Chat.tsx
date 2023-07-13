@@ -12,6 +12,7 @@ import {
   findUserWhoBlockedMe,
   findUserWhoWasBlockedMe,
 } from "../../http/blockUser.services";
+import { selectUser } from "../../store/Reducers/UserSlice";
 
 const socket = io("http://localhost:4200/chatSocket");
 
@@ -26,7 +27,7 @@ const Chat: FC = () => {
     [] as string[]
   );
   const [blockersId, setBlockersId] = useState<string[]>([] as string[]);
-  const { user } = useAppSelector((state) => state.userReducer);
+  const user = useAppSelector(selectUser);
   const isBlockedOrBlockerF = () => {
     if (selectChats.type === "DM") {
       const isBlockedUser = blockedUsersId.some(
@@ -47,45 +48,75 @@ const Chat: FC = () => {
     }
     return "ok";
   };
-  useEffect(() => {
-    socket.on(`chatCreate${user.user.id}`, (content) => {
-      setChats((chats) => {
-        if (content.id !== chats[chats.length - 1].id) {
-          return [...chats, content];
-        }
-        return chats;
-      });
-    });
-    socket.on(`chatDelete${user.user.id}`, (deleteChat: IChat) => {
-      setChats((chats) =>
-        chats.filter((OneChat) => {
-          return OneChat.id !== deleteChat.id;
-        })
-      );
-      setSelectChats({} as IAllChatWithUser);
-    });
-    socket.on(`newBlockedUser${user.user.id}`, (blockedUserId: string) => {
-      setBlockedUsersId([...blockedUsersId, blockedUserId]);
-    });
-    socket.on(`newBlocker${user.user.id}`, (blockerId: string) => {
-      setBlockersId([...blockersId, blockerId]);
-    });
 
-    socket.on(`deleteBlockedUser${user.user.id}`, (blockedUserId: string) => {
-      setBlockedUsersId((blockedUsersId) =>
-        blockedUsersId.filter((oneBlockedUserId) => {
-          return oneBlockedUserId !== blockedUserId;
-        })
-      );
+  const newBlocker = (blockerId: string) => {
+    setBlockersId([...blockersId, blockerId]);
+  };
+  const chatCreate = (content: IAllChatWithUser) => {
+    setChats((chats) => {
+      if (chats.length === 0) {
+        return [...chats, content];
+      }
+      if (chats.length > 0 && content.id !== chats[chats.length - 1].id) {
+        return [...chats, content];
+      }
+      return chats;
     });
-    socket.on(`deleteBlocker${user.user.id}`, (blockerId: string) => {
-      setBlockersId((blockersId) =>
-        blockersId.filter((oneBlockerId) => {
-          return oneBlockerId !== blockerId;
-        })
-      );
+  };
+  const chatDelete = (deleteChat: IChat) => {
+    setChats((chats) =>
+      chats.filter((OneChat) => {
+        return OneChat.id !== deleteChat.id;
+      })
+    );
+    setSelectChats({} as IAllChatWithUser);
+  };
+  const newBlockedUser = (blockedUserId: string) => {
+    console.log("в сокете у нас такие blockedUser= ", blockedUsersId);
+    setBlockedUsersId((blockedUsersId) => {
+      if (blockedUsersId.length === 0) {
+        return [...blockedUsersId, blockedUserId];
+      }
+      if (
+        blockedUsersId.length > 0 &&
+        blockedUsersId[blockedUsersId.length - 1] !== blockedUserId
+      ) {
+        return [...blockedUsersId, blockedUserId];
+      }
+      return blockedUsersId;
     });
+  };
+  const deleteBlockedUser = (blockedUserId: string) => {
+    setBlockedUsersId((blockedUsersId) =>
+      blockedUsersId.filter((oneBlockedUserId) => {
+        return oneBlockedUserId !== blockedUserId;
+      })
+    );
+  };
+  const deleteBlocker = (blockerId: string) => {
+    setBlockersId((blockersId) =>
+      blockersId.filter((oneBlockerId) => {
+        return oneBlockerId !== blockerId;
+      })
+    );
+  };
+  useEffect(() => {
+    socket.on(`chatCreate${user.user.id}`, chatCreate);
+    socket.on(`chatDelete${user.user.id}`, chatDelete);
+    socket.on(`newBlockedUser${user.user.id}`, newBlockedUser);
+    socket.on(`newBlocker${user.user.id}`, newBlocker);
+    socket.on(`deleteBlockedUser${user.user.id}`, deleteBlockedUser);
+    socket.on(`deleteBlocker${user.user.id}`, deleteBlocker);
     getChat();
+    console.log("blockedUsers = ", blockedUsersId);
+    return () => {
+      socket.off(`chatCreate${user.user.id}`, chatCreate);
+      socket.off(`chatDelete${user.user.id}`, chatDelete);
+      socket.off(`newBlockedUser${user.user.id}`, newBlockedUser);
+      socket.off(`newBlocker${user.user.id}`, newBlocker);
+      socket.off(`deleteBlockedUser${user.user.id}`, deleteBlockedUser);
+      socket.off(`deleteBlocker${user.user.id}`, deleteBlocker);
+    };
   }, []);
   const getChat = async () => {
     await findCharForUser().then((data) => setChats(data));
@@ -107,14 +138,16 @@ const Chat: FC = () => {
       </div>
       <div className={st.main_block}>
         <ChatSideMenuHiden
-          blackList={isBlockedOrBlockerF()}
+          blockersId={blockersId}
+          blockedUsersId={blockedUsersId}
           socket={socket}
           chats={chats}
           setSelectChats={setSelectChats}
         />
         {hidden && (
           <ChatSideMenu
-            blackList={isBlockedOrBlockerF()}
+            blockersId={blockersId}
+            blockedUsersId={blockedUsersId}
             socket={socket}
             chats={chats}
             setSelectChats={setSelectChats}

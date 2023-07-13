@@ -1,11 +1,11 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, SyntheticEvent, useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { CHAT_ROUTE, LOGIN_ROUTE, REGISTR_ROUTE } from "../../utils/const";
 import styles from "../../styles/auth.module.css";
 import { IuserForState, IuserLogin } from "../../types/IUser";
 import { login } from "../../http/user.services";
 import { useAppDispatch, useAppSelector } from "../../Hooks/redux";
-import { UserSlice } from "../../store/Reducers/UserSlice";
+import { UserSlice, selectIsAuth } from "../../store/Reducers/UserSlice";
 
 const Login: FC = () => {
   const [user, setUser] = useState<IuserLogin>({
@@ -14,12 +14,13 @@ const Login: FC = () => {
   } as IuserLogin);
   const navigate = useNavigate();
 
-  const { isAuth } = useAppSelector((state) => state.userReducer);
+  const isAuth = useAppSelector(selectIsAuth);
   const { SetUser } = UserSlice.actions;
   const dispatch = useAppDispatch();
 
   useEffect(() => {}, [isAuth]);
-  const loginF = async () => {
+  const loginF = async (e: SyntheticEvent) => {
+    e.preventDefault();
     const getUser: IuserForState = await login(user);
     dispatch(SetUser(getUser));
     navigate(CHAT_ROUTE);
@@ -60,11 +61,14 @@ const Login: FC = () => {
                 setUser((prev) => ({ ...prev, password: e.target.value }))
               }
             />
-            <Link to={""}>
-              <div className={styles.block_button} onClick={loginF}>
-                Войти
-              </div>
-            </Link>
+
+            <button
+              className={styles.block_button}
+              type="submit"
+              onClick={loginF}
+            >
+              Войти
+            </button>
           </form>
         </div>
       </div>

@@ -8,7 +8,6 @@ import React, {
 } from "react";
 import { IMessage } from "../../types/IMessage";
 import st from "../../styles/message.module.css";
-
 import ChatMessage from "./ChatMessage";
 import { IuserChat } from "../../types/IUser";
 import { Socket } from "socket.io-client";

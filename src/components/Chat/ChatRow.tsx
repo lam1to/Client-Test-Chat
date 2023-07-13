@@ -1,8 +1,7 @@
 import React, { Dispatch, FC, SetStateAction, useEffect } from "react";
-import { IAllChatWithUser } from "../../types/IChat";
+import { IAllChatWithUser, IChat } from "../../types/IChat";
 import OneChat from "./OneChat";
 import st from "../../styles/oneChat.module.css";
-import { useAppSelector } from "../../Hooks/redux";
 import { Socket } from "socket.io-client";
 
 export interface PoropsChatRow {
@@ -10,22 +9,44 @@ export interface PoropsChatRow {
   setSelectChats: Dispatch<SetStateAction<IAllChatWithUser>>;
   socket: Socket;
   setHidden?: Dispatch<SetStateAction<boolean>>;
-  blackList: string;
+  blockedUsersId: string[];
+  blockersId: string[];
 }
 const ChatRow: FC<PoropsChatRow> = ({
   chats,
   setSelectChats,
   socket,
   setHidden,
-  blackList,
+  blockedUsersId,
+  blockersId,
 }) => {
-  const { user } = useAppSelector((state) => state.userReducer);
-  useEffect(() => {}, [chats]);
+  const isBlockedOrBlockerF = (oneChat: IAllChatWithUser) => {
+    if (oneChat.type === "DM") {
+      const isBlockedUser = blockedUsersId.some(
+        (one) => one === oneChat.users[0].id
+      );
+      const isBlocker = blockersId.some((one) => one === oneChat.users[0].id);
+      const isBlockedOrBlocker: string =
+        isBlockedUser && isBlocker
+          ? "blockedBlocker"
+          : isBlockedUser
+          ? "blocked"
+          : isBlocker
+          ? "blocker"
+          : "ok";
+      return isBlockedOrBlocker;
+    }
+    return "ok";
+  };
+  useEffect(() => {
+    console.log("blockedUsersId", blockedUsersId);
+    console.log("blockersId", blockersId);
+  }, [blockedUsersId, blockersId]);
   return (
     <div className={st.chatrow}>
       {chats?.map((one, i) => (
         <OneChat
-          blackList={blackList}
+          blackList={isBlockedOrBlockerF(one)}
           setHidden={setHidden}
           socket={socket}
           key={i}

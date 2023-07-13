@@ -11,6 +11,7 @@ import { getAllUsers } from "../../http/user.services";
 import { useAppSelector } from "../../Hooks/redux";
 import { Socket } from "socket.io-client";
 import { useOutsideClick } from "outsideclick-react";
+import { selectUser } from "../../store/Reducers/UserSlice";
 export interface PropsChatSearch {
   socket: Socket;
   setHidden?: Dispatch<SetStateAction<boolean>>;
@@ -20,7 +21,7 @@ const ChatSearch: FC<PropsChatSearch> = ({ socket, setHidden }) => {
   const [search, setSearch] = useState<string>("");
   const [users, setUsers] = useState<IuserChat[]>();
   const [isSearch, setIsSearch] = useState<boolean>(false);
-  const { user } = useAppSelector((state) => state.userReducer);
+  const user = useAppSelector(selectUser);
   useEffect(() => {
     getAllUsers().then((data) => setUsers(data));
   }, []);

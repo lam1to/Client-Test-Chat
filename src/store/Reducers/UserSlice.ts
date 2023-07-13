@@ -1,5 +1,6 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
 import { ISetIsAuth, IUserState, IuserForState } from "../../types/IUser";
+import { RootState } from "../store";
 
 const initialState: IUserState = {
   isAuth: false,
@@ -22,5 +23,13 @@ export const UserSlice = createSlice({
     },
   },
 });
-
+export const selectUserState = (state: RootState) => state.userReducer;
+export const selectUser = createSelector(
+  selectUserState,
+  (state) => state.user
+);
+export const selectIsAuth = createSelector(
+  selectUserState,
+  (state) => state.isAuth
+);
 export default UserSlice.reducer;

@@ -8,7 +8,6 @@ import { getAllMessageForChat } from "../../http/chat.services";
 import MainChatInput from "./MainChatInput";
 import MainChatHeader from "./MainChatHeader";
 import Loader from "../Loading/Loader";
-import { useAppSelector } from "../../Hooks/redux";
 
 export interface PropsMainChat {
   chat: IAllChatWithUser;
@@ -17,36 +16,42 @@ export interface PropsMainChat {
 }
 const MainChat: FC<PropsMainChat> = ({ chat, socket, blackList }) => {
   const [messages, SetMessages] = useState<IMessage[]>([]);
-  const { user } = useAppSelector((state) => state.userReducer);
+  const message = (content: IMessage) => {
+    SetMessages((messages) => {
+      if (
+        messages.length > 0 &&
+        content.id === messages[messages.length - 1].id
+      ) {
+        return messages;
+      }
+      return [...messages, content];
+    });
+  };
+  const messageDelete = (content: IMessage) => {
+    SetMessages((messages) =>
+      messages.filter((oneMessage) => {
+        return oneMessage.id !== content.id;
+      })
+    );
+  };
+  const messageUpdate = (content: IMessage) => {
+    SetMessages((messages) =>
+      messages.map((oneMessage) =>
+        oneMessage.id === content.id ? content : oneMessage
+      )
+    );
+  };
   useEffect(() => {
     console.log("blackList in mainChat = ", blackList);
     getMessages();
-    socket.on(`message${chat.id}`, async (content: IMessage) => {
-      SetMessages((messages) => {
-        if (
-          messages.length > 0 &&
-          content.id === messages[messages.length - 1].id
-        ) {
-          return messages;
-        }
-        return [...messages, content];
-      });
-    });
-    socket.on(`messageDelete${chat.id}`, (content: IMessage) => {
-      SetMessages((messages) =>
-        messages.filter((oneMessage) => {
-          return oneMessage.id !== content.id;
-        })
-      );
-    });
-
-    socket.on(`messageUpdate${chat.id}`, (content: IMessage) => {
-      SetMessages((messages) =>
-        messages.map((oneMessage) =>
-          oneMessage.id === content.id ? content : oneMessage
-        )
-      );
-    });
+    socket.on(`message${chat.id}`, message);
+    socket.on(`messageDelete${chat.id}`, messageDelete);
+    socket.on(`messageUpdate${chat.id}`, messageUpdate);
+    return () => {
+      socket.off(`message${chat.id}`, message);
+      socket.off(`messageDelete${chat.id}`, messageDelete);
+      socket.off(`messageUpdate${chat.id}`, messageUpdate);
+    };
   }, [chat]);
   const [loading, setLoading] = useState<boolean>(true);
   const getMessages = async () => {

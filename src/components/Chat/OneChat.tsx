@@ -1,10 +1,17 @@
-import React, { Dispatch, FC, SetStateAction, useState } from "react";
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { IAllChatWithUser } from "../../types/IChat";
 import st from "../../styles/oneChat.module.css";
 import dotsImg from "../../public/more.png";
 import { Socket } from "socket.io-client";
 import { useOutsideClick } from "outsideclick-react";
 import { useAppSelector } from "../../Hooks/redux";
+import { selectUser } from "../../store/Reducers/UserSlice";
 
 export interface PropsOneChat {
   oneChat: IAllChatWithUser;
@@ -25,7 +32,7 @@ const OneChat: FC<PropsOneChat> = ({
     setIsDropDown(false);
     if (setHidden) setHidden(true);
   };
-  const { user } = useAppSelector((state) => state.userReducer);
+  const user = useAppSelector(selectUser);
   const blockUser = () => {
     socket.emit("createBlockUser", {
       idUserWhoBlocked: user.user.id,
