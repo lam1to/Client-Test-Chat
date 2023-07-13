@@ -105,6 +105,7 @@
 .main_chat_input{
     margin-bottom: 10px;
     position: relative;
+    width: 100%;
 }
 .main_chat_form{
     display: flex;
@@ -209,8 +210,37 @@
 
 /* Stickers end */
 
+/* blackList start */
+.blackList_main_block{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.blackList_img{
+    margin: 0px 20px 0px 10px ;
+}
+.main_chat_input_blackList_block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+.main_chat_input_blackList_item{
+    font-size: 16px;
+    color: #AA76D2;
+    display: flex;
+    word-break: break-all;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+/* blackList end */
+
 
 /* main chat input comp end */
+
+
 
 
 
@@ -279,6 +309,9 @@
     }
     .main_chat_input_edit_img img{
         width: 14px;
+    }
+    .main_chat_input_blackList_item{
+        font-size: 12px;
     }
 }
 @media (max-width:500px) {

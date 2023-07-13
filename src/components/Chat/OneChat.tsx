@@ -4,23 +4,39 @@ import st from "../../styles/oneChat.module.css";
 import dotsImg from "../../public/more.png";
 import { Socket } from "socket.io-client";
 import { useOutsideClick } from "outsideclick-react";
+import { useAppSelector } from "../../Hooks/redux";
 
 export interface PropsOneChat {
   oneChat: IAllChatWithUser;
   setSelectChats: Dispatch<SetStateAction<IAllChatWithUser>>;
   socket: Socket;
   setHidden?: Dispatch<SetStateAction<boolean>>;
+  blackList: string;
 }
 const OneChat: FC<PropsOneChat> = ({
   oneChat,
   setSelectChats,
   socket,
   setHidden,
+  blackList,
 }) => {
-  const removeF = async () => {
+  const removeF = () => {
     socket.emit("deleteChat", oneChat.id);
     setIsDropDown(false);
     if (setHidden) setHidden(true);
+  };
+  const { user } = useAppSelector((state) => state.userReducer);
+  const blockUser = () => {
+    socket.emit("createBlockUser", {
+      idUserWhoBlocked: user.user.id,
+      idUserWhoWasBlocked: oneChat.users[0].id,
+    });
+  };
+  const unblockUser = () => {
+    socket.emit("removeBlockUser", {
+      idUserWhoBlocked: user.user.id,
+      idUserWhoWasBlocked: oneChat.users[0].id,
+    });
   };
   const [isDropDown, setIsDropDown] = useState<boolean>(false);
   const handleOutsideClick = () => {
@@ -63,15 +79,36 @@ const OneChat: FC<PropsOneChat> = ({
           </div>
           {isDropDown && (
             <div className={st.position}>
-              <div
-                onClick={() => removeF()}
-                className={st.onechat_remove_block_drop_down}
-              >
-                <ul>
-                  <li className={st.onechat_remove_block_drop_down_item}>
-                    remove
-                  </li>
-                </ul>
+              <div className={st.onechat_remove_block_drop_down}>
+                {oneChat.type === "DM" ? (
+                  <ul className={st.onechat_remove_block_drop_down_row}>
+                    {blackList === "blocked" ||
+                    blackList === "blockedBlocker" ? (
+                      <li
+                        onClick={unblockUser}
+                        className={st.onechat_remove_block_drop_down_item}
+                      >
+                        unblock
+                      </li>
+                    ) : (
+                      <li
+                        onClick={blockUser}
+                        className={st.onechat_remove_block_drop_down_item}
+                      >
+                        block
+                      </li>
+                    )}
+                  </ul>
+                ) : (
+                  <ul className={st.onechat_remove_block_drop_down_row}>
+                    <li
+                      onClick={() => removeF()}
+                      className={st.onechat_remove_block_drop_down_item}
+                    >
+                      remove
+                    </li>
+                  </ul>
+                )}
               </div>
             </div>
           )}

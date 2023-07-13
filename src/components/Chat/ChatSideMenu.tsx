@@ -8,17 +8,20 @@ export interface PropsChatSideMenu {
   chats: IAllChatWithUser[];
   setSelectChats: Dispatch<SetStateAction<IAllChatWithUser>>;
   socket: Socket;
+  blackList: string;
 }
 const ChatSideMenu: FC<PropsChatSideMenu> = ({
   chats,
   setSelectChats,
   socket,
+  blackList,
 }) => {
   return (
     <div className={st.all_chat_block}>
       <ChatSearch socket={socket} />
       <div className={st.all_chat_block_users}>
         <ChatRow
+          blackList={blackList}
           socket={socket}
           chats={chats}
           setSelectChats={setSelectChats}

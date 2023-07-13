@@ -36,3 +36,8 @@ export interface ISetUser {
   type: EUserActionTypes.SET_USER;
   payload: IuserForState;
 }
+
+export interface IBlockUser {
+  user_Who_BlocketId: string;
+  user_Who_Was_BlocketId: string;
+}

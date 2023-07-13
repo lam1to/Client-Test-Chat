@@ -70,8 +70,20 @@
     position: absolute;
     color: #AA76D2;
     font-size: 20px;
-    right: -86px;
+    left: 24px;
+    bottom: -6px;
     background-color: #0E0B1D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.onechat_remove_block_drop_down_item{
+    display: flex;
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
 }
 .onechat_remove_block_drop_down_item:hover{

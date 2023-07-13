@@ -13,11 +13,13 @@ import { useAppSelector } from "../../Hooks/redux";
 export interface PropsMainChat {
   chat: IAllChatWithUser;
   socket: Socket;
+  blackList: string;
 }
-const MainChat: FC<PropsMainChat> = ({ chat, socket }) => {
+const MainChat: FC<PropsMainChat> = ({ chat, socket, blackList }) => {
   const [messages, SetMessages] = useState<IMessage[]>([]);
   const { user } = useAppSelector((state) => state.userReducer);
   useEffect(() => {
+    console.log("blackList in mainChat = ", blackList);
     getMessages();
     socket.on(`message${chat.id}`, async (content: IMessage) => {
       SetMessages((messages) => {
@@ -89,6 +91,7 @@ const MainChat: FC<PropsMainChat> = ({ chat, socket }) => {
             )}
           </div>
           <MainChatInput
+            blackList={blackList}
             setEditMessage={setEditMessage}
             editMessage={editMessage}
             contentRef={contentRef}

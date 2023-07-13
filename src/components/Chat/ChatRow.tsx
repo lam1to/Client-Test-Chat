@@ -10,12 +10,14 @@ export interface PoropsChatRow {
   setSelectChats: Dispatch<SetStateAction<IAllChatWithUser>>;
   socket: Socket;
   setHidden?: Dispatch<SetStateAction<boolean>>;
+  blackList: string;
 }
 const ChatRow: FC<PoropsChatRow> = ({
   chats,
   setSelectChats,
   socket,
   setHidden,
+  blackList,
 }) => {
   const { user } = useAppSelector((state) => state.userReducer);
   useEffect(() => {}, [chats]);
@@ -23,6 +25,7 @@ const ChatRow: FC<PoropsChatRow> = ({
     <div className={st.chatrow}>
       {chats?.map((one, i) => (
         <OneChat
+          blackList={blackList}
           setHidden={setHidden}
           socket={socket}
           key={i}

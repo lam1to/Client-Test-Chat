@@ -9,12 +9,14 @@ import { EmojiStyle } from "emoji-picker-react";
 import { IMessage } from "../../types/IMessage";
 import pencilImg from "../../public/pencil.png";
 import { IuserChat } from "../../types/IUser";
+import MainChatInputBlackList from "./MainChatInputBlackList";
 export interface PropsMainChatInput {
   socket: Socket;
   chatId: string;
   contentRef: React.MutableRefObject<HTMLInputElement>;
   editMessage: IMessage;
   setEditMessage: Dispatch<SetStateAction<IMessage>>;
+  blackList: string;
 }
 
 const MainChatInput: FC<PropsMainChatInput> = ({
@@ -23,6 +25,7 @@ const MainChatInput: FC<PropsMainChatInput> = ({
   contentRef,
   editMessage,
   setEditMessage,
+  blackList,
 }) => {
   useEffect(() => {}, []);
   const { user } = useAppSelector((state) => state.userReducer);
@@ -67,50 +70,54 @@ const MainChatInput: FC<PropsMainChatInput> = ({
         </div>
       )}
 
-      <div className={st.main_chat_form}>
-        <input
-          placeholder="Введите сообщение "
-          type="text"
-          className={st.main_chat_form_input}
-          ref={contentRef}
-          onKeyDown={(e) => {
-            if (e.code === "Enter") {
+      {blackList !== "ok" ? (
+        <MainChatInputBlackList blackList={blackList} />
+      ) : (
+        <div className={st.main_chat_form}>
+          <input
+            placeholder="Введите сообщение "
+            type="text"
+            className={st.main_chat_form_input}
+            ref={contentRef}
+            onKeyDown={(e) => {
+              if (e.code === "Enter") {
+                Object.keys(editMessage).length !== 0
+                  ? editMessageF()
+                  : createMessageF();
+              }
+            }}
+          />
+          {/* <div className={st.stickers}>
+        <div className={st.stickers_img}>
+          <img src={stickerPng} alt="" />
+        </div>
+        <div className={st.stickers_block}>
+          <Picker
+            height={window.innerWidth <= 500 ? 300 : 400}
+            width={window.innerWidth <= 500 ? 300 : 300}
+            autoFocusSearch={false}
+            lazyLoadEmojis={true}
+            emojiStyle={EmojiStyle.APPLE}
+            onEmojiClick={(e) =>
+              (contentRef.current.value = `${contentRef.current?.value}${e.emoji}`)
+            }
+            theme={Theme.DARK}
+          />
+        </div>
+      </div> */}
+          <button
+            onClick={() => {
               Object.keys(editMessage).length !== 0
                 ? editMessageF()
                 : createMessageF();
-            }
-          }}
-        />
-        {/* <div className={st.stickers}>
-          <div className={st.stickers_img}>
-            <img src={stickerPng} alt="" />
-          </div>
-          <div className={st.stickers_block}>
-            <Picker
-              height={window.innerWidth <= 500 ? 300 : 400}
-              width={window.innerWidth <= 500 ? 300 : 300}
-              autoFocusSearch={false}
-              lazyLoadEmojis={true}
-              emojiStyle={EmojiStyle.APPLE}
-              onEmojiClick={(e) =>
-                (contentRef.current.value = `${contentRef.current?.value}${e.emoji}`)
-              }
-              theme={Theme.DARK}
-            />
-          </div>
-        </div> */}
-        <button
-          onClick={() => {
-            Object.keys(editMessage).length !== 0
-              ? editMessageF()
-              : createMessageF();
-          }}
-          type="button"
-          className={st.main_chat_form_button}
-        >
-          Отправить
-        </button>
-      </div>
+            }}
+            type="button"
+            className={st.main_chat_form_button}
+          >
+            Отправить
+          </button>
+        </div>
+      )}
     </div>
   );
 };

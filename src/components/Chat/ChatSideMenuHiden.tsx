@@ -11,12 +11,14 @@ export interface PropsChatSideMenu {
   chats: IAllChatWithUser[];
   setSelectChats: Dispatch<SetStateAction<IAllChatWithUser>>;
   socket: Socket;
+  blackList: string;
 }
 
 const ChatSideMenuHiden: FC<PropsChatSideMenu> = ({
   chats,
   setSelectChats,
   socket,
+  blackList,
 }) => {
   const [hidden, setHidden] = useState<boolean>(true);
   return (
@@ -44,6 +46,7 @@ const ChatSideMenuHiden: FC<PropsChatSideMenu> = ({
         <ChatSearch setHidden={setHidden} socket={socket} />
         <div className={st.all_chat_block_users}>
           <ChatRow
+            blackList={blackList}
             setHidden={setHidden}
             socket={socket}
             chats={chats}

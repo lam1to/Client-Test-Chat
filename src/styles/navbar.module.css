@@ -89,6 +89,9 @@
     }
 }
 @media (max-width:415px) {
+    .navbar_block_name_exit{
+        width: 55%;
+    }
     .navbar_exit{
         font-size: 18px;
         align-items: end;
