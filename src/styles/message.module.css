@@ -1,6 +1,6 @@
 .row_message{
-    height: 70vh;
-    overflow: auto;
+    height: 100%;
+    margin:10px 20px 0px 0px;
 }
 
 .one_message{

@@ -38,10 +38,6 @@ const ChatRow: FC<PoropsChatRow> = ({
     }
     return "ok";
   };
-  useEffect(() => {
-    console.log("blockedUsersId", blockedUsersId);
-    console.log("blockersId", blockersId);
-  }, [blockedUsersId, blockersId]);
   return (
     <div className={st.chatrow}>
       {chats?.map((one, i) => (

@@ -27,9 +27,13 @@ const MainChatHeader: FC<PropsMainChatHeader> = ({
           <div className={st.main_chat_header_name_block} key={i}>
             {chat.users.length == 1
               ? chat.type + ": " + one.name + " " + one.lastName
-              : chat.users.length - 1 !== i
+              : i === 0
               ? chat.type + ": " + one.name + ", "
-              : one.name}
+              : i < 3
+              ? one.name + ", "
+              : i === 3
+              ? "..."
+              : ""}
           </div>
         ))}
       </div>

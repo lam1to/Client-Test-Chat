@@ -35,7 +35,7 @@ const ChatRowMessage: FC<PropsRowImessage> = ({
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   };
   const { user } = useAppSelector((state) => state.userReducer);
-  const [overflow, setOverflow] = useState<string>("auto");
+  const [overflow, setOverflow] = useState<string>("scroll");
   const removeMessage = (message: IMessage) => {
     socket.emit("deleteMessage", {
       messageId: message.id,

@@ -31,6 +31,7 @@ const ChatSideMenuHiden: FC<PropsChatSideMenu> = ({
         }}
         src={iconAllMessage}
         alt=""
+        className={st.chat_drop_menu_img_img}
       />
       <div
         className={

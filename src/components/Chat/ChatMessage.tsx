@@ -20,7 +20,7 @@ interface PropsOneMessage {
   removeMessage: (message: IMessage) => void;
   setEditMessage: Dispatch<SetStateAction<IMessage>>;
 }
-interface Position {
+export interface Position {
   x: number;
   y: number;
 }

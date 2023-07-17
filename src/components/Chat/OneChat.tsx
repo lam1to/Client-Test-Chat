@@ -12,6 +12,7 @@ import { Socket } from "socket.io-client";
 import { useOutsideClick } from "outsideclick-react";
 import { useAppSelector } from "../../Hooks/redux";
 import { selectUser } from "../../store/Reducers/UserSlice";
+import { Position } from "./ChatMessage";
 
 export interface PropsOneChat {
   oneChat: IAllChatWithUser;
@@ -27,6 +28,7 @@ const OneChat: FC<PropsOneChat> = ({
   setHidden,
   blackList,
 }) => {
+  const [xYPosistion, setXyPosistion] = useState<Position>({ x: 0, y: 0 });
   const removeF = () => {
     socket.emit("deleteChat", oneChat.id);
     setIsDropDown(false);
@@ -50,6 +52,16 @@ const OneChat: FC<PropsOneChat> = ({
     setIsDropDown(false);
   };
   const ref = useOutsideClick(handleOutsideClick);
+  const onVisible = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const positionChange = {
+      x: e.pageX,
+      y: e.pageY,
+    };
+    setXyPosistion(positionChange);
+    isDropDown ? setIsDropDown(false) : setIsDropDown(true);
+  };
   return (
     <div
       onClick={() => {
@@ -73,20 +85,16 @@ const OneChat: FC<PropsOneChat> = ({
             </div>
           ))}
         </div>
-        <div
-          ref={ref}
-          onClick={(e) => {
-            isDropDown ? setIsDropDown(false) : setIsDropDown(true);
-            e.stopPropagation();
-          }}
-          className={st.onechat_remove_block}
-        >
+        <div ref={ref} onClick={onVisible} className={st.onechat_remove_block}>
           <div className={st.oneChat_remove_block_img}>
             <img src={dotsImg} alt="" />
           </div>
           {isDropDown && (
             <div className={st.position}>
-              <div className={st.onechat_remove_block_drop_down}>
+              <div
+                style={{ top: xYPosistion.y, left: xYPosistion.x - 100 }}
+                className={st.onechat_remove_block_drop_down}
+              >
                 {oneChat.type === "DM" ? (
                   <ul className={st.onechat_remove_block_drop_down_row}>
                     {blackList === "blocked" ||

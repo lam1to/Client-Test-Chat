@@ -280,9 +280,14 @@ div {
     .chat_drop_menu_img{
         border-right: 1px solid #AA76D2;
         display: block;
+
     }
-    .chat_drop_menu_img img{
-        padding: 20px 0px 0px 10px;
+    .chat_drop_menu_img_img{
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+    .close_hidden_menu{
+        margin:10px 0px 0px 10px ;
     }
     .all_chat_block_users{
         height: 80%;
@@ -300,6 +305,36 @@ div {
     .all_chat_block_hidden_activ{
         width: 100vw;
     }
+    .main_block{
+        flex-direction: column;
+    }
+    .chat_drop_menu_img{
+        height:7%;
+        width: 100%;
+        border-bottom: 1px solid #AA76D2;
+        display: flex;
+        align-items: center;
+    }
+    .chat_drop_menu_img_img{
+        margin: 10px 0px 5px 10px;
+    }
+    .all_chat_block_hidden{
+        top: -500px;
+        left: 0px;
+        transition: 1s;
+    }
+    .all_chat_block_hidden_activ{
+        position: absolute;
+        z-index: 10;
+        top: 0px;
+        width: 100vw;
+        transition: 1s;
+        background-color: #0E0B1D;
+        height: 100vh;
+    }
+    /* .close_hidden_menu{
+        margin-top: 5px;
+    } */
 }
 
 /* test */
