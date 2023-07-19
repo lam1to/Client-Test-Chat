@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import iconAllMessage from "../../public/chat.png";
 import st from "../../styles/chat.module.css";
 import MainChat from "./MainChat";
-import { findCharForUser } from "../../http/chat.services";
+import { findAllLeftChat, findCharForUser } from "../../http/chat.services";
 import { IAllChatWithUser, IChat } from "../../types/IChat";
 import { io } from "socket.io-client";
 import { useAppSelector } from "../../Hooks/redux";
@@ -26,6 +26,8 @@ const Chat: FC = () => {
   const [blockedUsersId, setBlockedUsersId] = useState<string[]>(
     [] as string[]
   );
+  const [leftChatId, setLeftChatId] = useState<string[]>([] as string[]);
+
   const [blockersId, setBlockersId] = useState<string[]>([] as string[]);
   const user = useAppSelector(selectUser);
   const isBlockedOrBlockerF = () => {
@@ -72,7 +74,6 @@ const Chat: FC = () => {
     setSelectChats({} as IAllChatWithUser);
   };
   const newBlockedUser = (blockedUserId: string) => {
-    console.log("в сокете у нас такие blockedUser= ", blockedUsersId);
     setBlockedUsersId((blockedUsersId) => {
       if (blockedUsersId.length === 0) {
         return [...blockedUsersId, blockedUserId];
@@ -100,6 +101,18 @@ const Chat: FC = () => {
       })
     );
   };
+  const newLeftChat = (leftOneChatId: string) => {
+    setLeftChatId((leftChatId) => {
+      return [...leftChatId, leftOneChatId];
+    });
+  };
+  const deleteLeftChat = (leftOneChatId: string) => {
+    setLeftChatId((leftChatId) =>
+      leftChatId.filter((one) => {
+        return one !== leftOneChatId;
+      })
+    );
+  };
   useEffect(() => {
     socket.on(`chatCreate${user.user.id}`, chatCreate);
     socket.on(`chatDelete${user.user.id}`, chatDelete);
@@ -107,8 +120,9 @@ const Chat: FC = () => {
     socket.on(`newBlocker${user.user.id}`, newBlocker);
     socket.on(`deleteBlockedUser${user.user.id}`, deleteBlockedUser);
     socket.on(`deleteBlocker${user.user.id}`, deleteBlocker);
+    socket.on(`newLeftChat${user.user.id}`, newLeftChat);
+    socket.on(`deleteLeftChat${user.user.id}`, deleteLeftChat);
     getChat();
-    console.log("blockedUsers = ", blockedUsersId);
     return () => {
       socket.off(`chatCreate${user.user.id}`, chatCreate);
       socket.off(`chatDelete${user.user.id}`, chatDelete);
@@ -116,12 +130,20 @@ const Chat: FC = () => {
       socket.off(`newBlocker${user.user.id}`, newBlocker);
       socket.off(`deleteBlockedUser${user.user.id}`, deleteBlockedUser);
       socket.off(`deleteBlocker${user.user.id}`, deleteBlocker);
+      socket.off(`newLeftChat${user.user.id}`, newLeftChat);
+      socket.off(`deleteLeftChat${user.user.id}`, deleteLeftChat);
+      getChat();
     };
   }, []);
   const getChat = async () => {
     await findCharForUser().then((data) => setChats(data));
     await findUserWhoWasBlockedMe().then((data) => setBlockedUsersId(data));
     await findUserWhoBlockedMe().then((data) => setBlockersId(data));
+    await findAllLeftChat().then((data) => setLeftChatId(data));
+  };
+  const isLeft = () => {
+    const isLeftB: boolean = leftChatId.some((one) => one === selectChats.id);
+    return isLeftB;
   };
   const [hidden, setHidden] = useState<boolean>(true);
   return (
@@ -138,25 +160,30 @@ const Chat: FC = () => {
       </div>
       <div className={st.main_block}>
         <ChatSideMenuHiden
+          setChats={setChats}
           blockersId={blockersId}
           blockedUsersId={blockedUsersId}
           socket={socket}
           chats={chats}
           setSelectChats={setSelectChats}
+          leftChatId={leftChatId}
         />
         {hidden && (
           <ChatSideMenu
+            setChats={setChats}
             blockersId={blockersId}
             blockedUsersId={blockedUsersId}
             socket={socket}
             chats={chats}
             setSelectChats={setSelectChats}
+            leftChatId={leftChatId}
           />
         )}
         <MainChat
           blackList={isBlockedOrBlockerF()}
           socket={socket}
           chat={selectChats}
+          isLeft={isLeft()}
         />
       </div>
     </div>

@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { IAllChatWithUser } from "../../types/IChat";
+import { IAllChatWithUser, ILeftChatUser, LeftChat } from "../../types/IChat";
 import st from "../../styles/oneChat.module.css";
 import dotsImg from "../../public/more.png";
 import { Socket } from "socket.io-client";
@@ -20,6 +20,8 @@ export interface PropsOneChat {
   socket: Socket;
   setHidden?: Dispatch<SetStateAction<boolean>>;
   blackList: string;
+  leftIsChat?: boolean;
+  editLeftChat: (one: ILeftChatUser, flag: boolean) => void;
 }
 const OneChat: FC<PropsOneChat> = ({
   oneChat,
@@ -27,6 +29,8 @@ const OneChat: FC<PropsOneChat> = ({
   socket,
   setHidden,
   blackList,
+  leftIsChat,
+  editLeftChat,
 }) => {
   const [xYPosistion, setXyPosistion] = useState<Position>({ x: 0, y: 0 });
   const removeF = () => {
@@ -61,6 +65,36 @@ const OneChat: FC<PropsOneChat> = ({
     };
     setXyPosistion(positionChange);
     isDropDown ? setIsDropDown(false) : setIsDropDown(true);
+  };
+  const newLeftUserInChat = (newLeftUserInChatOne: ILeftChatUser) => {
+    if (newLeftUserInChatOne.userId !== user.user.id && !leftIsChat)
+      editLeftChat(newLeftUserInChatOne, true);
+  };
+  const deleteLeftUserInChat = (newLeftUserInChatOne: ILeftChatUser) => {
+    if (newLeftUserInChatOne.userId !== user.user.id && !leftIsChat)
+      editLeftChat(newLeftUserInChatOne, false);
+  };
+  useEffect(() => {
+    socket.on(`newLeftUserInChat${oneChat.id}`, newLeftUserInChat);
+    socket.on(`deleteLeftUserInChat${oneChat.id}`, deleteLeftUserInChat);
+    return () => {
+      socket.off(`newLeftUserInChat${oneChat.id}`, newLeftUserInChat);
+      socket.off(`deleteLeftUserInChat${oneChat.id}`, deleteLeftUserInChat);
+    };
+  });
+  const left = () => {
+    socket.emit("createLeftChat", {
+      idUsers: user.user.id,
+      idChat: oneChat.id,
+    });
+    console.log("left press");
+  };
+  const join = () => {
+    socket.emit("removeLeftChat", {
+      idUsers: user.user.id,
+      idChat: oneChat.id,
+    });
+    console.log("join press");
   };
   return (
     <div
@@ -116,12 +150,21 @@ const OneChat: FC<PropsOneChat> = ({
                   </ul>
                 ) : (
                   <ul className={st.onechat_remove_block_drop_down_row}>
-                    <li
-                      onClick={() => removeF()}
-                      className={st.onechat_remove_block_drop_down_item}
-                    >
-                      remove
-                    </li>
+                    {leftIsChat ? (
+                      <li
+                        onClick={join}
+                        className={st.onechat_remove_block_drop_down_item}
+                      >
+                        join
+                      </li>
+                    ) : (
+                      <li
+                        onClick={left}
+                        className={st.onechat_remove_block_drop_down_item}
+                      >
+                        left
+                      </li>
+                    )}
                   </ul>
                 )}
               </div>

@@ -6,10 +6,12 @@ import { IAllChatWithUser } from "../../types/IChat";
 import st from "../../styles/chat.module.css";
 export interface PropsChatSideMenu {
   chats: IAllChatWithUser[];
+  setChats: Dispatch<SetStateAction<IAllChatWithUser[]>>;
   setSelectChats: Dispatch<SetStateAction<IAllChatWithUser>>;
   socket: Socket;
   blockedUsersId: string[];
   blockersId: string[];
+  leftChatId: string[];
 }
 const ChatSideMenu: FC<PropsChatSideMenu> = ({
   chats,
@@ -17,12 +19,16 @@ const ChatSideMenu: FC<PropsChatSideMenu> = ({
   socket,
   blockedUsersId,
   blockersId,
+  leftChatId,
+  setChats,
 }) => {
   return (
     <div className={st.all_chat_block}>
       <ChatSearch socket={socket} />
       <div className={st.all_chat_block_users}>
         <ChatRow
+          setChats={setChats}
+          leftChatId={leftChatId}
           blockersId={blockersId}
           blockedUsersId={blockedUsersId}
           socket={socket}

@@ -124,7 +124,20 @@
     background-color: #45f798;
     color: #0E0B1D;
 }
+
+
 /* dropDown end */
+/* left in chat start */
+.one_message_leftChat{
+    width: 100%;
+    color: #4b6f5c;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px 0px 5px 0px;
+}
+/* left in chat end */
 /* media */
 @media (max-width:900px){
     .message_content_other{

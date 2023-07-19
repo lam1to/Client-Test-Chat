@@ -20,3 +20,11 @@ export interface IChatUser {
 export interface IAllChatWithUser extends IChat {
   users: IuserChat[];
 }
+export interface ILeftChatUser extends LeftChat {
+  user?: IuserChat;
+}
+export interface LeftChat {
+  id: string;
+  chatId: string;
+  userId: string;
+}

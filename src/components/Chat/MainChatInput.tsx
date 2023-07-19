@@ -10,6 +10,8 @@ import { IMessage } from "../../types/IMessage";
 import pencilImg from "../../public/pencil.png";
 import { IuserChat } from "../../types/IUser";
 import MainChatInputBlackList from "./MainChatInputBlackList";
+import { selectUser } from "../../store/Reducers/UserSlice";
+import MainChatInputLeft from "./MainChatInputLeft";
 export interface PropsMainChatInput {
   socket: Socket;
   chatId: string;
@@ -17,6 +19,7 @@ export interface PropsMainChatInput {
   editMessage: IMessage;
   setEditMessage: Dispatch<SetStateAction<IMessage>>;
   blackList: string;
+  isLeft: boolean;
 }
 
 const MainChatInput: FC<PropsMainChatInput> = ({
@@ -26,12 +29,13 @@ const MainChatInput: FC<PropsMainChatInput> = ({
   editMessage,
   setEditMessage,
   blackList,
+  isLeft,
 }) => {
   useEffect(() => {}, []);
-  const { user } = useAppSelector((state) => state.userReducer);
+  const { user } = useAppSelector(selectUser);
   const createMessageF = async () => {
     socket.emit("createGateway", {
-      userId: user.user.id,
+      userId: user.id,
       chatId: chatId,
       content: contentRef.current?.value,
     });
@@ -72,6 +76,8 @@ const MainChatInput: FC<PropsMainChatInput> = ({
 
       {blackList !== "ok" ? (
         <MainChatInputBlackList blackList={blackList} />
+      ) : isLeft ? (
+        <MainChatInputLeft />
       ) : (
         <div className={st.main_chat_form}>
           <input

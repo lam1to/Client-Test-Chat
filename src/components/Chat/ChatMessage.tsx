@@ -68,7 +68,11 @@ const ChatMessage: FC<PropsOneMessage> = ({
   };
   return (
     <div className={st.one_message}>
-      {user.user.id == message.userId ? (
+      {message.content.slice(0, 6) === "admin:" ? (
+        <div className={st.one_message_leftChat}>
+          {message.content.slice(6)}
+        </div>
+      ) : user.user.id == message.userId ? (
         <div className={st.message_block_self}>
           <div
             className={`${st.message_container} ${st.message_container_self}`}

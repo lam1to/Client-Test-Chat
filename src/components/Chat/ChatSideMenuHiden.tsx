@@ -9,10 +9,12 @@ import ChatRow from "./ChatRow";
 import closeImg from "../../public/close.png";
 export interface PropsChatSideMenu {
   chats: IAllChatWithUser[];
+  setChats: Dispatch<SetStateAction<IAllChatWithUser[]>>;
   setSelectChats: Dispatch<SetStateAction<IAllChatWithUser>>;
   socket: Socket;
   blockedUsersId: string[];
   blockersId: string[];
+  leftChatId: string[];
 }
 
 const ChatSideMenuHiden: FC<PropsChatSideMenu> = ({
@@ -21,6 +23,8 @@ const ChatSideMenuHiden: FC<PropsChatSideMenu> = ({
   socket,
   blockedUsersId,
   blockersId,
+  leftChatId,
+  setChats,
 }) => {
   const [hidden, setHidden] = useState<boolean>(true);
   return (
@@ -49,6 +53,8 @@ const ChatSideMenuHiden: FC<PropsChatSideMenu> = ({
         <ChatSearch setHidden={setHidden} socket={socket} />
         <div className={st.all_chat_block_users}>
           <ChatRow
+            setChats={setChats}
+            leftChatId={leftChatId}
             blockersId={blockersId}
             blockedUsersId={blockedUsersId}
             setHidden={setHidden}

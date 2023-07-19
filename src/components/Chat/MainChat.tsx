@@ -13,8 +13,9 @@ export interface PropsMainChat {
   chat: IAllChatWithUser;
   socket: Socket;
   blackList: string;
+  isLeft: boolean;
 }
-const MainChat: FC<PropsMainChat> = ({ chat, socket, blackList }) => {
+const MainChat: FC<PropsMainChat> = ({ chat, socket, blackList, isLeft }) => {
   const [messages, SetMessages] = useState<IMessage[]>([]);
   const message = (content: IMessage) => {
     SetMessages((messages) => {
@@ -42,17 +43,18 @@ const MainChat: FC<PropsMainChat> = ({ chat, socket, blackList }) => {
     );
   };
   useEffect(() => {
-    console.log("blackList in mainChat = ", blackList);
     getMessages();
-    socket.on(`message${chat.id}`, message);
-    socket.on(`messageDelete${chat.id}`, messageDelete);
-    socket.on(`messageUpdate${chat.id}`, messageUpdate);
-    return () => {
-      socket.off(`message${chat.id}`, message);
-      socket.off(`messageDelete${chat.id}`, messageDelete);
-      socket.off(`messageUpdate${chat.id}`, messageUpdate);
-    };
-  }, [chat]);
+    if (!isLeft) {
+      socket.on(`message${chat.id}`, message);
+      socket.on(`messageDelete${chat.id}`, messageDelete);
+      socket.on(`messageUpdate${chat.id}`, messageUpdate);
+      return () => {
+        socket.off(`message${chat.id}`, message);
+        socket.off(`messageDelete${chat.id}`, messageDelete);
+        socket.off(`messageUpdate${chat.id}`, messageUpdate);
+      };
+    }
+  }, [chat, isLeft]);
   const [loading, setLoading] = useState<boolean>(true);
   const getMessages = async () => {
     if (chat.id) {
@@ -96,6 +98,7 @@ const MainChat: FC<PropsMainChat> = ({ chat, socket, blackList }) => {
             )}
           </div>
           <MainChatInput
+            isLeft={isLeft}
             blackList={blackList}
             setEditMessage={setEditMessage}
             editMessage={editMessage}
