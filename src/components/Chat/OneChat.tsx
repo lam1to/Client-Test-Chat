@@ -81,7 +81,7 @@ const OneChat: FC<PropsOneChat> = ({
       socket.off(`newLeftUserInChat${oneChat.id}`, newLeftUserInChat);
       socket.off(`deleteLeftUserInChat${oneChat.id}`, deleteLeftUserInChat);
     };
-  });
+  }, [leftIsChat]);
   const left = () => {
     socket.emit("createLeftChat", {
       idUsers: user.user.id,

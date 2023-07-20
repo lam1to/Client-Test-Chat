@@ -1,4 +1,10 @@
-import React, { FC, useEffect, useState } from "react";
+import React, {
+  FC,
+  SetStateAction,
+  useEffect,
+  useState,
+  Dispatch,
+} from "react";
 import iconAllMessage from "../../public/chat.png";
 import st from "../../styles/chat.module.css";
 import MainChat from "./MainChat";
@@ -13,9 +19,16 @@ import {
   findUserWhoWasBlockedMe,
 } from "../../http/blockUser.services";
 import { selectUser } from "../../store/Reducers/UserSlice";
+import { useSocket } from "../../Hooks/useSocket";
 
 const socket = io("http://localhost:4200/chatSocket");
 
+export interface IUseSocket<T> {
+  masT: T[];
+  setMasT: Dispatch<SetStateAction<T[]>>;
+  addItem: (content: T) => void;
+  deleteItem: (content: T) => void;
+}
 const Chat: FC = () => {
   const [chats, setChats] = useState<IAllChatWithUser[]>(
     [] as IAllChatWithUser[]
@@ -23,19 +36,32 @@ const Chat: FC = () => {
   const [selectChats, setSelectChats] = useState<IAllChatWithUser>(
     {} as IAllChatWithUser
   );
-  const [blockedUsersId, setBlockedUsersId] = useState<string[]>(
-    [] as string[]
+  const blocked: IUseSocket<string> = useSocket<string>(
+    "newBlockedUser",
+    "deleteBlockedUser",
+    socket,
+    "blocked"
   );
-  const [leftChatId, setLeftChatId] = useState<string[]>([] as string[]);
+  const blocker: IUseSocket<string> = useSocket<string>(
+    "newBlocker",
+    "deleteBlocker",
+    socket,
+    "blocker"
+  );
 
-  const [blockersId, setBlockersId] = useState<string[]>([] as string[]);
+  const leftChat: IUseSocket<string> = useSocket<string>(
+    "newLeftChat",
+    "deleteLeftChat",
+    socket,
+    "leftChat"
+  );
   const user = useAppSelector(selectUser);
   const isBlockedOrBlockerF = () => {
     if (selectChats.type === "DM") {
-      const isBlockedUser = blockedUsersId.some(
+      const isBlockedUser = blocked.masT.some(
         (one) => one === selectChats.users[0].id
       );
-      const isBlocker = blockersId.some(
+      const isBlocker = blocker.masT.some(
         (one) => one === selectChats.users[0].id
       );
       const isBlockedOrBlocker: string =
@@ -51,9 +77,6 @@ const Chat: FC = () => {
     return "ok";
   };
 
-  const newBlocker = (blockerId: string) => {
-    setBlockersId([...blockersId, blockerId]);
-  };
   const chatCreate = (content: IAllChatWithUser) => {
     setChats((chats) => {
       if (chats.length === 0) {
@@ -65,7 +88,7 @@ const Chat: FC = () => {
       return chats;
     });
   };
-  const chatDelete = (deleteChat: IChat) => {
+  const chatDelete = (deleteChat: IAllChatWithUser) => {
     setChats((chats) =>
       chats.filter((OneChat) => {
         return OneChat.id !== deleteChat.id;
@@ -73,76 +96,22 @@ const Chat: FC = () => {
     );
     setSelectChats({} as IAllChatWithUser);
   };
-  const newBlockedUser = (blockedUserId: string) => {
-    setBlockedUsersId((blockedUsersId) => {
-      if (blockedUsersId.length === 0) {
-        return [...blockedUsersId, blockedUserId];
-      }
-      if (
-        blockedUsersId.length > 0 &&
-        blockedUsersId[blockedUsersId.length - 1] !== blockedUserId
-      ) {
-        return [...blockedUsersId, blockedUserId];
-      }
-      return blockedUsersId;
-    });
-  };
-  const deleteBlockedUser = (blockedUserId: string) => {
-    setBlockedUsersId((blockedUsersId) =>
-      blockedUsersId.filter((oneBlockedUserId) => {
-        return oneBlockedUserId !== blockedUserId;
-      })
-    );
-  };
-  const deleteBlocker = (blockerId: string) => {
-    setBlockersId((blockersId) =>
-      blockersId.filter((oneBlockerId) => {
-        return oneBlockerId !== blockerId;
-      })
-    );
-  };
-  const newLeftChat = (leftOneChatId: string) => {
-    setLeftChatId((leftChatId) => {
-      return [...leftChatId, leftOneChatId];
-    });
-  };
-  const deleteLeftChat = (leftOneChatId: string) => {
-    setLeftChatId((leftChatId) =>
-      leftChatId.filter((one) => {
-        return one !== leftOneChatId;
-      })
-    );
-  };
   useEffect(() => {
     socket.on(`chatCreate${user.user.id}`, chatCreate);
     socket.on(`chatDelete${user.user.id}`, chatDelete);
-    socket.on(`newBlockedUser${user.user.id}`, newBlockedUser);
-    socket.on(`newBlocker${user.user.id}`, newBlocker);
-    socket.on(`deleteBlockedUser${user.user.id}`, deleteBlockedUser);
-    socket.on(`deleteBlocker${user.user.id}`, deleteBlocker);
-    socket.on(`newLeftChat${user.user.id}`, newLeftChat);
-    socket.on(`deleteLeftChat${user.user.id}`, deleteLeftChat);
     getChat();
     return () => {
       socket.off(`chatCreate${user.user.id}`, chatCreate);
       socket.off(`chatDelete${user.user.id}`, chatDelete);
-      socket.off(`newBlockedUser${user.user.id}`, newBlockedUser);
-      socket.off(`newBlocker${user.user.id}`, newBlocker);
-      socket.off(`deleteBlockedUser${user.user.id}`, deleteBlockedUser);
-      socket.off(`deleteBlocker${user.user.id}`, deleteBlocker);
-      socket.off(`newLeftChat${user.user.id}`, newLeftChat);
-      socket.off(`deleteLeftChat${user.user.id}`, deleteLeftChat);
-      getChat();
     };
   }, []);
   const getChat = async () => {
     await findCharForUser().then((data) => setChats(data));
-    await findUserWhoWasBlockedMe().then((data) => setBlockedUsersId(data));
-    await findUserWhoBlockedMe().then((data) => setBlockersId(data));
-    await findAllLeftChat().then((data) => setLeftChatId(data));
   };
   const isLeft = () => {
-    const isLeftB: boolean = leftChatId.some((one) => one === selectChats.id);
+    const isLeftB: boolean = leftChat.masT.some(
+      (one) => one === selectChats.id
+    );
     return isLeftB;
   };
   const [hidden, setHidden] = useState<boolean>(true);
@@ -161,22 +130,22 @@ const Chat: FC = () => {
       <div className={st.main_block}>
         <ChatSideMenuHiden
           setChats={setChats}
-          blockersId={blockersId}
-          blockedUsersId={blockedUsersId}
+          blockersId={blocker.masT}
+          blockedUsersId={blocked.masT}
           socket={socket}
           chats={chats}
           setSelectChats={setSelectChats}
-          leftChatId={leftChatId}
+          leftChatId={leftChat.masT}
         />
         {hidden && (
           <ChatSideMenu
             setChats={setChats}
-            blockersId={blockersId}
-            blockedUsersId={blockedUsersId}
+            blockersId={blocker.masT}
+            blockedUsersId={blocked.masT}
             socket={socket}
             chats={chats}
             setSelectChats={setSelectChats}
-            leftChatId={leftChatId}
+            leftChatId={leftChat.masT}
           />
         )}
         <MainChat

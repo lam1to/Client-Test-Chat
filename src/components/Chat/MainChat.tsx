@@ -8,6 +8,8 @@ import { getAllMessageForChat } from "../../http/chat.services";
 import MainChatInput from "./MainChatInput";
 import MainChatHeader from "./MainChatHeader";
 import Loader from "../Loading/Loader";
+import { IUseSocket } from "./Chat";
+import { useSocket } from "../../Hooks/useSocket";
 
 export interface PropsMainChat {
   chat: IAllChatWithUser;
