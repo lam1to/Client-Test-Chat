@@ -3,6 +3,7 @@ import st from "../../styles/mainChat.module.css";
 import { IAllChatWithUser } from "../../types/IChat";
 import searchPngg from "../../public/search_symbol.png";
 import { useOutsideClick } from "outsideclick-react";
+import { useTranslation } from "react-i18next";
 
 interface PropsMainChatHeader {
   chat: IAllChatWithUser;
@@ -19,6 +20,7 @@ const MainChatHeader: FC<PropsMainChatHeader> = ({
   const handleOutsideClick = () => {
     setIsFilter(false);
   };
+  const [t, i18n] = useTranslation();
   const ref = useOutsideClick(handleOutsideClick);
   return (
     <div className={st.main_chat_header}>
@@ -49,7 +51,7 @@ const MainChatHeader: FC<PropsMainChatHeader> = ({
         {isFilter && (
           <div className={st.main_chat_header_search_block_input}>
             <input
-              placeholder="Поиск сообщений"
+              placeholder={t("mainChatHeader.searchMessage")}
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
               className={st.main_chat_header_search_input}

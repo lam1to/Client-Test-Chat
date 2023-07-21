@@ -1,0 +1,22 @@
+{
+    "navbar.welcom":"Welcom back ",
+    "navbar.exit":"Exit",
+    "chatSearch.searchUsers":"Search users",
+    "chatSearch.selectUsers": "Select users",
+    "chatSearch.createGm":"Create groupM",
+    "chatSearch.createDm":"Create directM",
+    "chatSearch.selected":"Selected",
+    "mainChat.empty":"The chat is not open",
+    "mainChatHeader.searchMessage":"Search message",
+    "mainChatInput.editMessage":"Editing",
+    "mainChatInput.closeEdit":"Close",
+    "mainChatInput.InputMessage":"Enter a message",
+    "mainChatInput.send":"Send",
+    "mainChatInputBlack.blockedUser":"You have blocked the user. To write him a message, you need to unblock him.",
+    "mainChatInputBlack.blockerUser":"This user has blocked you",
+    "mainChatInputLeftChat.weLeft":"You have logged out of the chat",
+    "oneChat.unblock":"Unblock",
+    "oneChat.block":"Block",
+    "oneChat.join":"Join",
+    "oneChat.left":"Left"
+}

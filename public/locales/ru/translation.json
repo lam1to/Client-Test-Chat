@@ -1,0 +1,22 @@
+{
+    "navbar.welcom":"Здравствуйте ",
+    "navbar.exit":"Выход",
+    "chatSearch.searchUsers":"Поиск пользователей",
+    "chatSearch.selectUsers":"Выберите пользователей",
+    "chatSearch.createGm":"Создать беседу",
+    "chatSearch.createDm":"Создать лс",
+    "chatSearch.select":"Выбран",
+    "mainChat.empty":"Чат не открыт",
+    "mainChatHeader.searchMessage":"Поиск сообщений",
+    "mainChatInput.editMessage":"Редактирование",
+    "mainChatInput.closeEdit":"Закрыть",
+    "mainChatInput.InputMessage":"Введите сообщение",
+    "mainChatInput.send":"Отправить",
+    "mainChatInputBlack.blockedUser":"Вы заблокировали пользователя. Чтобы написать ему сообщение, необходимо его разблокировать.",
+    "mainChatInputBlack.blockerUser":"Данный пользователь вас заблокировал",
+    "mainChatInputLeftChat.weLeft":"Вы вышли из чата",
+    "oneChat.unblock":"Разблокировать",
+    "oneChat.block":"Заблокировать",
+    "oneChat.join":"Зайти",
+    "oneChat.left":"Выйти"
+}

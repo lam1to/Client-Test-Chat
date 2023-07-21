@@ -12,6 +12,7 @@ import { IuserChat } from "../../types/IUser";
 import MainChatInputBlackList from "./MainChatInputBlackList";
 import { selectUser } from "../../store/Reducers/UserSlice";
 import MainChatInputLeft from "./MainChatInputLeft";
+import { useTranslation } from "react-i18next";
 export interface PropsMainChatInput {
   socket: Socket;
   chatId: string;
@@ -33,6 +34,7 @@ const MainChatInput: FC<PropsMainChatInput> = ({
 }) => {
   useEffect(() => {}, []);
   const { user } = useAppSelector(selectUser);
+  const [t, i18n] = useTranslation();
   const createMessageF = async () => {
     socket.emit("createGateway", {
       userId: user.id,
@@ -59,7 +61,7 @@ const MainChatInput: FC<PropsMainChatInput> = ({
               <img src={pencilImg} alt="" />
             </div>
             <div className={st.main_chat_input_edit_title}>
-              {"Редактирование: " + editMessage.content}
+              {t("mainChatInput.editMessage") + editMessage.content}
             </div>
           </div>
           <div
@@ -69,7 +71,7 @@ const MainChatInput: FC<PropsMainChatInput> = ({
             }}
             className={st.main_chat_input_edit_close}
           >
-            Close
+            {t("mainChatInput.closeEdit")}
           </div>
         </div>
       )}
@@ -81,7 +83,7 @@ const MainChatInput: FC<PropsMainChatInput> = ({
       ) : (
         <div className={st.main_chat_form}>
           <input
-            placeholder="Введите сообщение "
+            placeholder={t("mainChatInput.InputMessage")}
             type="text"
             className={st.main_chat_form_input}
             ref={contentRef}
@@ -120,7 +122,7 @@ const MainChatInput: FC<PropsMainChatInput> = ({
             type="button"
             className={st.main_chat_form_button}
           >
-            Отправить
+            {t("mainChatInput.send")}
           </button>
         </div>
       )}

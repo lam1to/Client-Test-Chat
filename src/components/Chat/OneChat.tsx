@@ -13,6 +13,7 @@ import { useOutsideClick } from "outsideclick-react";
 import { useAppSelector } from "../../Hooks/redux";
 import { selectUser } from "../../store/Reducers/UserSlice";
 import { Position } from "./ChatMessage";
+import { useTranslation } from "react-i18next";
 
 export interface PropsOneChat {
   oneChat: IAllChatWithUser;
@@ -32,6 +33,7 @@ const OneChat: FC<PropsOneChat> = ({
   leftIsChat,
   editLeftChat,
 }) => {
+  const [t, i18n] = useTranslation();
   const [xYPosistion, setXyPosistion] = useState<Position>({ x: 0, y: 0 });
   const removeF = () => {
     socket.emit("deleteChat", oneChat.id);
@@ -137,14 +139,14 @@ const OneChat: FC<PropsOneChat> = ({
                         onClick={unblockUser}
                         className={st.onechat_remove_block_drop_down_item}
                       >
-                        unblock
+                        {t("oneChat.unblock")}
                       </li>
                     ) : (
                       <li
                         onClick={blockUser}
                         className={st.onechat_remove_block_drop_down_item}
                       >
-                        block
+                        {t("oneChat.block")}
                       </li>
                     )}
                   </ul>
@@ -155,14 +157,14 @@ const OneChat: FC<PropsOneChat> = ({
                         onClick={join}
                         className={st.onechat_remove_block_drop_down_item}
                       >
-                        join
+                        {t("oneChat.join")}
                       </li>
                     ) : (
                       <li
                         onClick={left}
                         className={st.onechat_remove_block_drop_down_item}
                       >
-                        left
+                        {t("oneChat.left")}
                       </li>
                     )}
                   </ul>

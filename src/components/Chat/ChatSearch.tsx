@@ -12,6 +12,7 @@ import { useAppSelector } from "../../Hooks/redux";
 import { Socket } from "socket.io-client";
 import { useOutsideClick } from "outsideclick-react";
 import { selectUser } from "../../store/Reducers/UserSlice";
+import { useTranslation } from "react-i18next";
 export interface PropsChatSearch {
   socket: Socket;
   setHidden?: Dispatch<SetStateAction<boolean>>;
@@ -22,6 +23,7 @@ const ChatSearch: FC<PropsChatSearch> = ({ socket, setHidden }) => {
   const [users, setUsers] = useState<IuserChat[]>();
   const [isSearch, setIsSearch] = useState<boolean>(false);
   const user = useAppSelector(selectUser);
+  const [t, i18n] = useTranslation();
   useEffect(() => {
     getAllUsers().then((data) => setUsers(data));
   }, []);
@@ -54,7 +56,7 @@ const ChatSearch: FC<PropsChatSearch> = ({ socket, setHidden }) => {
         type="text"
         value={search}
         name="search"
-        placeholder="Search users"
+        placeholder={t("chatSearch.searchUsers")}
         className={st.chat_search_input}
         onChange={(e) => setSearch(e.target.value)}
         onClick={() => (isSearch ? setIsSearch(false) : setIsSearch(true))}
@@ -71,11 +73,11 @@ const ChatSearch: FC<PropsChatSearch> = ({ socket, setHidden }) => {
             className={st.button_create}
           >
             {count.length == 1 ? (
-              <>Создать DM</>
+              <>{t("chatSearch.createDm")}</>
             ) : count.length > 1 ? (
-              <>Создать GroupM</>
+              <>{t("chatSearch.createGm")}</>
             ) : (
-              <>Выберете users </>
+              <>{t("chatSearch.selectUsers")} </>
             )}
           </button>
           <div className={st.block_create_counter}>{count.length}</div>
@@ -122,7 +124,11 @@ const ChatSearch: FC<PropsChatSearch> = ({ socket, setHidden }) => {
                       {oneUser.id ===
                         count.filter((one) => {
                           return one === oneUser.id;
-                        })[0] && <div className={st.selectUser}>Выбран</div>}
+                        })[0] && (
+                        <div className={st.selectUser}>
+                          {t("chatSearch.selected")}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </button>
