@@ -337,9 +337,13 @@
 }
 @media (max-width:500px) {
     .main_chat_form_button{
-        font-size: 3vw;
+        font-size: 3.6vw;
+        transition: 1s;
     }
-
+    .main_chat_form_input{
+        font-size: 4vw;
+        transition: 1s;
+    }
     .main_chat_input_edit_title{
         font-size: 14px;
         transition: 1s;

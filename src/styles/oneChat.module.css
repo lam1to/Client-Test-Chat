@@ -3,6 +3,7 @@
 }
 .chatrow{
     height: 100%;
+    overflow: auto;
 }
 .chatrow::-webkit-scrollbar-thumb {
     background: none;
@@ -71,7 +72,7 @@
     border: 1px solid #AA76D2;
     color: #6EFFB1;
     font-size: 20px;
-    width: 100px;
+    width: 110px;
     height: 50px;
     z-index: 22;
 }
@@ -95,6 +96,7 @@
     justify-content: center;
     align-items: center;
     z-index: 22;
+    padding: 2px;
 }
 .onechat_remove_block_drop_down_item:hover{
     background-color: #45f798;

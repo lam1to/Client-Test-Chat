@@ -205,8 +205,7 @@
     border-radius: 50%;
 }
 
-element.style {
-}
+
 .oneChat_chatrow__d2Xqp {
     overflow: auto;
     height: 80.5vh;
@@ -242,12 +241,14 @@ div {
 }
 .all_chat_block_hidden{
     position: absolute;
+    visibility: hidden;
     top: 0px;
     left: -500px;
     transition: 1s;
 }
 .all_chat_block_hidden_activ{
     position: absolute;
+    visibility:visible;
     z-index: 10;
     top: 0px;
     left: 0px;
@@ -316,10 +317,13 @@ div {
         align-items: center;
     }
     .chat_drop_menu_img_img{
-        margin: 10px 0px 5px 10px;
+        /* margin: 10px 0px 5px 10px; */
+        margin: 0px 0px 0px 10px;
+        width: 20px
     }
     .all_chat_block_hidden{
-        top: -500px;
+        top: -700px;
+
         left: 0px;
         transition: 1s;
     }
