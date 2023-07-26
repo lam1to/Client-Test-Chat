@@ -6,12 +6,11 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { IMessage } from "../../types/IMessage";
-import st from "../../styles/message.module.css";
-import ChatMessage from "./ChatMessage";
-import { IuserChat } from "../../types/IUser";
+import { IMessage } from "../../../types/IMessage";
+import st from "../../../styles/message.module.css";
+import ChatMessage from "./OneMessage";
+import { IuserChat } from "../../../types/IUser";
 import { Socket } from "socket.io-client";
-import { useAppSelector } from "../../Hooks/redux";
 
 interface PropsRowImessage {
   messages: IMessage[];
@@ -20,7 +19,7 @@ interface PropsRowImessage {
   socket: Socket;
   setEditMessage: Dispatch<SetStateAction<IMessage>>;
 }
-const ChatRowMessage: FC<PropsRowImessage> = ({
+const RowMessage: FC<PropsRowImessage> = ({
   messages,
   users,
   contentRef,
@@ -34,8 +33,7 @@ const ChatRowMessage: FC<PropsRowImessage> = ({
   const scrollToBottom = () => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-  const { user } = useAppSelector((state) => state.userReducer);
-  const [overflow, setOverflow] = useState<string>("scroll");
+  const [overflow, setOverflow] = useState<string>("auto");
   const removeMessage = (message: IMessage) => {
     socket.emit("deleteMessage", {
       messageId: message.id,
@@ -65,4 +63,4 @@ const ChatRowMessage: FC<PropsRowImessage> = ({
   );
 };
 
-export default ChatRowMessage;
+export default RowMessage;

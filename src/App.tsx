@@ -8,6 +8,7 @@ import { check } from "./http/user.services";
 import { useAppDispatch, useAppSelector } from "./Hooks/redux";
 import { UserSlice } from "./store/Reducers/UserSlice";
 import Loader from "./components/Loading/Loader";
+import { io } from "socket.io-client";
 
 const App = () => {
   const { SetUser, SetIsAuth } = UserSlice.actions;

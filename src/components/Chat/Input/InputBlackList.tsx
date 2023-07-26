@@ -1,14 +1,12 @@
 import React, { FC } from "react";
-import st from "../../styles/mainChat.module.css";
-import exclamationImg from "../../public/exclamation.png";
+import st from "../../../styles/mainChat.module.css";
+import exclamationImg from "../../../public/exclamation.png";
 import { useTranslation } from "react-i18next";
 export interface PropsMainChatInputBlackList {
   blackList: string;
 }
 
-const MainChatInputBlackList: FC<PropsMainChatInputBlackList> = ({
-  blackList,
-}) => {
+const InputBlackList: FC<PropsMainChatInputBlackList> = ({ blackList }) => {
   const [t, i18n] = useTranslation();
   return (
     <div className={st.blackList_main_block}>
@@ -38,4 +36,4 @@ const MainChatInputBlackList: FC<PropsMainChatInputBlackList> = ({
   );
 };
 
-export default MainChatInputBlackList;
+export default InputBlackList;

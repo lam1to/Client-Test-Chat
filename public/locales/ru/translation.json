@@ -6,6 +6,7 @@
     "chatSearch.createGm":"Создать беседу",
     "chatSearch.createDm":"Создать лс",
     "chatSearch.select":"Выбран",
+    "chatSearch.inputNameChat":"Название беседы",
     "mainChat.empty":"Чат не открыт",
     "mainChatHeader.searchMessage":"Поиск сообщений",
     "mainChatInput.editMessage":"Редактирование",
@@ -15,8 +16,13 @@
     "mainChatInputBlack.blockedUser":"Вы заблокировали пользователя. Чтобы написать ему сообщение, необходимо его разблокировать.",
     "mainChatInputBlack.blockerUser":"Данный пользователь вас заблокировал",
     "mainChatInputLeftChat.weLeft":"Вы вышли из чата",
-    "oneChat.unblock":"Разблокировать",
-    "oneChat.block":"Заблокировать",
-    "oneChat.join":"Зайти",
-    "oneChat.left":"Выйти"
+    "mainChatHeader.unblock":"Разблокировать",
+    "mainChatHeader.block":"Заблокировать",
+    "mainChatHeader.join":"Зайти",
+    "mainChatHeader.left":"Выйти",
+    "mainChatHeader.remove":"Удалить",
+    "mainChatHeader.setting":"Настройки:",
+    "mainChatHeader.infoChat":"Информация о  ",
+    "mainChatHeader.listUsers": "Список участников ",
+    "chatRow.empty":"Пока чатов нет"
 }

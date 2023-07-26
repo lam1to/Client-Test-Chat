@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import st from "../../styles/mainChat.module.css";
+import st from "../../../styles/mainChat.module.css";
 import { useTranslation } from "react-i18next";
-const MainChatInputLeft: FC = () => {
+const InputLeft: FC = () => {
   const [t, i18n] = useTranslation();
   return (
     <div className={st.main_chat_input_left}>
@@ -10,4 +10,4 @@ const MainChatInputLeft: FC = () => {
   );
 };
 
-export default MainChatInputLeft;
+export default InputLeft;

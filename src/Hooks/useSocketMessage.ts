@@ -12,12 +12,12 @@ import {
   findUserWhoWasBlockedMe,
 } from "../http/blockUser.services";
 import { IMessage } from "../types/IMessage";
-import { IAllChatWithUser } from "../types/IChat";
+import { IChatWithUser } from "../types/IChat";
 
 export function useSocketMessage(
   socket: Socket,
   isLeft: boolean,
-  chat: IAllChatWithUser
+  chat: IChatWithUser
 ) {
   const [messages, SetMessages] = useState<IMessage[]>([]);
   const message = (content: IMessage) => {

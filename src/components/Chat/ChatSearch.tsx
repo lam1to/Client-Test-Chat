@@ -24,9 +24,11 @@ const ChatSearch: FC<PropsChatSearch> = ({ socket, setHidden }) => {
   const [isSearch, setIsSearch] = useState<boolean>(false);
   const user = useAppSelector(selectUser);
   const [t, i18n] = useTranslation();
+  const [nameChat, setNameChat] = useState<string>("");
+  const [count, setCount] = useState<string[]>([]);
   useEffect(() => {
     getAllUsers().then((data) => setUsers(data));
-  }, []);
+  }, [count.length]);
   const SearchUser = users?.filter((oneUser) => {
     return (
       oneUser.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -36,14 +38,15 @@ const ChatSearch: FC<PropsChatSearch> = ({ socket, setHidden }) => {
   const createChatF = () => {
     if (count.length > 0) {
       socket.emit("createChat", {
-        idUsers: [...count, user.user.id],
+        userWhoCreateId: user.user.id,
+        idUsers: [...count],
+        name: nameChat,
       });
       setCount([]);
       setIsSearch(false);
       if (setHidden) setHidden(true);
     }
   };
-  const [count, setCount] = useState<string[]>([]);
   const handleOutsideClick = () => {
     setIsSearch(false);
     setCount([]);
@@ -82,6 +85,15 @@ const ChatSearch: FC<PropsChatSearch> = ({ socket, setHidden }) => {
           </button>
           <div className={st.block_create_counter}>{count.length}</div>
         </div>
+        {count.length > 1 && (
+          <input
+            type="text"
+            placeholder={t("chatSearch.inputNameChat")}
+            className={`${st.chat_search_input} ${st.chat_search_input_name_chat}`}
+            value={nameChat}
+            onChange={(e) => setNameChat(e.target.value)}
+          />
+        )}
         <ul className={st.list_user}>
           {SearchUser?.map((oneUser, i) => {
             let flag: boolean = false;

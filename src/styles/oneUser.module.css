@@ -1,0 +1,17 @@
+.one_user_block{
+    display: flex;
+    margin-top: 20px;
+}
+
+.one_user_avatar_block{
+    margin: 0px 10px 0px 0px ;
+}
+.one_user_avatar_block img{
+    width: 40px;
+    border-radius: 50%;
+}
+.one_user_name{
+    display: flex;
+    align-items: center;
+
+}

@@ -101,6 +101,28 @@
 .main_chat_header_search_input::placeholder{
     color: #1A1037;
 }
+/* menu start */
+.main_chat_header_menu_block{
+    margin: 0px 10px 0px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+.main_chat_header_setting{
+    font-size: 20px;
+    margin: 0px 0px 10px 0px ;
+}
+.func_block_drop_down_row{
+    width: 100%;
+}
+.func_block_drop_down_item{
+    width: 90%;
+    cursor: pointer;
+    padding: 10px;
+}
+/* menu end */
+
 /* header comp end */
 
 /* main chat input comp start */
@@ -252,7 +274,6 @@
 /* left end */
 
 /* main chat input comp end */
-
 
 
 

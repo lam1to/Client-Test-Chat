@@ -7,35 +7,34 @@ import React, {
 } from "react";
 import iconAllMessage from "../../public/chat.png";
 import st from "../../styles/chat.module.css";
-import MainChat from "./MainChat";
+import MainChat from "./MainChat/MainChat";
 import { findAllLeftChat, findCharForUser } from "../../http/chat.services";
-import { IAllChatWithUser, IChat } from "../../types/IChat";
+import { IChatWithUser, IChat, ILeftChatUser } from "../../types/IChat";
 import { io } from "socket.io-client";
-import { useAppSelector } from "../../Hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../Hooks/redux";
 import ChatSideMenu from "./ChatSideMenu";
 import ChatSideMenuHiden from "./ChatSideMenuHiden";
-import {
-  findUserWhoBlockedMe,
-  findUserWhoWasBlockedMe,
-} from "../../http/blockUser.services";
-import { selectUser } from "../../store/Reducers/UserSlice";
 import { useSocket } from "../../Hooks/useSocket";
+import { useSocketChats } from "../../Hooks/useSocketChats";
+import { useFuncChat } from "../../Hooks/useFuncChat";
 
 const socket = io("http://localhost:4200/chatSocket");
 
 export interface IUseSocket<T> {
   masT: T[];
   setMasT: Dispatch<SetStateAction<T[]>>;
-  addItem: (content: T) => void;
-  deleteItem: (content: T) => void;
+}
+export interface IUseSocketChat {
+  masT: IChatWithUser[];
+  setMasT: Dispatch<SetStateAction<IChatWithUser[]>>;
+  editLeftChat: (oneLeftChat: ILeftChatUser, flag: boolean) => void;
 }
 const Chat: FC = () => {
-  const [chats, setChats] = useState<IAllChatWithUser[]>(
-    [] as IAllChatWithUser[]
+  const [selectChats, setSelectChats] = useState<IChatWithUser>(
+    {} as IChatWithUser
   );
-  const [selectChats, setSelectChats] = useState<IAllChatWithUser>(
-    {} as IAllChatWithUser
-  );
+
+  const chats: IUseSocketChat = useSocketChats(socket, setSelectChats);
   const blocked: IUseSocket<string> = useSocket<string>(
     "newBlockedUser",
     "deleteBlockedUser",
@@ -55,65 +54,7 @@ const Chat: FC = () => {
     socket,
     "leftChat"
   );
-  const user = useAppSelector(selectUser);
-  const isBlockedOrBlockerF = () => {
-    if (selectChats.type === "DM") {
-      const isBlockedUser = blocked.masT.some(
-        (one) => one === selectChats.users[0].id
-      );
-      const isBlocker = blocker.masT.some(
-        (one) => one === selectChats.users[0].id
-      );
-      const isBlockedOrBlocker: string =
-        isBlockedUser && isBlocker
-          ? "blockedBlocker"
-          : isBlockedUser
-          ? "blocked"
-          : isBlocker
-          ? "blocker"
-          : "ok";
-      return isBlockedOrBlocker;
-    }
-    return "ok";
-  };
-
-  const chatCreate = (content: IAllChatWithUser) => {
-    setChats((chats) => {
-      if (chats.length === 0) {
-        return [...chats, content];
-      }
-      if (chats.length > 0 && content.id !== chats[chats.length - 1].id) {
-        return [...chats, content];
-      }
-      return chats;
-    });
-  };
-  const chatDelete = (deleteChat: IAllChatWithUser) => {
-    setChats((chats) =>
-      chats.filter((OneChat) => {
-        return OneChat.id !== deleteChat.id;
-      })
-    );
-    setSelectChats({} as IAllChatWithUser);
-  };
-  useEffect(() => {
-    socket.on(`chatCreate${user.user.id}`, chatCreate);
-    socket.on(`chatDelete${user.user.id}`, chatDelete);
-    getChat();
-    return () => {
-      socket.off(`chatCreate${user.user.id}`, chatCreate);
-      socket.off(`chatDelete${user.user.id}`, chatDelete);
-    };
-  }, []);
-  const getChat = async () => {
-    await findCharForUser().then((data) => setChats(data));
-  };
-  const isLeft = () => {
-    const isLeftB: boolean = leftChat.masT.some(
-      (one) => one === selectChats.id
-    );
-    return isLeftB;
-  };
+  const funcChat = useFuncChat();
   const [hidden, setHidden] = useState<boolean>(true);
   return (
     <div className={st.chat}>
@@ -129,30 +70,27 @@ const Chat: FC = () => {
       </div>
       <div className={st.main_block}>
         <ChatSideMenuHiden
-          setChats={setChats}
-          blockersId={blocker.masT}
-          blockedUsersId={blocked.masT}
           socket={socket}
-          chats={chats}
+          chats={chats.masT}
           setSelectChats={setSelectChats}
-          leftChatId={leftChat.masT}
         />
         {hidden && (
           <ChatSideMenu
-            setChats={setChats}
-            blockersId={blocker.masT}
-            blockedUsersId={blocked.masT}
             socket={socket}
-            chats={chats}
+            chats={chats.masT}
             setSelectChats={setSelectChats}
-            leftChatId={leftChat.masT}
           />
         )}
         <MainChat
-          blackList={isBlockedOrBlockerF()}
+          blackList={funcChat.isBlockedOrBlockerF(
+            selectChats,
+            blocked,
+            blocker
+          )}
           socket={socket}
           chat={selectChats}
-          isLeft={isLeft()}
+          isLeft={funcChat.isLeft(leftChat, selectChats)}
+          editLeftChat={chats.editLeftChat}
         />
       </div>
     </div>

@@ -10,6 +10,8 @@ export interface IChat {
   id: string;
   type: string;
   createdAt: string;
+  name: string;
+  userWhoCreateId: string;
 }
 export interface IChatUser {
   id: string;
@@ -17,7 +19,7 @@ export interface IChatUser {
   userId: string;
 }
 
-export interface IAllChatWithUser extends IChat {
+export interface IChatWithUser extends IChat {
   users: IuserChat[];
 }
 export interface ILeftChatUser extends LeftChat {

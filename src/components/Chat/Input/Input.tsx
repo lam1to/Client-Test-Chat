@@ -1,18 +1,15 @@
 import React, { FC, useEffect, useRef, Dispatch, SetStateAction } from "react";
-import st from "../../styles/mainChat.module.css";
+import st from "../../../styles/mainChat.module.css";
 import { Socket } from "socket.io-client";
-import { useAppSelector } from "../../Hooks/redux";
-import stickerPng from "../../public/png-transparent-iphone-emoji-smiley-computer-icons-sick-transformed.png";
-import Picker from "emoji-picker-react";
-import { Theme } from "emoji-picker-react";
-import { EmojiStyle } from "emoji-picker-react";
-import { IMessage } from "../../types/IMessage";
-import pencilImg from "../../public/pencil.png";
-import { IuserChat } from "../../types/IUser";
-import MainChatInputBlackList from "./MainChatInputBlackList";
-import { selectUser } from "../../store/Reducers/UserSlice";
-import MainChatInputLeft from "./MainChatInputLeft";
+import { useAppSelector } from "../../../Hooks/redux";
+import { IMessage } from "../../../types/IMessage";
+import pencilImg from "../../../public/pencil.png";
+import InputBlackList from "./InputBlackList";
+import { selectUser } from "../../../store/Reducers/UserSlice";
+import InputLeft from "./InputLeft";
 import { useTranslation } from "react-i18next";
+import { useFuncMessage } from "../../../Hooks/useFuncMessage";
+// import InputEmoji from "./InputEmoji";
 export interface PropsMainChatInput {
   socket: Socket;
   chatId: string;
@@ -23,7 +20,7 @@ export interface PropsMainChatInput {
   isLeft: boolean;
 }
 
-const MainChatInput: FC<PropsMainChatInput> = ({
+const Input: FC<PropsMainChatInput> = ({
   socket,
   chatId,
   contentRef,
@@ -33,25 +30,8 @@ const MainChatInput: FC<PropsMainChatInput> = ({
   isLeft,
 }) => {
   useEffect(() => {}, []);
-  const { user } = useAppSelector(selectUser);
   const [t, i18n] = useTranslation();
-  const createMessageF = async () => {
-    socket.emit("createGateway", {
-      userId: user.id,
-      chatId: chatId,
-      content: contentRef.current?.value,
-    });
-    contentRef.current.value = "";
-  };
-  const editMessageF = () => {
-    socket.emit("updateMessage", {
-      messageId: editMessage.id,
-      content: contentRef.current?.value,
-      chatId: chatId,
-    });
-    setEditMessage({} as IMessage);
-    contentRef.current.value = "";
-  };
+  const funcMessage = useFuncMessage();
   return (
     <div className={st.main_chat_input}>
       {Object.keys(editMessage).length !== 0 && (
@@ -75,11 +55,11 @@ const MainChatInput: FC<PropsMainChatInput> = ({
           </div>
         </div>
       )}
-
+      {/* <InputEmoji contentRef={contentRef} /> */}
       {blackList !== "ok" ? (
-        <MainChatInputBlackList blackList={blackList} />
+        <InputBlackList blackList={blackList} />
       ) : isLeft ? (
-        <MainChatInputLeft />
+        <InputLeft />
       ) : (
         <div className={st.main_chat_form}>
           <input
@@ -90,34 +70,29 @@ const MainChatInput: FC<PropsMainChatInput> = ({
             onKeyDown={(e) => {
               if (e.code === "Enter") {
                 Object.keys(editMessage).length !== 0
-                  ? editMessageF()
-                  : createMessageF();
+                  ? funcMessage.editMessageF(
+                      socket,
+                      contentRef,
+                      chatId,
+                      editMessage,
+                      setEditMessage
+                    )
+                  : funcMessage.createMessageF(socket, contentRef, chatId);
               }
             }}
           />
-          {/* <div className={st.stickers}>
-        <div className={st.stickers_img}>
-          <img src={stickerPng} alt="" />
-        </div>
-        <div className={st.stickers_block}>
-          <Picker
-            height={window.innerWidth <= 500 ? 300 : 400}
-            width={window.innerWidth <= 500 ? 300 : 300}
-            autoFocusSearch={false}
-            lazyLoadEmojis={true}
-            emojiStyle={EmojiStyle.APPLE}
-            onEmojiClick={(e) =>
-              (contentRef.current.value = `${contentRef.current?.value}${e.emoji}`)
-            }
-            theme={Theme.DARK}
-          />
-        </div>
-      </div> */}
+
           <button
             onClick={() => {
               Object.keys(editMessage).length !== 0
-                ? editMessageF()
-                : createMessageF();
+                ? funcMessage.editMessageF(
+                    socket,
+                    contentRef,
+                    chatId,
+                    editMessage,
+                    setEditMessage
+                  )
+                : funcMessage.createMessageF(socket, contentRef, chatId);
             }}
             type="button"
             className={st.main_chat_form_button}
@@ -130,4 +105,4 @@ const MainChatInput: FC<PropsMainChatInput> = ({
   );
 };
 
-export default MainChatInput;
+export default Input;

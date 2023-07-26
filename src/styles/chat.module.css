@@ -13,12 +13,7 @@
 .all_chat_block_users{
     height: 88.5%;
 }
-.block_chat_search_form{
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    position: relative;
-}
+
 .button_create{
     width: 85%;
     height: 40px;
@@ -51,27 +46,8 @@
     justify-content: center;
     flex: 1 0 auto;
 }
-.chat_search_input{
-    margin: 10px;
-    width: 90%;
-    background-color: #0E0B1D;
-    border: none;
-    border-radius: 15px;
-    padding-left: 20px;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 20px;
-    /* identical to box height */
-    display: flex;
-    align-items: center;
-    height: 50px;
-    margin-bottom: 10px;
-    color: #6EFFB1;
-    outline: none;
-}
-.chat_search_input::placeholder{
-    color: #6EFFB1;
-}
+
+
 .all_chat_block{
     width: 30vw;
     height: 100%;
@@ -114,6 +90,8 @@
     position: absolute;
     top:70px;
     z-index: 12;
+    height: 500px;
+    background-color: #4E4370;
 
 }
 
@@ -176,13 +154,6 @@
 }
 
 
-.search_button{
-    width: 100%;
-    background: none;
-     border: none;
-     padding: 0;
-     cursor: pointer;
-}
 
 .oneuser_block_name{
     margin-top: 20px;
@@ -256,6 +227,53 @@ div {
     transition: 1s;
     background-color: #0E0B1D;
 }
+/* search start */
+
+.block_chat_search_form{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+}
+.chat_search_input{
+    margin: 10px;
+    width: 90%;
+    background-color: #0E0B1D;
+    border: none;
+    border-radius: 15px;
+    padding-left: 20px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    /* identical to box height */
+    display: flex;
+    align-items: center;
+    height: 50px;
+    margin-bottom: 10px;
+    color: #6EFFB1;
+    outline: none;
+}
+
+.chat_search_input::placeholder{
+    color: #6EFFB1;
+}
+.search_button{
+    width: 100%;
+    background: none;
+     border: none;
+     padding: 0;
+     cursor: pointer;
+}
+.chat_search_input_name_chat{
+    font-size: 12px;
+    width: 86%;
+    height: 35px;
+    
+}
+
+/* search end */
+
+/* media  */
 @media(max-width: 1200px ){
     .all_chat_block{
         width: 40vw;
