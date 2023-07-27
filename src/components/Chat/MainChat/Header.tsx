@@ -17,6 +17,7 @@ import { selectUser } from "../../../store/Reducers/UserSlice";
 import { Socket } from "socket.io-client";
 import OneUser from "../OneUser";
 import { useFuncChat } from "../../../Hooks/useFuncChat";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface PropsMainChatHeader {
   chat: IChatWithUser;
@@ -81,17 +82,25 @@ const Header: FC<PropsMainChatHeader> = ({
         >
           <img className={st.main_chat_header_search_img} src={searchPngg} />
         </div>
-        {isFilter && (
-          <div className={st.main_chat_header_search_block_input}>
-            <input
-              placeholder={t("mainChatHeader.searchMessage")}
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              className={st.main_chat_header_search_input}
-              type="text"
-            />
-          </div>
-        )}
+        <AnimatePresence>
+          {isFilter && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className={st.main_chat_header_search_block_input}
+            >
+              <input
+                placeholder={t("mainChatHeader.searchMessage")}
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                className={st.main_chat_header_search_input}
+                type="text"
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
       <div className={st.main_chat_header_menu_block}>
         <img

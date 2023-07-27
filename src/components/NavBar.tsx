@@ -3,7 +3,11 @@ import styles from "../styles/navbar.module.css";
 import { useNavigate } from "react-router-dom";
 import { CHAT_ROUTE } from "../utils/const";
 import { useAppDispatch, useAppSelector } from "../Hooks/redux";
-import { UserSlice } from "../store/Reducers/UserSlice";
+import {
+  UserSlice,
+  selectIsAuth,
+  selectUser,
+} from "../store/Reducers/UserSlice";
 import { IuserForState } from "../types/IUser";
 import { useTranslation } from "react-i18next";
 import navbarMenuImg from "../public/menu.png";
@@ -12,7 +16,8 @@ import { useOutsideClick } from "outsideclick-react";
 const NavBar: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { user, isAuth } = useAppSelector((state) => state.userReducer);
+  const user = useAppSelector(selectUser);
+  const isAuth = useAppSelector(selectIsAuth);
   const { SetIsAuth, SetUserN } = UserSlice.actions;
   const [t, i18n] = useTranslation();
   const [hidden, setHidden] = useState<boolean>(true);
@@ -35,56 +40,60 @@ const NavBar: FC = () => {
             TestChat
           </button>
         </div>
-        <div className={styles.navbar_name}>
-          {t("navbar.welcom") + user.user.name}
-        </div>
-        <div className={styles.navbar_menu}>
-          <div className={styles.navbar_menu_block_img}>
-            <img
-              onClick={() => setHidden(hidden ? false : true)}
-              src={navbarMenuImg}
-            />
+        {isAuth && (
+          <div className={styles.navbar_name}>
+            {t("navbar.welcom") + user.user.name}
           </div>
-          <div
-            ref={ref}
-            className={`${styles.navbar_menu_block_dropDown} ${
-              hidden
-                ? styles.navbar_menu_block_dropDown_hidden
-                : styles.navbar_menu_block_dropDown_activ
-            }`}
-          >
-            <div className={styles.navbar_menu_block_close_block}>
-              <div className={styles.navbar_name_dropDown}>
-                {user.user.name}
-              </div>
+        )}
+        {isAuth && (
+          <div className={styles.navbar_menu}>
+            <div className={styles.navbar_menu_block_img}>
               <img
-                onClick={() => setHidden(true)}
-                src={navbarCloseMenuImg}
-                alt=""
+                onClick={() => setHidden(hidden ? false : true)}
+                src={navbarMenuImg}
               />
             </div>
+            <div
+              ref={ref}
+              className={`${styles.navbar_menu_block_dropDown} ${
+                hidden
+                  ? styles.navbar_menu_block_dropDown_hidden
+                  : styles.navbar_menu_block_dropDown_activ
+              }`}
+            >
+              <div className={styles.navbar_menu_block_close_block}>
+                <div className={styles.navbar_name_dropDown}>
+                  {user.user.name}
+                </div>
+                <img
+                  onClick={() => setHidden(true)}
+                  src={navbarCloseMenuImg}
+                  alt=""
+                />
+              </div>
 
-            <ul className={styles.navbar_menu_dropDown}>
-              <li className={styles.navbar_menu_item}>
-                <select
-                  className={styles.navbar_menu_dropDown_select}
-                  onChange={(e) => i18n.changeLanguage(e.target.value)}
-                >
-                  <option value="ru">Ru</option>
-                  <option value="en">En</option>
-                </select>
-              </li>
-              <li className={styles.navbar_menu_item}>
-                <button
-                  onClick={() => exit()}
-                  className={`${styles.link_button} ${styles.navbar_menu_exit_button}`}
-                >
-                  {t("navbar.exit")}
-                </button>
-              </li>
-            </ul>
+              <ul className={styles.navbar_menu_dropDown}>
+                <li className={styles.navbar_menu_item}>
+                  <select
+                    className={styles.navbar_menu_dropDown_select}
+                    onChange={(e) => i18n.changeLanguage(e.target.value)}
+                  >
+                    <option value="ru">Ru</option>
+                    <option value="en">En</option>
+                  </select>
+                </li>
+                <li className={styles.navbar_menu_item}>
+                  <button
+                    onClick={() => exit()}
+                    className={`${styles.link_button} ${styles.navbar_menu_exit_button}`}
+                  >
+                    {t("navbar.exit")}
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

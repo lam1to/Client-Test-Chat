@@ -1,4 +1,11 @@
-import React, { FC, useEffect, useRef, Dispatch, SetStateAction } from "react";
+import React, {
+  FC,
+  useEffect,
+  useRef,
+  Dispatch,
+  SetStateAction,
+  useState,
+} from "react";
 import st from "../../../styles/mainChat.module.css";
 import { Socket } from "socket.io-client";
 import { useAppSelector } from "../../../Hooks/redux";
@@ -9,6 +16,9 @@ import { selectUser } from "../../../store/Reducers/UserSlice";
 import InputLeft from "./InputLeft";
 import { useTranslation } from "react-i18next";
 import { useFuncMessage } from "../../../Hooks/useFuncMessage";
+import clipPng from "../../../public/paper-clip.png";
+import closePng from "../../../public/close.png";
+import { AnimatePresence, motion } from "framer-motion";
 // import InputEmoji from "./InputEmoji";
 export interface PropsMainChatInput {
   socket: Socket;
@@ -32,6 +42,37 @@ const Input: FC<PropsMainChatInput> = ({
   useEffect(() => {}, []);
   const [t, i18n] = useTranslation();
   const funcMessage = useFuncMessage();
+  const refInput = useRef<HTMLInputElement>({} as HTMLInputElement);
+  const [selectFile, setSelectFile] = useState<File>({} as File);
+  const startUpload = () => {
+    refInput.current.click();
+  };
+  const onChangeInputFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.files);
+    if (e.target.files) {
+      setSelectFile(e.target.files[0]);
+    }
+  };
+  const funcReader = () => {
+    if (selectFile) return URL.createObjectURL(selectFile);
+  };
+  const closeImg = () => {
+    setSelectFile({} as File);
+  };
+  const [drag, setDrag] = useState<boolean>(false);
+  const dragStartHandler = (e: React.DragEvent<HTMLElement>) => {
+    e.preventDefault();
+    setDrag(true);
+  };
+  const dragLeaveHandler = (e: React.DragEvent<HTMLElement>) => {
+    e.preventDefault();
+    setDrag(false);
+  };
+  const onDropHandler = (e: React.DragEvent<HTMLElement>) => {
+    e.preventDefault();
+    setSelectFile(e.dataTransfer.files[0]);
+    setDrag(false);
+  };
   return (
     <div className={st.main_chat_input}>
       {Object.keys(editMessage).length !== 0 && (
@@ -56,13 +97,59 @@ const Input: FC<PropsMainChatInput> = ({
         </div>
       )}
       {/* <InputEmoji contentRef={contentRef} /> */}
-      {blackList !== "ok" ? (
+      <AnimatePresence>
+        {selectFile && selectFile.name && (
+          <motion.div
+            initial={{ height: 0, width: 0 }}
+            animate={{ height: 100, width: 100 }}
+            exit={{ height: 0, width: 0 }}
+            className={st.main_chat_input_upload_block}
+          >
+            <img
+              className={st.main_chat_input_upload_block_main_img}
+              src={funcReader()}
+            />
+
+            <div
+              className={st.main_chat_input_upload_block_close}
+              onClick={closeImg}
+            >
+              close
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {drag ? (
+        <div
+          onDragStart={(e) => dragStartHandler(e)}
+          onDragLeave={(e) => dragLeaveHandler(e)}
+          onDragOver={(e) => dragStartHandler(e)}
+          onDrop={onDropHandler}
+          className={st.drag_drop_container}
+        >
+          <div className={st.drag_drop_block}>Перетащите сюда фото</div>
+        </div>
+      ) : blackList !== "ok" ? (
         <InputBlackList blackList={blackList} />
       ) : isLeft ? (
         <InputLeft />
       ) : (
         <div className={st.main_chat_form}>
+          <div className={st.main_chat_form_upload}>
+            <input
+              ref={refInput}
+              className={st.main_chat_form_upload_input}
+              type="file"
+              onChange={onChangeInputFile}
+              accept="image/*"
+            />
+            <img onClick={startUpload} src={clipPng} alt="" />
+          </div>
           <input
+            onDragStart={(e) => dragStartHandler(e)}
+            onDragLeave={(e) => dragLeaveHandler(e)}
+            onDragOver={(e) => dragStartHandler(e)}
             placeholder={t("mainChatInput.InputMessage")}
             type="text"
             className={st.main_chat_form_input}

@@ -79,7 +79,7 @@ const OneMessage: FC<PropsOneMessage> = ({
             >
               <div>{message.content}</div>
               <div className={st.message_content_time_self}>{time}</div>
-              {/* {dropDown && (
+              {dropDown && (
                 <div
                   style={{ top: xYPosistion.y, left: xYPosistion.x - 100 }}
                   className={st.message_block_dropdown}
@@ -115,7 +115,7 @@ const OneMessage: FC<PropsOneMessage> = ({
                     </li>
                   </ul>
                 </div>
-              )} */}
+              )}
             </div>
           </div>
         </div>
@@ -149,7 +149,7 @@ const OneMessage: FC<PropsOneMessage> = ({
             >
               <div>{message.content}</div>
               <div className={st.message_content_time}>{time}</div>
-              {/* {dropDown && (
+              {dropDown && (
                 <div
                   style={{ top: xYPosistion.y, left: xYPosistion.x }}
                   className={st.message_block_dropdown}
@@ -160,7 +160,7 @@ const OneMessage: FC<PropsOneMessage> = ({
                       className={st.message_block_dropdown_item}
                     >
                       edit
-                    </li> }
+              </li> */}
                     <li
                       onClick={(e) =>
                         funcMessage.deleteF(
@@ -177,7 +177,7 @@ const OneMessage: FC<PropsOneMessage> = ({
                     </li>
                   </ul>
                 </div>
-              )} */}
+              )}
             </div>
           </div>
         </div>

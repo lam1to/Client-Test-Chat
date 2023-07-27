@@ -11,6 +11,7 @@ import st from "../../../styles/message.module.css";
 import ChatMessage from "./OneMessage";
 import { IuserChat } from "../../../types/IUser";
 import { Socket } from "socket.io-client";
+import { motion } from "framer-motion";
 
 interface PropsRowImessage {
   messages: IMessage[];
@@ -47,15 +48,21 @@ const RowMessage: FC<PropsRowImessage> = ({
           return oneUser.id == oneMessage.userId;
         })[0];
         return (
-          <ChatMessage
-            setEditMessage={setEditMessage}
-            removeMessage={removeMessage}
-            contentRef={contentRef}
-            setOverflow={setOverflow}
-            userWho={user}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
             key={i}
-            message={oneMessage}
-          />
+          >
+            <ChatMessage
+              setEditMessage={setEditMessage}
+              removeMessage={removeMessage}
+              contentRef={contentRef}
+              setOverflow={setOverflow}
+              userWho={user}
+              message={oneMessage}
+            />
+          </motion.div>
         );
       })}
       <div ref={scrollRef} />

@@ -273,6 +273,80 @@
 }
 /* left end */
 
+/* upload start */
+.main_chat_form_upload{
+    width: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.main_chat_form_upload_input{
+    width: 0;
+    height: 0;
+    display: none;
+}
+.main_chat_input_upload_block{
+    position: relative;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+}
+.main_chat_input_upload_block_close{
+    position: absolute;
+     opacity: 0; 
+     top: 0;
+     left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+     width: 97%;
+     background: rgba(56, 45, 58, 0.72);
+    height: 97%; 
+    border-radius: 20%;
+    border: 2px solid #AA76D2;
+    font-size: 25px;
+    font-weight: 900;
+     visibility:hidden; 
+    transition: opacity .2s, visibility .2s;
+    transition: 1s;
+    cursor: pointer;
+}
+.main_chat_input_upload_block_main_img{
+    width: 97%;
+    height: 97%;
+    border: 2px solid #AA76D2;
+    border-radius: 20%;
+}
+.main_chat_input_upload_block:hover .main_chat_input_upload_block_close{
+    visibility: visible;
+    opacity: 1;
+    font-size: 30px;
+    transition: 0.2s;
+    
+}
+
+/* upload end */
+
+/* drag and drop start  */
+.drag_drop_container{
+   height: 70px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    font-size: 30px;
+    
+}
+.drag_drop_block{
+   height: 96%;
+    width: 80%;
+    border: 2px solid #6EFFB1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* drag and drop end */
 /* main chat input comp end */
 
 

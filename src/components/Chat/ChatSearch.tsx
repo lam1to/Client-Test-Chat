@@ -13,6 +13,7 @@ import { Socket } from "socket.io-client";
 import { useOutsideClick } from "outsideclick-react";
 import { selectUser } from "../../store/Reducers/UserSlice";
 import { useTranslation } from "react-i18next";
+import { AnimatePresence, motion } from "framer-motion";
 export interface PropsChatSearch {
   socket: Socket;
   setHidden?: Dispatch<SetStateAction<boolean>>;
@@ -64,91 +65,110 @@ const ChatSearch: FC<PropsChatSearch> = ({ socket, setHidden }) => {
         onChange={(e) => setSearch(e.target.value)}
         onClick={() => (isSearch ? setIsSearch(false) : setIsSearch(true))}
       />
-      <div
-        className={`${
-          isSearch === true ? st.block_list_user_true : st.block_list_user_false
-        } ${st.block_list_user}`}
-      >
-        <div className={st.block_create}>
-          <button
-            type="button"
-            onClick={() => createChatF()}
-            className={st.button_create}
+      <AnimatePresence>
+        {isSearch && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            className={st.block_list_container}
           >
-            {count.length == 1 ? (
-              <>{t("chatSearch.createDm")}</>
-            ) : count.length > 1 ? (
-              <>{t("chatSearch.createGm")}</>
-            ) : (
-              <>{t("chatSearch.selectUsers")} </>
-            )}
-          </button>
-          <div className={st.block_create_counter}>{count.length}</div>
-        </div>
-        {count.length > 1 && (
-          <input
-            type="text"
-            placeholder={t("chatSearch.inputNameChat")}
-            className={`${st.chat_search_input} ${st.chat_search_input_name_chat}`}
-            value={nameChat}
-            onChange={(e) => setNameChat(e.target.value)}
-          />
-        )}
-        <ul className={st.list_user}>
-          {SearchUser?.map((oneUser, i) => {
-            let flag: boolean = false;
-            return (
-              <li key={i}>
+            <div className={st.block_list_user}>
+              <div className={st.block_create}>
                 <button
                   type="button"
-                  onClick={() => {
-                    oneUser.id ===
-                    count.filter((one) => {
-                      return one === oneUser.id;
-                    })[0]
-                      ? setCount((count) =>
-                          count.filter((oneCount) => {
-                            return oneCount !== oneUser.id;
-                          })
-                        )
-                      : setCount((count) => [...count, oneUser.id]);
-                    flag = true;
-                  }}
-                  className={st.search_button}
+                  onClick={() => createChatF()}
+                  className={st.button_create}
                 >
-                  <div
-                    className={`${
-                      oneUser.id ===
-                      count.filter((one) => {
-                        return one === oneUser.id;
-                      })[0]
-                        ? st.onechat_block_select
-                        : st.onechat_block
-                    } ${st.onechat_block}`}
-                  >
-                    <div className={st.oneuser_block_img}>
-                      <img src={oneUser.avatarPath} alt="" />
-                    </div>
-                    <div className={st.block_user}>
-                      <div className={st.oneuser_block_name}>
-                        {oneUser.name + " " + oneUser.lastName}
-                      </div>
-                      {oneUser.id ===
-                        count.filter((one) => {
-                          return one === oneUser.id;
-                        })[0] && (
-                        <div className={st.selectUser}>
-                          {t("chatSearch.selected")}
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                  {count.length == 1 ? (
+                    <>{t("chatSearch.createDm")}</>
+                  ) : count.length > 1 ? (
+                    <>{t("chatSearch.createGm")}</>
+                  ) : (
+                    <>{t("chatSearch.selectUsers")} </>
+                  )}
                 </button>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+                <div className={st.block_create_counter}>{count.length}</div>
+              </div>
+              <AnimatePresence>
+                {count.length > 1 && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 1 }}
+                    style={{ overflow: "hidden" }}
+                  >
+                    <input
+                      type="text"
+                      placeholder={t("chatSearch.inputNameChat")}
+                      className={`${st.chat_search_input} ${st.chat_search_input_name_chat}`}
+                      value={nameChat}
+                      onChange={(e) => setNameChat(e.target.value)}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <ul className={st.list_user}>
+                {SearchUser?.map((oneUser, i) => {
+                  let flag: boolean = false;
+                  return (
+                    <li key={i}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          oneUser.id ===
+                          count.filter((one) => {
+                            return one === oneUser.id;
+                          })[0]
+                            ? setCount((count) =>
+                                count.filter((oneCount) => {
+                                  return oneCount !== oneUser.id;
+                                })
+                              )
+                            : setCount((count) => [...count, oneUser.id]);
+                          flag = true;
+                        }}
+                        className={st.search_button}
+                      >
+                        <div
+                          className={`${
+                            oneUser.id ===
+                            count.filter((one) => {
+                              return one === oneUser.id;
+                            })[0]
+                              ? st.onechat_block_select
+                              : st.onechat_block
+                          } ${st.onechat_block}`}
+                        >
+                          <div className={st.oneuser_block_img}>
+                            <img src={oneUser.avatarPath} alt="" />
+                          </div>
+                          <div className={st.block_user}>
+                            <div className={st.oneuser_block_name}>
+                              {oneUser.name + " " + oneUser.lastName}
+                            </div>
+                            {oneUser.id ===
+                              count.filter((one) => {
+                                return one === oneUser.id;
+                              })[0] && (
+                              <div className={st.selectUser}>
+                                {t("chatSearch.selected")}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </form>
   );
 };
