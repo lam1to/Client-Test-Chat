@@ -22,6 +22,7 @@
     background: #160E2D;
     position: relative;
     margin: 0 20px;
+    /* height: 100%; */
     max-height: calc(100vh - 40px);
     text-align: left;
     display: flex;
@@ -45,11 +46,17 @@
     border-bottom: 1px solid #AA76D2;
     justify-content: space-between;
   }
-  .modal_close {
+  .modal_close{
     cursor: pointer;
     padding: 1rem;
     margin: -1rem -1rem -1rem auto;
+    display: flex;
   }
+  
+  .modal_close_photo {
+    cursor: pointer;
+  }
+
   .modal_body {
     overflow: auto;
     font-size: 16px;
@@ -61,7 +68,39 @@
   .modal_title {
     margin: 0;
   }
-  
+  /* modal photo start */
+
+  .modal_body_photo{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    overflow: hidden;
+    object-fit: cover;
+  }
+ .modal_body_photo_item_activ{
+  display: block;
+ }
+ .modal_body_photo_item_activ img{
+  width: 100%;
+ }
+.modal_body_photo_item{
+  display: none;
+}
+.modal_body_photo_click_right{
+  right: 10px;
+}
+.modal_body_photo_click_left{
+  left: 10px;
+}
+.modal_body_photo_click{
+  position: absolute;
+  top: 50%;
+  cursor: pointer;
+}
+/* modal photo end */
+
   @keyframes appear {
     from {
       opacity: 0;

@@ -24,5 +24,6 @@
     "mainChatHeader.setting":"Настройки:",
     "mainChatHeader.infoChat":"Информация о  ",
     "mainChatHeader.listUsers": "Список участников ",
+    "mainChatInput.dragAndDrop":"Перетащите сюда фото",
     "chatRow.empty":"Пока чатов нет"
 }

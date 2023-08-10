@@ -1,7 +1,8 @@
+
 /* comp mainChat start */
 .main_chat_container{
-    width: 100%;
-    height: 100%;
+    flex: 1 1;
+    overflow: hidden;
 }
 .main_chat{
     width: 100%;
@@ -12,8 +13,8 @@
 
 .main_chat_content{
     width: 100%;
+    flex: 1 1;
     overflow: hidden;
-    flex: 1 0 ;
 }
 .emptyChat{
     height: 90vh;
@@ -47,7 +48,7 @@
 .main_chat_header_name{
     color: #6EFFB1;
     font-size: 20px;
-    padding-left: 100px;
+    padding-left: 60px;
 }
 
 .main_chat_header_search{
@@ -279,6 +280,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0px 10px 0px 10px ;
 }
 .main_chat_form_upload_input{
     width: 0;
@@ -286,10 +288,22 @@
     display: none;
 }
 .main_chat_input_upload_block{
-    position: relative;
+    width: 100%;
+    height: 100px;
+    overflow-x: auto;
+    display: flex;
+    padding: 0;
+    margin: 0;
+
+}
+.main_chat_input_upload_block_main_one{
     width: 100px;
     height: 100px;
-    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+}
+.main_chat_input_upload_block_main_one:not(:last-child){
+    margin-right: 10px;
 }
 .main_chat_input_upload_block_close{
     position: absolute;
@@ -318,7 +332,7 @@
     border: 2px solid #AA76D2;
     border-radius: 20%;
 }
-.main_chat_input_upload_block:hover .main_chat_input_upload_block_close{
+.main_chat_input_upload_block_main_one:hover .main_chat_input_upload_block_close{
     visibility: visible;
     opacity: 1;
     font-size: 30px;

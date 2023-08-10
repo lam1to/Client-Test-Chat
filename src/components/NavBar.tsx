@@ -30,7 +30,7 @@ const NavBar: FC = () => {
   };
   const ref = useOutsideClick(handleOutsideClick);
   return (
-    <div className={styles.navbar}>
+    <div className={`${styles.navbar} navbar`}>
       <div className={`${styles.navbar_container} _container`}>
         <div className={styles.navbar_title}>
           <button
@@ -53,6 +53,7 @@ const NavBar: FC = () => {
                 src={navbarMenuImg}
               />
             </div>
+
             <div
               ref={ref}
               className={`${styles.navbar_menu_block_dropDown} ${

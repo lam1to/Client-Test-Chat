@@ -24,5 +24,6 @@
     "mainChatHeader.setting":"Setting:",
     "mainChatHeader.infoChat":"Information about ",
     "mainChatHeader.listUsers": "List users ",
+    "mainChatInput.dragAndDrop": "Drag the photo here",
     "chatRow.empty":"There are no chats yet"
 }

@@ -57,7 +57,7 @@ const Chat: FC = () => {
   const funcChat = useFuncChat();
   const [hidden, setHidden] = useState<boolean>(true);
   return (
-    <div className={st.chat}>
+    <div className={`${st.chat} chat`}>
       <div className={st.func_block}>
         <div className={st.func_row}>
           <div
@@ -68,6 +68,7 @@ const Chat: FC = () => {
           </div>
         </div>
       </div>
+
       <div className={st.main_block}>
         <ChatSideMenuHiden
           socket={socket}
@@ -81,6 +82,7 @@ const Chat: FC = () => {
             setSelectChats={setSelectChats}
           />
         )}
+
         <MainChat
           blackList={funcChat.isBlockedOrBlockerF(
             selectChats,

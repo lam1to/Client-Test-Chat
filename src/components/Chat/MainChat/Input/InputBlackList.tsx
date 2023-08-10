@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import st from "../../../styles/mainChat.module.css";
-import exclamationImg from "../../../public/exclamation.png";
+import st from "../../../../styles/mainChat.module.css";
+import exclamationImg from "../../../../public/exclamation.png";
 import { useTranslation } from "react-i18next";
 export interface PropsMainChatInputBlackList {
   blackList: string;

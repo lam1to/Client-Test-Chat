@@ -10,9 +10,9 @@ import st from "../../../styles/mainChat.module.css";
 import { IChatWithUser, ILeftChatUser } from "../../../types/IChat";
 import { Socket } from "socket.io-client";
 import { IMessage } from "../../../types/IMessage";
-import RowMessage from "./RowMessage";
+import RowMessage from "./Message/RowMessage";
 import { getAllMessageForChat } from "../../../http/chat.services";
-import Input from "../Input/Input";
+import Input, { ISelectFile } from "./Input/Input";
 import Header from "./Header";
 import Loader from "../../Loading/Loader";
 import { IUseSocket } from "../Chat";
@@ -53,10 +53,67 @@ const MainChat: FC<PropsMainChat> = ({
   // 1
   const contentRef = useRef<HTMLInputElement>({} as HTMLInputElement);
   const [editMessage, setEditMessage] = useState<IMessage>({} as IMessage);
+  const [isLoadingMessage, setIsLoadingMessage] = useState<boolean>(false);
+  const [isLoadingImgs, setIsLoadingImgs] = useState<boolean[]>(
+    [] as boolean[]
+  );
+  const [copySelectFile, setCopySelectFile] = useState<ISelectFile[]>(
+    [] as ISelectFile[]
+  );
   return (
     <div className={st.main_chat_container}>
       {chat.id ? (
         <div className={st.main_chat}>
+          {/* <div className={st.header_test}>header</div>
+          <div className={st.content_test}>
+            <ul className={st.content_content_test}>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+              <li>hi</li>
+            </ul>
+          </div>
+          <div className={st.footer_test}>footer</div> */}
           <Header
             editLeftChat={editLeftChat}
             blackList={blackList}
@@ -71,6 +128,8 @@ const MainChat: FC<PropsMainChat> = ({
               <Loader />
             ) : (
               <RowMessage
+                copySelectFile={copySelectFile}
+                isLoadingMessage={isLoadingMessage}
                 setEditMessage={setEditMessage}
                 socket={socket}
                 contentRef={contentRef}
@@ -80,6 +139,8 @@ const MainChat: FC<PropsMainChat> = ({
             )}
           </div>
           <Input
+            setCopySelectFile={setCopySelectFile}
+            setIsLoadingMessage={setIsLoadingMessage}
             isLeft={isLeft}
             blackList={blackList}
             setEditMessage={setEditMessage}

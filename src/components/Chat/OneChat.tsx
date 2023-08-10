@@ -12,7 +12,6 @@ import { Socket } from "socket.io-client";
 import { useOutsideClick } from "outsideclick-react";
 import { useAppSelector } from "../../Hooks/redux";
 import { selectUser } from "../../store/Reducers/UserSlice";
-import { Position } from "./MainChat/OneMessage";
 import { useTranslation } from "react-i18next";
 
 export interface PropsOneChat {

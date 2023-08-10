@@ -2,7 +2,7 @@ import stickerPng from "../../../public/png-transparent-iphone-emoji-smiley-comp
 import Picker from "emoji-picker-react";
 import { Theme } from "emoji-picker-react";
 import { EmojiStyle } from "emoji-picker-react";
-import st from "../../../styles/mainChat.module.css";
+import st from "../../../../styles/mainChat.module.css";
 import { FC } from "react";
 interface IPropsInputEmoji {
   contentRef: React.MutableRefObject<HTMLInputElement>;

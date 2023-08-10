@@ -1,10 +1,16 @@
 import { Socket } from "socket.io-client";
 import { PropsUseSocketMessage } from "../components/Chat/MainChat/MainChat";
-import { IMessage } from "../types/IMessage";
+import { IMessage, IStorageUrl } from "../types/IMessage";
 import { useAppSelector } from "./redux";
 import { selectUser } from "../store/Reducers/UserSlice";
-import { Dispatch, SetStateAction } from "react";
-import { Position } from "../components/Chat/MainChat/OneMessage";
+import { Dispatch, SetStateAction, useState } from "react";
+import {
+  createMessage,
+  createMessageImg,
+  uploadFile,
+} from "../http/message.service";
+import { ISelectFile } from "../components/Chat/MainChat/Input/Input";
+import { Position } from "./useDataMessage";
 
 export const useFuncMessage = () => {
   const user = useAppSelector(selectUser);
@@ -25,14 +31,48 @@ export const useFuncMessage = () => {
   const createMessageF = async (
     socket: Socket,
     contentRef: React.MutableRefObject<HTMLInputElement>,
-    chatId: string
+    selectFile: ISelectFile[],
+    setSelectFile: Dispatch<SetStateAction<ISelectFile[]>>,
+    chatId: string,
+    setIsLoadingMessage: Dispatch<SetStateAction<boolean>>
   ) => {
-    socket.emit("createGateway", {
-      userId: user.user.id,
-      chatId: chatId,
-      content: contentRef.current?.value,
-    });
-    contentRef.current.value = "";
+    if (Object.keys(selectFile).length !== 0) {
+      setIsLoadingMessage(true);
+      let masUrl: IStorageUrl[] = [] as IStorageUrl[];
+      const formData = new FormData();
+      const copySelectFile: ISelectFile[] = selectFile;
+      setSelectFile([] as ISelectFile[]);
+      const content = contentRef.current.value;
+      contentRef.current.value = "";
+      for (let i = 0; i < selectFile.length; i++) {
+        formData.append("file", copySelectFile[i].file);
+        await uploadFile(formData).then((data) => {
+          masUrl = [...masUrl, data];
+          console.log("загрузило файл = ", selectFile[i]);
+        });
+        formData.delete("file");
+      }
+      socket.emit("createMessageWithImg", {
+        userId: user.user.id,
+        chatId: chatId,
+        content: content,
+        masUrl: masUrl,
+      });
+      setIsLoadingMessage(false);
+    } else {
+      if (
+        contentRef.current?.value == "" &&
+        Object.keys(selectFile).length === 0
+      )
+        return;
+      else
+        socket.emit("createGateway", {
+          userId: user.user.id,
+          chatId: chatId,
+          content: contentRef.current?.value,
+        });
+      contentRef.current.value = "";
+    }
   };
   const editMessageF = (
     socket: Socket,
@@ -81,14 +121,23 @@ export const useFuncMessage = () => {
   const deleteF = (
     e: React.MouseEvent<HTMLLIElement, MouseEvent>,
     setOverflow: Dispatch<SetStateAction<string>>,
-    removeMessage: (message: IMessage) => void,
     setDropDown: Dispatch<SetStateAction<boolean>>,
-    message: IMessage
+    message: IMessage,
+    socket: Socket
   ) => {
     e.stopPropagation();
     setOverflow("auto");
-    removeMessage(message);
+    removeMessage(message, socket);
     setDropDown(false);
+  };
+  const getTimeMessage = (message: IMessage) => {
+    return message.createdAt.slice(11, 16);
+  };
+  const removeMessage = (message: IMessage, socket: Socket) => {
+    socket.emit("deleteMessage", {
+      messageId: message.id,
+      chatId: message.chatId,
+    });
   };
   return {
     FilterMessages: FilterMessages,
@@ -97,5 +146,6 @@ export const useFuncMessage = () => {
     onVisible: onVisible,
     editF: editF,
     deleteF: deleteF,
+    getTimeMessage: getTimeMessage,
   };
 };
