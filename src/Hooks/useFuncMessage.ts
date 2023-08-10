@@ -1,6 +1,6 @@
 import { Socket } from "socket.io-client";
 import { PropsUseSocketMessage } from "../components/Chat/MainChat/MainChat";
-import { IMessage, IStorageUrl } from "../types/IMessage";
+import { IMessage, IMessageLoadingImgs, IStorageUrl } from "../types/IMessage";
 import { useAppSelector } from "./redux";
 import { selectUser } from "../store/Reducers/UserSlice";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -34,7 +34,9 @@ export const useFuncMessage = () => {
     selectFile: ISelectFile[],
     setSelectFile: Dispatch<SetStateAction<ISelectFile[]>>,
     chatId: string,
-    setIsLoadingMessage: Dispatch<SetStateAction<boolean>>
+    setIsLoadingMessage: Dispatch<SetStateAction<boolean>>,
+    setIsLoadingImgs: Dispatch<SetStateAction<IMessageLoadingImgs[]>>,
+    isLoadingImgs: IMessageLoadingImgs[]
   ) => {
     if (Object.keys(selectFile).length !== 0) {
       setIsLoadingMessage(true);
@@ -49,6 +51,12 @@ export const useFuncMessage = () => {
         await uploadFile(formData).then((data) => {
           masUrl = [...masUrl, data];
           console.log("загрузило файл = ", selectFile[i]);
+          setIsLoadingImgs((isLoadingImgs) =>
+            isLoadingImgs.map((oneLoadingImgs) => {
+              oneLoadingImgs.id === i && (oneLoadingImgs.isLoading = false);
+              return oneLoadingImgs;
+            })
+          );
         });
         formData.delete("file");
       }

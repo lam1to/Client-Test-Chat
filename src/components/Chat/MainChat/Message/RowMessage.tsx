@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { IMessage } from "../../../../types/IMessage";
+import { IMessage, IMessageLoadingImgs } from "../../../../types/IMessage";
 import st from "../../../../styles/message.module.css";
 import ChatMessage from "./OneMessage";
 import { IuserChat } from "../../../../types/IUser";
@@ -25,6 +25,7 @@ interface PropsRowImessage {
   socket: Socket;
   setEditMessage: Dispatch<SetStateAction<IMessage>>;
   isLoadingMessage: boolean;
+  isLoadingImgs: IMessageLoadingImgs[];
 }
 const RowMessage: FC<PropsRowImessage> = ({
   messages,
@@ -34,6 +35,7 @@ const RowMessage: FC<PropsRowImessage> = ({
   setEditMessage,
   isLoadingMessage,
   copySelectFile,
+  isLoadingImgs,
 }) => {
   useEffect(() => {
     scrollToBottom();
@@ -70,6 +72,7 @@ const RowMessage: FC<PropsRowImessage> = ({
 
       {isLoadingMessage && (
         <OneMessageWithImgLoading
+          isLoadingImgs={isLoadingImgs}
           selectFile={copySelectFile}
           content={contentRef.current.value}
         />

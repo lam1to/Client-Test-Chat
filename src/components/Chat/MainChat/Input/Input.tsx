@@ -9,7 +9,7 @@ import React, {
 import st from "../../../../styles/mainChat.module.css";
 import { Socket } from "socket.io-client";
 import { useAppSelector } from "../../../../Hooks/redux";
-import { IMessage } from "../../../../types/IMessage";
+import { IMessage, IMessageLoadingImgs } from "../../../../types/IMessage";
 import pencilImg from "../../../../public/pencil.png";
 import InputBlackList from "./InputBlackList";
 import { selectUser } from "../../../../store/Reducers/UserSlice";
@@ -30,6 +30,8 @@ export interface PropsMainChatInput {
   blackList: string;
   isLeft: boolean;
   setIsLoadingMessage: Dispatch<SetStateAction<boolean>>;
+  isLoadingImgs: IMessageLoadingImgs[];
+  setIsLoadingImgs: Dispatch<SetStateAction<IMessageLoadingImgs[]>>;
 }
 export interface ISelectFile {
   id: number;
@@ -46,6 +48,8 @@ const Input: FC<PropsMainChatInput> = ({
   blackList,
   isLeft,
   setIsLoadingMessage,
+  setIsLoadingImgs,
+  isLoadingImgs,
 }) => {
   useEffect(() => {}, []);
   const [t, i18n] = useTranslation();
@@ -104,10 +108,19 @@ const Input: FC<PropsMainChatInput> = ({
     setDrag(false);
   };
   const createMessage = () => {
-    console.log("зашли в создарние и у нас такие картинки = ", selectFile);
     if (Object.keys(selectFile).length !== 0) {
-      console.log("зашли в копирование");
       setCopySelectFile(selectFile);
+      console.log(
+        "при сете = ",
+        selectFile.map((oneSelectFile, i) => {
+          return { id: i, isLoading: true };
+        })
+      );
+      setIsLoadingImgs([
+        ...selectFile.map((oneSelectFile, i) => {
+          return { id: i, isLoading: true };
+        }),
+      ]);
     }
     funcMessage.createMessageF(
       socket,
@@ -115,7 +128,9 @@ const Input: FC<PropsMainChatInput> = ({
       selectFile,
       setSelectFile,
       chatId,
-      setIsLoadingMessage
+      setIsLoadingMessage,
+      setIsLoadingImgs,
+      isLoadingImgs
     );
   };
   return (

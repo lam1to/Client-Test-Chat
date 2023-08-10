@@ -27,3 +27,8 @@ export interface ImessageState {
   isRead: boolean;
   message: IMessage;
 }
+
+export interface IMessageLoadingImgs {
+  id: number;
+  isLoading: boolean;
+}
