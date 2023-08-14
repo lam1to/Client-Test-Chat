@@ -5,6 +5,7 @@ import { IMessage } from "../../../../types/IMessage";
 import { useDataMessage } from "../../../../Hooks/useDataMessage";
 import { Socket } from "socket.io-client";
 import OneMessageWithImg from "./OneMessageWithImg";
+import { useTranslation } from "react-i18next";
 
 export interface IPropsOneMessageSelf {
   message: IMessage;
@@ -24,6 +25,7 @@ const OneMessageSelf: FC<IPropsOneMessageSelf> = ({
   const funcMessage = useFuncMessage();
   const dataMessage = useDataMessage(setOverflow);
   //   console.log("message[", message.id, "] = ", message);
+  const [t, i18n] = useTranslation();
   return (
     <div className={st.message_block_self}>
       <div className={`${st.message_container} ${st.message_container_self}`}>
@@ -78,7 +80,7 @@ const OneMessageSelf: FC<IPropsOneMessageSelf> = ({
                   }
                   className={st.message_block_dropdown_item}
                 >
-                  edit
+                  {t("mainChatContent.editMessage")}
                 </li>
                 <li
                   onClick={(e) =>
@@ -92,7 +94,7 @@ const OneMessageSelf: FC<IPropsOneMessageSelf> = ({
                   }
                   className={st.message_block_dropdown_item}
                 >
-                  delete
+                  {t("mainChatContent.deleteMessage")}
                 </li>
               </ul>
             </div>

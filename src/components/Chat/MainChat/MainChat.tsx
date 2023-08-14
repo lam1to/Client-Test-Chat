@@ -15,8 +15,6 @@ import { getAllMessageForChat } from "../../../http/chat.services";
 import Input, { ISelectFile } from "./Input/Input";
 import Header from "./Header";
 import Loader from "../../Loading/Loader";
-import { IUseSocket } from "../Chat";
-import { useSocket } from "../../../Hooks/useSocket";
 import { useSocketMessage } from "../../../Hooks/useSocketMessage";
 import { useTranslation } from "react-i18next";
 import { useFuncMessage } from "../../../Hooks/useFuncMessage";

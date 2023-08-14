@@ -6,6 +6,7 @@ import { IuserChat } from "../../../../types/IUser";
 import { useFuncMessage } from "../../../../Hooks/useFuncMessage";
 import { useDataMessage } from "../../../../Hooks/useDataMessage";
 import OneMessageWithImg from "./OneMessageWithImg";
+import { useTranslation } from "react-i18next";
 
 export interface IPropsOneMessageOther {
   message: IMessage;
@@ -22,6 +23,7 @@ export const OneMessageOther: FC<IPropsOneMessageOther> = ({
 }) => {
   const funcMessage = useFuncMessage();
   const dataMessage = useDataMessage(setOverflow);
+  const [t, i18n] = useTranslation();
   return (
     <div className={st.message_block_other}>
       <div className={st.message_container}>
@@ -83,7 +85,7 @@ export const OneMessageOther: FC<IPropsOneMessageOther> = ({
                   }
                   className={st.message_block_dropdown_item}
                 >
-                  delete
+                  {t("mainChatContent.deleteMessage")}
                 </li>
               </ul>
             </div>

@@ -1,6 +1,11 @@
 import { Socket } from "socket.io-client";
 import { PropsUseSocketMessage } from "../components/Chat/MainChat/MainChat";
-import { IMessage, IMessageLoadingImgs, IStorageUrl } from "../types/IMessage";
+import {
+  IEditMessageWithImg,
+  IMessage,
+  IMessageLoadingImgs,
+  IStorageUrl,
+} from "../types/IMessage";
 import { useAppSelector } from "./redux";
 import { selectUser } from "../store/Reducers/UserSlice";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -35,8 +40,7 @@ export const useFuncMessage = () => {
     setSelectFile: Dispatch<SetStateAction<ISelectFile[]>>,
     chatId: string,
     setIsLoadingMessage: Dispatch<SetStateAction<boolean>>,
-    setIsLoadingImgs: Dispatch<SetStateAction<IMessageLoadingImgs[]>>,
-    isLoadingImgs: IMessageLoadingImgs[]
+    setIsLoadingImgs: Dispatch<SetStateAction<IMessageLoadingImgs[]>>
   ) => {
     if (Object.keys(selectFile).length !== 0) {
       setIsLoadingMessage(true);
@@ -97,6 +101,26 @@ export const useFuncMessage = () => {
     setEditMessage({} as IMessage);
     contentRef.current.value = "";
   };
+
+  const editMessageWithImg = (
+    copyContentImg: IEditMessageWithImg[],
+    socket: Socket,
+    contentRef: React.MutableRefObject<HTMLInputElement>,
+    chatId: string,
+    editMessage: IMessage,
+    setEditMessage: Dispatch<SetStateAction<IMessage>>
+  ) => {
+    console.log("нам передали такие url = ", copyContentImg);
+    socket.emit("updateMessageWithImg", {
+      messageId: editMessage.id,
+      content: contentRef.current?.value,
+      chatId: chatId,
+      image_url: [...copyContentImg.map((oneUrl) => oneUrl.image_url)],
+    });
+    setEditMessage({} as IMessage);
+    contentRef.current.value = "";
+  };
+
   const onVisible = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     setOverflow: Dispatch<SetStateAction<string>>,
@@ -155,5 +179,6 @@ export const useFuncMessage = () => {
     editF: editF,
     deleteF: deleteF,
     getTimeMessage: getTimeMessage,
+    editMessageWithImg: editMessageWithImg,
   };
 };

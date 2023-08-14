@@ -9,7 +9,7 @@
     "chatSearch.inputNameChat":"Название беседы",
     "mainChat.empty":"Чат не открыт",
     "mainChatHeader.searchMessage":"Поиск сообщений",
-    "mainChatInput.editMessage":"Редактирование",
+    "mainChatInput.editMessage":"Редактирование ",
     "mainChatInput.closeEdit":"Закрыть",
     "mainChatInput.InputMessage":"Введите сообщение",
     "mainChatInput.send":"Отправить",
@@ -25,5 +25,7 @@
     "mainChatHeader.infoChat":"Информация о  ",
     "mainChatHeader.listUsers": "Список участников ",
     "mainChatInput.dragAndDrop":"Перетащите сюда фото",
+    "mainChatContent.editMessage":"Изменить",
+    "mainChatContent.deleteMessage":"Удалить",
     "chatRow.empty":"Пока чатов нет"
 }

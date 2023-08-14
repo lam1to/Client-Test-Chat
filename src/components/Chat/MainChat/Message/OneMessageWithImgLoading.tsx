@@ -19,10 +19,6 @@ const OneMessageWithImgLoading: FC<IPropsOneMessageWithImgLoading> = ({
   const funcReader = (selectFile: File) => {
     if (selectFile) return URL.createObjectURL(selectFile);
   };
-  useEffect(() => {
-    console.log("загрузка", isLoadingImgs);
-  }, [isLoadingImgs]);
-  console.log("loading selectFile = ", selectFile);
   return (
     <div>
       <div className={st.message_block_self}>

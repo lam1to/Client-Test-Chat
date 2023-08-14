@@ -9,7 +9,7 @@
     "chatSearch.inputNameChat":"Name chat",
     "mainChat.empty":"The chat is not open",
     "mainChatHeader.searchMessage":"Search message",
-    "mainChatInput.editMessage":"Editing",
+    "mainChatInput.editMessage":"Editing ",
     "mainChatInput.closeEdit":"Close",
     "mainChatInput.InputMessage":"Enter a message",
     "mainChatInput.send":"Send",
@@ -25,5 +25,7 @@
     "mainChatHeader.infoChat":"Information about ",
     "mainChatHeader.listUsers": "List users ",
     "mainChatInput.dragAndDrop": "Drag the photo here",
+    "mainChatContent.editMessage":"Edit",
+    "mainChatContent.deleteMessage":"Delete",
     "chatRow.empty":"There are no chats yet"
 }

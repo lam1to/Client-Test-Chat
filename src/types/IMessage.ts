@@ -18,6 +18,9 @@ export interface IContentImg {
   messageId: string;
   image_url: string;
 }
+export interface IEditMessageWithImg {
+  image_url: string;
+}
 
 export interface IStorageUrl {
   imgUrl: string;

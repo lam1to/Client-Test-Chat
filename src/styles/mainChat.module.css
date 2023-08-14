@@ -171,16 +171,30 @@
 }
 
 /* edit block start */
+.main_chat_input_edit_block_without_img{
+    top: -30px;
+    height: 40px;
+}
 .main_chat_input_edit_block{
     position: absolute;
-    top: -22px;
     left: 0;
-    height: 30px;
     z-index: 15;
     background-color: #160E2D;
-    display: flex;
     width: 100%;
+}
+.main_chat_input_edit_block_with_img{
+top: -150px;
+height: 160px;
+}
+.main_chat_input_edit_row_img{
+    margin-top: 10px;
+}
+.main_chat_input_edit_block_message_content{
+    display: flex;
     justify-content: space-between;
+    height: 40px;
+    width: 100%;
+    /* wi */
 }
 .main_chat_input_edit_container{
     display: flex;
@@ -361,8 +375,16 @@
     justify-content: center;
 }
 /* drag and drop end */
+/* loading new File in input */
+.loading_container{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 /* main chat input comp end */
-
 
 
 
@@ -462,7 +484,7 @@
         transition: 1s;
     }
     .main_chat_input_edit_block{
-        top: -32px;
+        top: -150px;
         padding: 5px 0px 5px 0px;
     }
 }
