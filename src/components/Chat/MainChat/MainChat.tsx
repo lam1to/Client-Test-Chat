@@ -57,7 +57,6 @@ const MainChat: FC<PropsMainChat> = ({
   const [copySelectFile, setCopySelectFile] = useState<ISelectFile[]>(
     [] as ISelectFile[]
   );
-  console.log("в каком статусе файлы = ", isLoadingImgs);
   return (
     <div className={st.main_chat_container}>
       {chat.id ? (

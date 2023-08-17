@@ -13,6 +13,8 @@
     "navbar.exit":"Exit",
     "navbar.infoUser":"Information about ",
     "navbar.uploadAvatar":"Change",
+    "navbar.saveChange":"Save",
+    "navbar.changeData":"Change data",
     "chatSearch.searchUsers":"Search users",
     "chatSearch.selectUsers": "Select users",
     "chatSearch.createGm":"Create groupM",

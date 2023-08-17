@@ -9,6 +9,7 @@ import { UserSlice, selectIsAuth } from "../../store/Reducers/UserSlice";
 import { IError } from "../../types/IError";
 import { Modal } from "../Modal/Modal";
 import { useTranslation } from "react-i18next";
+import ModalError from "../Modal/ModalError";
 
 const Login: FC = () => {
   const [user, setUser] = useState<IuserLogin>({
@@ -39,22 +40,7 @@ const Login: FC = () => {
   return (
     <div className={styles.block_auth}>
       {Object.keys(error).length > 0 && (
-        <Modal
-          visible={visible}
-          title={`${t("auth.error")}${error.statusCode}`}
-          onClose={() => setVisible(false)}
-        >
-          <div className={styles.auth_error_container}>
-            <div className={styles.auth_error_row}>
-              {error.message?.map((oneMessage, i) => (
-                <div key={i}>{oneMessage}</div>
-              ))}
-            </div>
-            <div className={styles.auth_error_repeat}>
-              {t("auth.errorRepeat")}
-            </div>
-          </div>
-        </Modal>
+        <ModalError visible={visible} error={error} setVisible={setVisible} />
       )}
       <div className="block-auth-container _container">
         <div className={styles.auth_select_varinat}>

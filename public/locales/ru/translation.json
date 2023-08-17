@@ -13,6 +13,8 @@
     "navbar.exit":"Выход",
     "navbar.infoUser":"Информация о ",
     "navbar.uploadAvatar":"Сменить",
+    "navbar.saveChange":"Сохранить",
+    "navbar.changeData":"Изменить данные",
     "chatSearch.searchUsers":"Поиск пользователей",
     "chatSearch.selectUsers":"Выберите пользователей",
     "chatSearch.createGm":"Создать беседу",

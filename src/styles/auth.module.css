@@ -154,14 +154,22 @@
 display: flex;
 flex-direction: column;
 }
-.auth_error_row{
+.auth_error_block_row{
     height: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
+.auth_error_row{
+    
+}
+.auth_error_item{
+    font-size: 22px;
+}
+.auth_error_item:not(:last-child){
+    margin-bottom: 10px;
+}
 .auth_error_repeat{
-
+font-size: 15px;
 }
 /* login end */

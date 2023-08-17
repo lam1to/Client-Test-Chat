@@ -10,6 +10,7 @@ import {
 import { AxiosError } from "axios";
 import { IError } from "../types/IError";
 import { Dispatch, SetStateAction } from "react";
+import { IFi } from "../components/Modal/ModalUserInfo";
 
 export const registration = async (
   user: Iuser,
@@ -64,4 +65,8 @@ export const getAllUsers = async () => {
 
 export const updateUserAvatar = async (dto: IUpdateAvatar) => {
   const { data } = await $authHost.post("api/user/updateAvatar", dto);
+};
+
+export const updateUserFi = async (newFi: IFi) => {
+  const { data } = await $authHost.post("api/user/updateFi", newFi);
 };
