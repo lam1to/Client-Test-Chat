@@ -6,6 +6,9 @@ import { IuserForState, IuserLogin } from "../../types/IUser";
 import { login } from "../../http/user.services";
 import { useAppDispatch, useAppSelector } from "../../Hooks/redux";
 import { UserSlice, selectIsAuth } from "../../store/Reducers/UserSlice";
+import { IError } from "../../types/IError";
+import { Modal } from "../Modal/Modal";
+import { useTranslation } from "react-i18next";
 
 const Login: FC = () => {
   const [user, setUser] = useState<IuserLogin>({
@@ -17,35 +20,60 @@ const Login: FC = () => {
   const isAuth = useAppSelector(selectIsAuth);
   const { SetUser } = UserSlice.actions;
   const dispatch = useAppDispatch();
+  const [error, setError] = useState<IError>({} as IError);
 
-  useEffect(() => {}, [isAuth]);
   const loginF = async (e: SyntheticEvent) => {
     e.preventDefault();
-    const getUser: IuserForState = await login(user);
-    dispatch(SetUser(getUser));
-    navigate(CHAT_ROUTE);
+    const getUser: IuserForState = await login(user, setError);
+    if (getUser) {
+      dispatch(SetUser(getUser));
+      navigate(CHAT_ROUTE);
+    }
   };
+  useEffect(() => {
+    setVisible(true);
+  }, [error]);
+  const [visible, setVisible] = useState<boolean>(false);
+  const [t] = useTranslation();
 
   return (
     <div className={styles.block_auth}>
+      {Object.keys(error).length > 0 && (
+        <Modal
+          visible={visible}
+          title={`${t("auth.error")}${error.statusCode}`}
+          onClose={() => setVisible(false)}
+        >
+          <div className={styles.auth_error_container}>
+            <div className={styles.auth_error_row}>
+              {error.message?.map((oneMessage, i) => (
+                <div key={i}>{oneMessage}</div>
+              ))}
+            </div>
+            <div className={styles.auth_error_repeat}>
+              {t("auth.errorRepeat")}
+            </div>
+          </div>
+        </Modal>
+      )}
       <div className="block-auth-container _container">
         <div className={styles.auth_select_varinat}>
           <div
             className={`${styles.block_auth_variant_avtor}  ${styles._activ_logreg}`}
           >
-            <Link to={LOGIN_ROUTE}>Войти</Link>
+            <Link to={LOGIN_ROUTE}>{t("auth.login1")}</Link>
           </div>
           <div className={styles.block_auth_variant_avtor}>
-            <Link to={REGISTR_ROUTE}>Регистрация</Link>
+            <Link to={REGISTR_ROUTE}>{t("auth.registration")}</Link>
           </div>
         </div>
         <div className={styles.block_auth_form}>
           <form className={styles.block_auth_block_form}>
             <input
-              name="Username"
+              name="Email"
               value={user.email}
               type="text"
-              placeholder="Email"
+              placeholder={t("auth.email")}
               className={styles.block_input}
               onChange={(e) =>
                 setUser((prev) => ({ ...prev, email: e.target.value }))
@@ -55,7 +83,7 @@ const Login: FC = () => {
               type="password"
               value={user.password}
               name="Password"
-              placeholder="Пароль"
+              placeholder={t("auth.password")}
               className={styles.block_input}
               onChange={(e) =>
                 setUser((prev) => ({ ...prev, password: e.target.value }))
@@ -67,7 +95,7 @@ const Login: FC = () => {
               type="submit"
               onClick={loginF}
             >
-              Войти
+              {t("auth.login2")}
             </button>
           </form>
         </div>

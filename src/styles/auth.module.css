@@ -144,4 +144,24 @@
 }
 
 
+
+
+/* modal start  */
+
+
+/* modal end */
+.auth_error_container{
+display: flex;
+flex-direction: column;
+}
+.auth_error_row{
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth_error_repeat{
+
+}
 /* login end */

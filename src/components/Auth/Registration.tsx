@@ -6,6 +6,9 @@ import { registration } from "../../http/user.services";
 import { Iuser } from "../../types/IUser";
 import { useAppDispatch } from "../../Hooks/redux";
 import { UserSlice } from "../../store/Reducers/UserSlice";
+import { useTranslation } from "react-i18next";
+import { IError } from "../../types/IError";
+import { Modal } from "../Modal/Modal";
 
 const Registration: FC = () => {
   const [user, setUser] = useState<Iuser>({
@@ -17,23 +20,50 @@ const Registration: FC = () => {
   const navigate = useNavigate();
   const { SetUser } = UserSlice.actions;
   const dispatch = useAppDispatch();
+  const [visible, setVisible] = useState<boolean>(false);
+  const [error, setError] = useState<IError>({} as IError);
   const registrationF = async (e: SyntheticEvent) => {
     e.preventDefault();
-    const data = await registration(user);
-    dispatch(SetUser(data));
-    navigate(CHAT_ROUTE);
+    const data = await registration(user, setError);
+    if (data) {
+      dispatch(SetUser(data));
+      navigate(CHAT_ROUTE);
+    }
   };
+  useEffect(() => {
+    setVisible(true);
+  }, [error]);
+  const [t] = useTranslation();
+
   return (
     <div className={styles.block_auth}>
+      {Object.keys(error).length > 0 && (
+        <Modal
+          visible={visible}
+          title={`${t("auth.error")}${error.statusCode}`}
+          onClose={() => setVisible(false)}
+        >
+          <div className={styles.auth_error_container}>
+            <div className={styles.auth_error_row}>
+              {error.message?.map((oneMessage, i) => (
+                <div key={i}>{oneMessage}</div>
+              ))}
+            </div>
+            <div className={styles.auth_error_repeat}>
+              {t("auth.errorRepeat")}
+            </div>
+          </div>
+        </Modal>
+      )}
       <div className="block_auth-container _container">
         <div className={styles.auth_select_varinat}>
           <div className={styles.block_auth_variant_avtor}>
-            <Link to={LOGIN_ROUTE}>Войти</Link>
+            <Link to={LOGIN_ROUTE}>{t("auth.login1")}</Link>
           </div>
           <div
             className={`${styles.block_auth_variant_avtor}  ${styles._activ_logreg}`}
           >
-            <Link to={REGISTR_ROUTE}>Регистрация</Link>
+            <Link to={REGISTR_ROUTE}>{t("auth.registration")}</Link>
           </div>
         </div>
         <div className={styles.block_auth_formR}>
@@ -42,7 +72,7 @@ const Registration: FC = () => {
               <input
                 type="text"
                 value={user.name}
-                placeholder="Имя"
+                placeholder={t("auth.name")}
                 className={styles.block_inputLitl}
                 onChange={(e) =>
                   setUser((prev) => ({ ...prev, name: e.target.value }))
@@ -51,7 +81,7 @@ const Registration: FC = () => {
               <input
                 type="text"
                 value={user.lastName}
-                placeholder="Фамилия"
+                placeholder={t("auth.lastName")}
                 className={styles.block_inputLitl}
                 onChange={(e) =>
                   setUser((prev) => ({ ...prev, lastName: e.target.value }))
@@ -61,7 +91,7 @@ const Registration: FC = () => {
             <input
               type="text"
               value={user.email}
-              placeholder="Email"
+              placeholder={t("auth.email")}
               className={styles.block_input}
               onChange={(e) =>
                 setUser((prev) => ({ ...prev, email: e.target.value }))
@@ -70,7 +100,7 @@ const Registration: FC = () => {
             <input
               type="password"
               value={user.password}
-              placeholder="Пароль"
+              placeholder={t("auth.password")}
               className={styles.block_input}
               onChange={(e) =>
                 setUser((prev) => ({ ...prev, password: e.target.value }))
@@ -81,7 +111,7 @@ const Registration: FC = () => {
               type="submit"
               onClick={registrationF}
             >
-              Войти
+              {t("auth.registration2")}
             </button>
           </form>
         </div>

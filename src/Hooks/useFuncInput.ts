@@ -103,11 +103,36 @@ export const useFuncInput = () => {
     ]);
   };
 
+  const arrayMove = <Type>(
+    selectFile: Type[],
+    oldIndex: number,
+    newIndex: number
+  ) => {
+    const newArray: Type[] = [...selectFile];
+    const oldFile: Type = newArray[newIndex];
+    newArray[newIndex] = newArray[oldIndex];
+    newArray[oldIndex] = oldFile;
+    return newArray;
+  };
+
+  const arrayMovea = (
+    selectFile: ISelectFile[],
+    oldIndex: number,
+    newIndex: number
+  ) => {
+    const newArray: ISelectFile[] = [...selectFile];
+    const oldFile: ISelectFile = newArray[newIndex];
+    newArray[newIndex] = newArray[oldIndex];
+    newArray[oldIndex] = oldFile;
+    return newArray;
+  };
+
   return {
     closeImg: closeImg,
     funcReader: funcReader,
     uploadNewFile: uploadNewFile,
     findUrlWhichWasAdded: findUrlWhichWasAdded,
     closeEditOneContentImg: closeEditOneContentImg,
+    arrayMove: arrayMove,
   };
 };

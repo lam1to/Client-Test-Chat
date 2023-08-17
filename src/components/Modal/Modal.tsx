@@ -34,7 +34,13 @@ export const Modal: FC<ModalProps> = ({
 
   // или возвращаем верстку модального окна
   return (
-    <div className={st.modal} onClick={onClose}>
+    <div
+      className={st.modal}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClose();
+      }}
+    >
       <div className={st.modal_dialog} onClick={(e) => e.stopPropagation()}>
         <div className={st.modal_header}>
           <h3 className={st.modal_title}>{title}</h3>

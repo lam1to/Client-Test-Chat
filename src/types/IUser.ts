@@ -1,14 +1,15 @@
 export interface Iuser {
+  id: string;
   name: string;
   lastName: string;
   email: string;
   password: string;
+  avatar_path: string;
 }
 export interface IuserLogin extends Omit<Iuser, "name" | "lastName"> {}
 
 export interface IuserForState extends Omit<Iuser, "password"> {
-  user: any;
-  id: string;
+  user: Iuser;
   accessToken: string;
   refreshToken: string;
 }
@@ -40,4 +41,9 @@ export interface ISetUser {
 export interface IBlockUser {
   user_Who_BlocketId: string;
   user_Who_Was_BlocketId: string;
+}
+
+export interface IUpdateAvatar {
+  id: string;
+  avatar_path: string;
 }

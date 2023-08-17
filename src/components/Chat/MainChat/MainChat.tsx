@@ -48,7 +48,6 @@ const MainChat: FC<PropsMainChat> = ({
   const [filter, setFilter] = useState<string>("");
   const [t, i18n] = useTranslation();
   const funcMessage = useFuncMessage();
-  // 1
   const contentRef = useRef<HTMLInputElement>({} as HTMLInputElement);
   const [editMessage, setEditMessage] = useState<IMessage>({} as IMessage);
   const [isLoadingMessage, setIsLoadingMessage] = useState<boolean>(false);
