@@ -6,6 +6,9 @@ export interface IMessage {
   createdAt: string;
   contentImg?: IContentImg[];
 }
+export interface ILastMessage extends IMessage {
+  name: string;
+}
 
 export interface IMessageCreateDto {
   content: string;

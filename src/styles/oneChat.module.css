@@ -78,7 +78,15 @@
 }
 
 
+/* last message start  */
 
+.onechat_block_last_message{
+    color:#37473e;
+    margin-top: 10px;
+    font-size: 11px;
+}
+
+/* last message end */
 @media (max-width:1000px) {
     .onechat_block_name{
         font-size: 16px;

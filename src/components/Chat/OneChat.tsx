@@ -13,13 +13,20 @@ import { useOutsideClick } from "outsideclick-react";
 import { useAppSelector } from "../../Hooks/redux";
 import { selectUser } from "../../store/Reducers/UserSlice";
 import { useTranslation } from "react-i18next";
+import { ILastMessage } from "../../types/IMessage";
 
 export interface PropsOneChat {
   oneChat: IChatWithUser;
   setSelectChats: Dispatch<SetStateAction<IChatWithUser>>;
   setHidden?: Dispatch<SetStateAction<boolean>>;
+  lastMessage: ILastMessage;
 }
-const OneChat: FC<PropsOneChat> = ({ oneChat, setSelectChats, setHidden }) => {
+const OneChat: FC<PropsOneChat> = ({
+  oneChat,
+  setSelectChats,
+  setHidden,
+  lastMessage,
+}) => {
   return (
     <div
       onClick={() => {
@@ -39,7 +46,13 @@ const OneChat: FC<PropsOneChat> = ({ oneChat, setSelectChats, setHidden }) => {
             oneChat.name
           )}
         </div>
+        {lastMessage && Object.keys(lastMessage).length !== 0 && (
+          <div className={st.onechat_block_last_message}>
+            {lastMessage.name + " " + lastMessage.content}
+          </div>
+        )}
       </div>
+
       {/* <div>{message && message.content}</div> */}
     </div>
   );

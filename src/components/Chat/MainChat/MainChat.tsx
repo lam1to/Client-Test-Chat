@@ -9,7 +9,11 @@ import React, {
 import st from "../../../styles/mainChat.module.css";
 import { IChatWithUser, ILeftChatUser } from "../../../types/IChat";
 import { Socket } from "socket.io-client";
-import { IMessage, IMessageLoadingImgs } from "../../../types/IMessage";
+import {
+  ILastMessage,
+  IMessage,
+  IMessageLoadingImgs,
+} from "../../../types/IMessage";
 import RowMessage from "./Message/RowMessage";
 import { getAllMessageForChat } from "../../../http/chat.services";
 import Input, { ISelectFile } from "./Input/Input";
@@ -18,6 +22,7 @@ import Loader from "../../Loading/Loader";
 import { useSocketMessage } from "../../../Hooks/useSocketMessage";
 import { useTranslation } from "react-i18next";
 import { useFuncMessage } from "../../../Hooks/useFuncMessage";
+import { lastMessage } from "../../../http/message.service";
 
 export interface PropsUseSocketMessage {
   messages: IMessage[];
@@ -27,6 +32,8 @@ export interface PropsUseSocketMessage {
 }
 
 export interface PropsMainChat {
+  lastMessageChat: ILastMessage[];
+  setLastMessageChat: Dispatch<SetStateAction<ILastMessage[]>>;
   chat: IChatWithUser;
   socket: Socket;
   blackList: string;
@@ -39,11 +46,15 @@ const MainChat: FC<PropsMainChat> = ({
   blackList,
   isLeft,
   editLeftChat,
+  lastMessageChat,
+  setLastMessageChat,
 }) => {
   const messages: PropsUseSocketMessage = useSocketMessage(
     socket,
     isLeft,
-    chat
+    chat,
+    lastMessageChat,
+    setLastMessageChat
   );
   const [filter, setFilter] = useState<string>("");
   const [t, i18n] = useTranslation();

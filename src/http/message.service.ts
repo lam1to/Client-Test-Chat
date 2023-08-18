@@ -26,3 +26,8 @@ export const uploadFile = async (formData: FormData) => {
 export const removeFile = async (oneFile: IEditMessageWithImg) => {
   const { data } = await $authHost.post("api/storage/removeOneFile", oneFile);
 };
+
+export const lastMessage = async () => {
+  const { data } = await $authHost.get("api/message/lastMessage");
+  if (data) return data;
+};

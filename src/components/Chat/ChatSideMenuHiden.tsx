@@ -7,16 +7,21 @@ import ChatSideMenu from "./ChatSideMenu";
 import ChatSearch from "./ChatSearch";
 import ChatRow from "./ChatRow";
 import closeImg from "../../public/close.png";
+import { ILastMessage } from "../../types/IMessage";
 export interface PropsChatSideMenu {
   chats: IChatWithUser[];
   setSelectChats: Dispatch<SetStateAction<IChatWithUser>>;
   socket: Socket;
+  lastMessageChat: ILastMessage[];
+  setLastMessageChat: Dispatch<SetStateAction<ILastMessage[]>>;
 }
 
 const ChatSideMenuHiden: FC<PropsChatSideMenu> = ({
   chats,
   setSelectChats,
   socket,
+  lastMessageChat,
+  setLastMessageChat,
 }) => {
   const [hidden, setHidden] = useState<boolean>(true);
   return (
@@ -45,6 +50,8 @@ const ChatSideMenuHiden: FC<PropsChatSideMenu> = ({
         <ChatSearch setHidden={setHidden} socket={socket} />
         <div className={st.all_chat_block_users}>
           <ChatRow
+            lastMessageChat={lastMessageChat}
+            setLastMessageChat={setLastMessageChat}
             setHidden={setHidden}
             chats={chats}
             setSelectChats={setSelectChats}

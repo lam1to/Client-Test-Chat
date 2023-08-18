@@ -17,6 +17,7 @@ import ChatSideMenuHiden from "./ChatSideMenuHiden";
 import { useSocket } from "../../Hooks/useSocket";
 import { useSocketChats } from "../../Hooks/useSocketChats";
 import { useFuncChat } from "../../Hooks/useFuncChat";
+import { useLastMessage } from "../../Hooks/useLastMessage";
 
 const socket = io("http://localhost:4200/chatSocket");
 
@@ -34,6 +35,8 @@ const Chat: FC = () => {
     {} as IChatWithUser
   );
 
+  const lastMessage = useLastMessage(socket);
+  console.log("lastMessage = ", lastMessage.lastMessageChat);
   const chats: IUseSocketChat = useSocketChats(socket, setSelectChats);
   const blocked: IUseSocket<string> = useSocket<string>(
     "newBlockedUser",
@@ -71,12 +74,16 @@ const Chat: FC = () => {
 
       <div className={st.main_block}>
         <ChatSideMenuHiden
+          lastMessageChat={lastMessage.lastMessageChat}
+          setLastMessageChat={lastMessage.setLastMessageChat}
           socket={socket}
           chats={chats.masT}
           setSelectChats={setSelectChats}
         />
         {hidden && (
           <ChatSideMenu
+            lastMessageChat={lastMessage.lastMessageChat}
+            setLastMessageChat={lastMessage.setLastMessageChat}
             socket={socket}
             chats={chats.masT}
             setSelectChats={setSelectChats}
@@ -84,6 +91,8 @@ const Chat: FC = () => {
         )}
 
         <MainChat
+          lastMessageChat={lastMessage.lastMessageChat}
+          setLastMessageChat={lastMessage.setLastMessageChat}
           blackList={funcChat.isBlockedOrBlockerF(
             selectChats,
             blocked,

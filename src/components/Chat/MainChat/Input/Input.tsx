@@ -123,7 +123,7 @@ const Input: FC<PropsMainChatInput> = ({
   const [copyContentImg, setCopyContentImg] = useState<IEditMessageWithImg[]>(
     {} as IEditMessageWithImg[]
   );
-  console.log("edit message = ", editMessage);
+  // console.log("edit message = ", editMessage);
 
   return (
     <div className={st.main_chat_input}>

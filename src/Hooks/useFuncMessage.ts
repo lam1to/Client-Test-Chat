@@ -97,6 +97,7 @@ export const useFuncMessage = () => {
       messageId: editMessage.id,
       content: contentRef.current?.value,
       chatId: chatId,
+      userId: user.user.id,
     });
     setEditMessage({} as IMessage);
     contentRef.current.value = "";
@@ -115,6 +116,7 @@ export const useFuncMessage = () => {
       messageId: editMessage.id,
       content: contentRef.current?.value,
       chatId: chatId,
+      userId: user.user.id,
       image_url: [...copyContentImg.map((oneUrl) => oneUrl.image_url)],
     });
     setEditMessage({} as IMessage);
@@ -167,6 +169,7 @@ export const useFuncMessage = () => {
   };
   const removeMessage = (message: IMessage, socket: Socket) => {
     socket.emit("deleteMessage", {
+      userId: user.user.id,
       messageId: message.id,
       chatId: message.chatId,
     });
