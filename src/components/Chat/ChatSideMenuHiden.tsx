@@ -50,11 +50,12 @@ const ChatSideMenuHiden: FC<PropsChatSideMenu> = ({
         <ChatSearch setHidden={setHidden} socket={socket} />
         <div className={st.all_chat_block_users}>
           <ChatRow
+            socket={socket}
             lastMessageChat={lastMessageChat}
-            setLastMessageChat={setLastMessageChat}
             setHidden={setHidden}
             chats={chats}
             setSelectChats={setSelectChats}
+            setLastMessageChat={setLastMessageChat}
           />
         </div>
       </div>

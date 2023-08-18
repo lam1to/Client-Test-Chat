@@ -91,8 +91,6 @@ const Chat: FC = () => {
         )}
 
         <MainChat
-          lastMessageChat={lastMessage.lastMessageChat}
-          setLastMessageChat={lastMessage.setLastMessageChat}
           blackList={funcChat.isBlockedOrBlockerF(
             selectChats,
             blocked,

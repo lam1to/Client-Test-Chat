@@ -9,8 +9,8 @@ export interface PropsChatSideMenu {
   chats: IChatWithUser[];
   setSelectChats: Dispatch<SetStateAction<IChatWithUser>>;
   socket: Socket;
-  lastMessageChat: ILastMessage[];
   setLastMessageChat: Dispatch<SetStateAction<ILastMessage[]>>;
+  lastMessageChat: ILastMessage[];
 }
 const ChatSideMenu: FC<PropsChatSideMenu> = ({
   chats,
@@ -24,6 +24,7 @@ const ChatSideMenu: FC<PropsChatSideMenu> = ({
       <ChatSearch socket={socket} />
       <div className={st.all_chat_block_users}>
         <ChatRow
+          socket={socket}
           lastMessageChat={lastMessageChat}
           setLastMessageChat={setLastMessageChat}
           chats={chats}

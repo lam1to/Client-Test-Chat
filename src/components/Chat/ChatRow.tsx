@@ -12,12 +12,15 @@ export interface PoropsChatRow {
   setHidden?: Dispatch<SetStateAction<boolean>>;
   lastMessageChat: ILastMessage[];
   setLastMessageChat: Dispatch<SetStateAction<ILastMessage[]>>;
+  socket: Socket;
 }
 const ChatRow: FC<PoropsChatRow> = ({
   chats,
   setSelectChats,
   setHidden,
   lastMessageChat,
+  setLastMessageChat,
+  socket,
 }) => {
   const [t] = useTranslation();
   return (
@@ -29,6 +32,9 @@ const ChatRow: FC<PoropsChatRow> = ({
           )[0];
           return (
             <OneChat
+              setLastMessageChat={setLastMessageChat}
+              lastMessageChat={lastMessageChat}
+              socket={socket}
               lastMessage={lastMessage}
               setHidden={setHidden}
               key={i}

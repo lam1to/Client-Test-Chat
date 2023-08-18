@@ -14,19 +14,32 @@ import { useAppSelector } from "../../Hooks/redux";
 import { selectUser } from "../../store/Reducers/UserSlice";
 import { useTranslation } from "react-i18next";
 import { ILastMessage } from "../../types/IMessage";
+import { useSocketLastMessage } from "../../Hooks/useSocketLastMessage";
 
 export interface PropsOneChat {
   oneChat: IChatWithUser;
   setSelectChats: Dispatch<SetStateAction<IChatWithUser>>;
   setHidden?: Dispatch<SetStateAction<boolean>>;
   lastMessage: ILastMessage;
+  socket: Socket;
+  lastMessageChat: ILastMessage[];
+  setLastMessageChat: Dispatch<SetStateAction<ILastMessage[]>>;
 }
 const OneChat: FC<PropsOneChat> = ({
   oneChat,
   setSelectChats,
   setHidden,
   lastMessage,
+  socket,
+  lastMessageChat,
+  setLastMessageChat,
 }) => {
+  const lastMessageSocket = useSocketLastMessage(
+    socket,
+    lastMessageChat,
+    setLastMessageChat,
+    oneChat
+  );
   return (
     <div
       onClick={() => {

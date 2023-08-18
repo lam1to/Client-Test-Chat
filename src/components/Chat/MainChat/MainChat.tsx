@@ -23,6 +23,7 @@ import { useSocketMessage } from "../../../Hooks/useSocketMessage";
 import { useTranslation } from "react-i18next";
 import { useFuncMessage } from "../../../Hooks/useFuncMessage";
 import { lastMessage } from "../../../http/message.service";
+import { useSocketLastMessage } from "../../../Hooks/useSocketLastMessage";
 
 export interface PropsUseSocketMessage {
   messages: IMessage[];
@@ -32,8 +33,6 @@ export interface PropsUseSocketMessage {
 }
 
 export interface PropsMainChat {
-  lastMessageChat: ILastMessage[];
-  setLastMessageChat: Dispatch<SetStateAction<ILastMessage[]>>;
   chat: IChatWithUser;
   socket: Socket;
   blackList: string;
@@ -46,16 +45,13 @@ const MainChat: FC<PropsMainChat> = ({
   blackList,
   isLeft,
   editLeftChat,
-  lastMessageChat,
-  setLastMessageChat,
 }) => {
   const messages: PropsUseSocketMessage = useSocketMessage(
     socket,
     isLeft,
-    chat,
-    lastMessageChat,
-    setLastMessageChat
+    chat
   );
+
   const [filter, setFilter] = useState<string>("");
   const [t, i18n] = useTranslation();
   const funcMessage = useFuncMessage();

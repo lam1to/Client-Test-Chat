@@ -8,38 +8,8 @@ export const useLastMessage = (socket: Socket) => {
     [] as ILastMessage[]
   );
 
-  const newLastMessage = (content: ILastMessage) => {
-    if (content.id == "0") {
-      setLastMessageChat((lastMessageChat) => [
-        ...lastMessageChat.filter(
-          (oneLastMessage) => oneLastMessage.chatId !== content.chatId
-        ),
-      ]);
-    } else {
-      const isExists: boolean = lastMessageChat.some(
-        (one) => one.chatId === content.chatId
-      );
-      if (!isExists) {
-        setLastMessageChat((lastMessageChat) => [...lastMessageChat, content]);
-      } else {
-        setLastMessageChat((lastMessageChat) => [
-          ...lastMessageChat.map((oneLastMessage) => {
-            if (oneLastMessage.chatId === content.chatId) {
-              oneLastMessage = content;
-            }
-            return oneLastMessage;
-          }),
-        ]);
-      }
-    }
-  };
-
   useEffect(() => {
     getLastMessage();
-    socket.on(`newLastMessage`, newLastMessage);
-    return () => {
-      socket.off(`newLastMessage`, newLastMessage);
-    };
   }, []);
   const getLastMessage = async () => {
     await lastMessage().then((data) => setLastMessageChat(data));
