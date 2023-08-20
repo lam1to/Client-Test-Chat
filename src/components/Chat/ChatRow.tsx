@@ -5,6 +5,7 @@ import st from "../../styles/oneChat.module.css";
 import { Socket } from "socket.io-client";
 import { useTranslation } from "react-i18next";
 import { ILastMessage } from "../../types/IMessage";
+import { IUseSocket } from "./Chat";
 
 export interface PoropsChatRow {
   chats: IChatWithUser[];
@@ -13,6 +14,7 @@ export interface PoropsChatRow {
   lastMessageChat: ILastMessage[];
   setLastMessageChat: Dispatch<SetStateAction<ILastMessage[]>>;
   socket: Socket;
+  leftChat: IUseSocket<string>;
 }
 const ChatRow: FC<PoropsChatRow> = ({
   chats,
@@ -21,8 +23,10 @@ const ChatRow: FC<PoropsChatRow> = ({
   lastMessageChat,
   setLastMessageChat,
   socket,
+  leftChat,
 }) => {
   const [t] = useTranslation();
+
   return (
     <div className={st.chatrow}>
       {chats.length !== 0 ? (
@@ -40,6 +44,7 @@ const ChatRow: FC<PoropsChatRow> = ({
               key={i}
               oneChat={one}
               setSelectChats={setSelectChats}
+              leftChat={leftChat}
             />
           );
         })

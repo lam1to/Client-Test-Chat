@@ -74,6 +74,7 @@ const Chat: FC = () => {
 
       <div className={st.main_block}>
         <ChatSideMenuHiden
+          leftChat={leftChat}
           lastMessageChat={lastMessage.lastMessageChat}
           setLastMessageChat={lastMessage.setLastMessageChat}
           socket={socket}
@@ -82,6 +83,7 @@ const Chat: FC = () => {
         />
         {hidden && (
           <ChatSideMenu
+            leftChat={leftChat}
             lastMessageChat={lastMessage.lastMessageChat}
             setLastMessageChat={lastMessage.setLastMessageChat}
             socket={socket}

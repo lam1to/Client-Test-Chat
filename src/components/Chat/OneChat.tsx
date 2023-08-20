@@ -15,6 +15,8 @@ import { selectUser } from "../../store/Reducers/UserSlice";
 import { useTranslation } from "react-i18next";
 import { ILastMessage } from "../../types/IMessage";
 import { useSocketLastMessage } from "../../Hooks/useSocketLastMessage";
+import { IUseSocket } from "./Chat";
+import { useFuncChat } from "../../Hooks/useFuncChat";
 
 export interface PropsOneChat {
   oneChat: IChatWithUser;
@@ -24,6 +26,7 @@ export interface PropsOneChat {
   socket: Socket;
   lastMessageChat: ILastMessage[];
   setLastMessageChat: Dispatch<SetStateAction<ILastMessage[]>>;
+  leftChat: IUseSocket<string>;
 }
 const OneChat: FC<PropsOneChat> = ({
   oneChat,
@@ -33,13 +36,17 @@ const OneChat: FC<PropsOneChat> = ({
   socket,
   lastMessageChat,
   setLastMessageChat,
+  leftChat,
 }) => {
+  const funcChat = useFuncChat();
   const lastMessageSocket = useSocketLastMessage(
     socket,
     lastMessageChat,
     setLastMessageChat,
-    oneChat
+    oneChat,
+    funcChat.isLeft(leftChat, oneChat)
   );
+
   return (
     <div
       onClick={() => {
@@ -61,12 +68,28 @@ const OneChat: FC<PropsOneChat> = ({
         </div>
         {lastMessage && Object.keys(lastMessage).length !== 0 && (
           <div className={st.onechat_block_last_message}>
-            {lastMessage.name + " " + lastMessage.content}
+            {lastMessage.content.slice(0, 6) === "admin:" ? (
+              <div className={st.onechat_block_last_message_block}>
+                {lastMessage.content.slice(6, 21) + "..."}
+              </div>
+            ) : (
+              <div className={st.onechat_block_last_message_block}>
+                <div className={st.onechat_block_last_message_block_name}>
+                  {lastMessage.name + ":"}
+                </div>
+                {lastMessage.contentImg &&
+                Object(lastMessage.contentImg).length !== 0 ? (
+                  <div>Вложение {lastMessage.contentImg.length}</div>
+                ) : (
+                  <div className={st.onechat_block_last_message_block_content}>
+                    {lastMessage.content.slice(0, 15)}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
       </div>
-
-      {/* <div>{message && message.content}</div> */}
     </div>
   );
 };

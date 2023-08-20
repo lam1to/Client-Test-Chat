@@ -13,11 +13,6 @@ export const createChat = async (users: string[]) => {
   return data;
 };
 
-export const getAllMessageForChat = async (chadId: string) => {
-  const { data } = await $authHost.get("api/message/getAllForChat/" + chadId);
-  return data;
-};
-
 export const remove = async (chatId: string) => {
   const { data } = await $authHost.delete("api/chat/" + chatId);
   return data;

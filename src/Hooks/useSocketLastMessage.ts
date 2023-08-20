@@ -7,9 +7,11 @@ export const useSocketLastMessage = (
   socket: Socket,
   lastMessageChat: ILastMessage[],
   setLastMessageChat: Dispatch<SetStateAction<ILastMessage[]>>,
-  chat: IChatWithUser
+  chat: IChatWithUser,
+  isLeft: boolean
 ) => {
   const newLastMessage = (content: ILastMessage) => {
+    console.log("chat id - ", chat.id, "Content = ", content);
     if (content.id == "0") {
       setLastMessageChat((lastMessageChat) => [
         ...lastMessageChat.filter(
@@ -36,9 +38,11 @@ export const useSocketLastMessage = (
   };
 
   useEffect(() => {
-    socket.on(`newLastMessage${chat.id}`, newLastMessage);
-    return () => {
-      socket.off(`newLastMessage${chat.id}`, newLastMessage);
-    };
-  }, []);
+    if (!isLeft) {
+      socket.on(`newLastMessage${chat.id}`, newLastMessage);
+      return () => {
+        socket.off(`newLastMessage${chat.id}`, newLastMessage);
+      };
+    }
+  }, [chat, isLeft]);
 };

@@ -15,7 +15,6 @@ import {
   IMessageLoadingImgs,
 } from "../../../types/IMessage";
 import RowMessage from "./Message/RowMessage";
-import { getAllMessageForChat } from "../../../http/chat.services";
 import Input, { ISelectFile } from "./Input/Input";
 import Header from "./Header";
 import Loader from "../../Loading/Loader";
@@ -30,6 +29,13 @@ export interface PropsUseSocketMessage {
   SetMessages: Dispatch<SetStateAction<IMessage[]>>;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
+  currentPart: number;
+  setCurrentPart: Dispatch<SetStateAction<number>>;
+  fetching: boolean;
+  setFetching: Dispatch<SetStateAction<boolean>>;
+  allPart: number;
+  isNewMessage: boolean;
+  setIsNewMessage: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface PropsMainChat {
@@ -82,6 +88,13 @@ const MainChat: FC<PropsMainChat> = ({
               <Loader width={50} height={50} />
             ) : (
               <RowMessage
+                isNewMessage={messages.isNewMessage}
+                setIsNewMessage={messages.setIsNewMessage}
+                allPart={messages.allPart}
+                currentPart={messages.currentPart}
+                setCurrentPart={messages.setCurrentPart}
+                fetching={messages.fetching}
+                setFetching={messages.setFetching}
                 copySelectFile={copySelectFile}
                 isLoadingMessage={isLoadingMessage}
                 setEditMessage={setEditMessage}

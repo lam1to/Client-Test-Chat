@@ -26,6 +26,13 @@ interface PropsRowImessage {
   setEditMessage: Dispatch<SetStateAction<IMessage>>;
   isLoadingMessage: boolean;
   isLoadingImgs: IMessageLoadingImgs[];
+  currentPart: number;
+  setCurrentPart: Dispatch<SetStateAction<number>>;
+  fetching: boolean;
+  setFetching: Dispatch<SetStateAction<boolean>>;
+  allPart: number;
+  isNewMessage: boolean;
+  setIsNewMessage: Dispatch<SetStateAction<boolean>>;
 }
 const RowMessage: FC<PropsRowImessage> = ({
   messages,
@@ -36,17 +43,49 @@ const RowMessage: FC<PropsRowImessage> = ({
   isLoadingMessage,
   copySelectFile,
   isLoadingImgs,
+  fetching,
+  setFetching,
+  setCurrentPart,
+  currentPart,
+  allPart,
+  isNewMessage,
+  setIsNewMessage,
 }) => {
   useEffect(() => {
-    scrollToBottom();
+    if (isNewMessage) {
+      scrollToBottom();
+      setIsNewMessage(false);
+    }
   }, [messages]);
   const scrollRef = useRef<HTMLDivElement>(null);
   const scrollToBottom = () => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   };
   const [overflow, setOverflow] = useState<string>("auto");
+  const ref = useRef<HTMLDivElement>({} as HTMLDivElement);
+
+  const [scrollTop, setScrollTop] = useState<number>(0);
+  useEffect(() => {
+    if (!fetching) {
+      const el = document.getElementsByClassName(`${st.row_message}`)?.[0];
+      const newHeight = el.scrollHeight;
+      el?.scrollTo(0, newHeight - scrollTop);
+    }
+  }, [fetching]);
+  const scrollHandler = (e: React.UIEvent<HTMLDivElement>) => {
+    if (e.currentTarget.scrollTop === 0 && currentPart < allPart) {
+      setCurrentPart(currentPart + 1);
+      setFetching(true);
+      setScrollTop(e.currentTarget.scrollHeight);
+    }
+  };
   return (
-    <div style={{ overflow: overflow }} className={st.row_message}>
+    <div
+      onScroll={scrollHandler}
+      ref={ref}
+      style={{ overflow: overflow }}
+      className={st.row_message}
+    >
       {messages.map((oneMessage, i) => {
         const user: IuserChat = users.filter((oneUser) => {
           return oneUser.id == oneMessage.userId;
@@ -56,7 +95,7 @@ const RowMessage: FC<PropsRowImessage> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
-            key={i}
+            key={oneMessage.id}
           >
             <OneMessage
               setEditMessage={setEditMessage}

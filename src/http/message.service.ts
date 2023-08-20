@@ -16,6 +16,18 @@ export const createMessage = async (dto: IMessageCreateDto) => {
   return data;
 };
 
+export const getAllMessageForChat = async (chadId: string) => {
+  const { data } = await $authHost.get("api/message/getAllForChat/" + chadId);
+  return data;
+};
+
+export const getOnePartMessage = async (chatId: string, partId: string) => {
+  const { data } = await $authHost.get(
+    "api/message/getMessage/limit=10/chat=" + chatId + "/part=" + partId
+  );
+  return data;
+};
+
 export const uploadFile = async (formData: FormData) => {
   const { data } = await $authHost.post(
     "api/storage/uploadStorageFile",

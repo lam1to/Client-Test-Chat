@@ -84,8 +84,27 @@
     color:#37473e;
     margin-top: 10px;
     font-size: 11px;
+    height: 25px;
 }
 
+.onechat_block_last_message_block{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    
+
+}
+.onechat_block_last_message_block_name{
+    font-size: 13px;
+    margin-right: 3px;
+
+}
+.onechat_block_last_message_block_content{
+    display: flex;
+    height: 100%;
+    align-items: end;
+
+}
 /* last message end */
 @media (max-width:1000px) {
     .onechat_block_name{
