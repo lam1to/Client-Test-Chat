@@ -36,7 +36,6 @@ const Chat: FC = () => {
   );
 
   const lastMessage = useLastMessage(socket);
-  console.log("lastMessage = ", lastMessage.lastMessageChat);
   const chats: IUseSocketChat = useSocketChats(socket, setSelectChats);
   const blocked: IUseSocket<string> = useSocket<string>(
     "newBlockedUser",

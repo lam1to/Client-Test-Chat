@@ -16,23 +16,18 @@ import OneMessage from "./OneMessage";
 import Loader from "../../../Loading/Loader";
 import OneMessageWithImgLoading from "./OneMessageWithImgLoading";
 import { ISelectFile } from "../Input/Input";
+import { PropsUseSocketMessage } from "../MainChat";
 
 interface PropsRowImessage {
   copySelectFile: ISelectFile[];
-  messages: IMessage[];
+  messages: PropsUseSocketMessage;
   users: IuserChat[];
   contentRef: React.MutableRefObject<HTMLInputElement>;
   socket: Socket;
   setEditMessage: Dispatch<SetStateAction<IMessage>>;
   isLoadingMessage: boolean;
   isLoadingImgs: IMessageLoadingImgs[];
-  currentPart: number;
-  setCurrentPart: Dispatch<SetStateAction<number>>;
-  fetching: boolean;
-  setFetching: Dispatch<SetStateAction<boolean>>;
-  allPart: number;
-  isNewMessage: boolean;
-  setIsNewMessage: Dispatch<SetStateAction<boolean>>;
+  messagesFilter: IMessage[];
 }
 const RowMessage: FC<PropsRowImessage> = ({
   messages,
@@ -43,18 +38,12 @@ const RowMessage: FC<PropsRowImessage> = ({
   isLoadingMessage,
   copySelectFile,
   isLoadingImgs,
-  fetching,
-  setFetching,
-  setCurrentPart,
-  currentPart,
-  allPart,
-  isNewMessage,
-  setIsNewMessage,
+  messagesFilter,
 }) => {
   useEffect(() => {
-    if (isNewMessage) {
+    if (messages.isNewMessage) {
       scrollToBottom();
-      setIsNewMessage(false);
+      messages.setIsNewMessage(false);
     }
   }, [messages]);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -66,16 +55,19 @@ const RowMessage: FC<PropsRowImessage> = ({
 
   const [scrollTop, setScrollTop] = useState<number>(0);
   useEffect(() => {
-    if (!fetching) {
+    if (!messages.fetching) {
       const el = document.getElementsByClassName(`${st.row_message}`)?.[0];
       const newHeight = el.scrollHeight;
       el?.scrollTo(0, newHeight - scrollTop);
     }
-  }, [fetching]);
+  }, [messages.fetching]);
   const scrollHandler = (e: React.UIEvent<HTMLDivElement>) => {
-    if (e.currentTarget.scrollTop === 0 && currentPart < allPart) {
-      setCurrentPart(currentPart + 1);
-      setFetching(true);
+    if (
+      e.currentTarget.scrollTop === 0 &&
+      messages.currentPart < messages.allPart
+    ) {
+      messages.setCurrentPart(messages.currentPart + 1);
+      messages.setFetching(true);
       setScrollTop(e.currentTarget.scrollHeight);
     }
   };
@@ -86,7 +78,7 @@ const RowMessage: FC<PropsRowImessage> = ({
       style={{ overflow: overflow }}
       className={st.row_message}
     >
-      {messages.map((oneMessage, i) => {
+      {messagesFilter.map((oneMessage, i) => {
         const user: IuserChat = users.filter((oneUser) => {
           return oneUser.id == oneMessage.userId;
         })[0];

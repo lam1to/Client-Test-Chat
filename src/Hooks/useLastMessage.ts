@@ -12,7 +12,9 @@ export const useLastMessage = (socket: Socket) => {
     getLastMessage();
   }, []);
   const getLastMessage = async () => {
-    await lastMessage().then((data) => setLastMessageChat(data));
+    await lastMessage().then((data) =>
+      setLastMessageChat((lastMessageChat) => [...lastMessageChat, ...data])
+    );
   };
 
   return {

@@ -46,6 +46,7 @@ const OneChat: FC<PropsOneChat> = ({
     oneChat,
     funcChat.isLeft(leftChat, oneChat)
   );
+  const { user } = useAppSelector(selectUser);
 
   return (
     <div
@@ -75,14 +76,22 @@ const OneChat: FC<PropsOneChat> = ({
             ) : (
               <div className={st.onechat_block_last_message_block}>
                 <div className={st.onechat_block_last_message_block_name}>
-                  {lastMessage.name + ":"}
+                  {lastMessage.userId === user.id ? (
+                    <div>Вы:</div>
+                  ) : (
+                    <div>{lastMessage.name + ":"}</div>
+                  )}
                 </div>
                 {lastMessage.contentImg &&
                 Object(lastMessage.contentImg).length !== 0 ? (
                   <div>Вложение {lastMessage.contentImg.length}</div>
                 ) : (
                   <div className={st.onechat_block_last_message_block_content}>
-                    {lastMessage.content.slice(0, 15)}
+                    {lastMessage.content.length > 8 ? (
+                      <div>{lastMessage.content.slice(0, 8) + "..."}</div>
+                    ) : (
+                      lastMessage.content
+                    )}
                   </div>
                 )}
               </div>

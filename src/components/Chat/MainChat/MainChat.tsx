@@ -88,20 +88,14 @@ const MainChat: FC<PropsMainChat> = ({
               <Loader width={50} height={50} />
             ) : (
               <RowMessage
-                isNewMessage={messages.isNewMessage}
-                setIsNewMessage={messages.setIsNewMessage}
-                allPart={messages.allPart}
-                currentPart={messages.currentPart}
-                setCurrentPart={messages.setCurrentPart}
-                fetching={messages.fetching}
-                setFetching={messages.setFetching}
+                messages={messages}
                 copySelectFile={copySelectFile}
                 isLoadingMessage={isLoadingMessage}
                 setEditMessage={setEditMessage}
                 socket={socket}
                 contentRef={contentRef}
                 users={chat.users}
-                messages={funcMessage.FilterMessages(filter, messages)}
+                messagesFilter={funcMessage.FilterMessages(filter, messages)}
                 isLoadingImgs={isLoadingImgs}
               />
             )}

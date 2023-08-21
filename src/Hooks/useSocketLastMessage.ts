@@ -11,30 +11,31 @@ export const useSocketLastMessage = (
   isLeft: boolean
 ) => {
   const newLastMessage = (content: ILastMessage) => {
-    console.log("chat id - ", chat.id, "Content = ", content);
-    if (content.id == "0") {
-      setLastMessageChat((lastMessageChat) => [
-        ...lastMessageChat.filter(
-          (oneLastMessage) => oneLastMessage.chatId !== content.chatId
-        ),
-      ]);
-    } else {
-      const isExists: boolean = lastMessageChat.some(
-        (one) => one.chatId === content.chatId
-      );
-      if (!isExists) {
-        setLastMessageChat((lastMessageChat) => [...lastMessageChat, content]);
+    setLastMessageChat((lastMessageChat) => {
+      if (content.id == "0") {
+        return [
+          ...lastMessageChat.filter(
+            (oneLastMessage) => oneLastMessage.chatId !== content.chatId
+          ),
+        ];
       } else {
-        setLastMessageChat((lastMessageChat) => [
-          ...lastMessageChat.map((oneLastMessage) => {
-            if (oneLastMessage.chatId === content.chatId) {
-              oneLastMessage = content;
-            }
-            return oneLastMessage;
-          }),
-        ]);
+        const isExists: boolean = lastMessageChat.some(
+          (one) => one.chatId === content.chatId
+        );
+        if (!isExists) {
+          return [...lastMessageChat, content];
+        } else {
+          return [
+            ...lastMessageChat.map((oneLastMessage) => {
+              if (oneLastMessage.chatId === content.chatId) {
+                oneLastMessage = content;
+              }
+              return oneLastMessage;
+            }),
+          ];
+        }
       }
-    }
+    });
   };
 
   useEffect(() => {
