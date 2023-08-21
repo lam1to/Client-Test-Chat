@@ -5,7 +5,9 @@ export interface IMessage {
   userId: string;
   createdAt: string;
   contentImg?: IContentImg[];
+  messageWasAnswered?: IMessage;
 }
+
 export interface ILastMessage extends IMessage {
   name: string;
 }

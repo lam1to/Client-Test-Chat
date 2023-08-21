@@ -15,6 +15,7 @@ interface PropsOneMessage {
   contentRef: React.MutableRefObject<HTMLInputElement>;
   socket: Socket;
   setEditMessage: Dispatch<SetStateAction<IMessage>>;
+  setReplyMessage: Dispatch<SetStateAction<IMessage>>;
 }
 
 const OneMessage: FC<PropsOneMessage> = ({
@@ -24,6 +25,7 @@ const OneMessage: FC<PropsOneMessage> = ({
   contentRef,
   socket,
   setEditMessage,
+  setReplyMessage,
 }) => {
   const user = useAppSelector(selectUser);
   return (
@@ -34,6 +36,7 @@ const OneMessage: FC<PropsOneMessage> = ({
         </div>
       ) : user.user.id == message.userId ? (
         <OneMessageSelf
+          setReplyMessage={setReplyMessage}
           message={message}
           contentRef={contentRef}
           setEditMessage={setEditMessage}
@@ -42,6 +45,8 @@ const OneMessage: FC<PropsOneMessage> = ({
         />
       ) : (
         <OneMessageOther
+          contentRef={contentRef}
+          setReplyMessage={setReplyMessage}
           message={message}
           socket={socket}
           setOverflow={setOverflow}

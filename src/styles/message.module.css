@@ -172,6 +172,44 @@
     height: 100%;
 }
 /* contentImg end */
+
+/* reply block start  */
+.reply_container{
+    display: flex;
+    min-height: 30px;
+    margin-bottom: 10px;
+}
+.reply_content_img_block{
+    width: 40px;
+    margin-right: 5px;
+}
+.reply_content_img_block img{
+    width: 100%;
+}
+.reply_img{
+    display: flex;
+    align-items: center;
+    border-right: 2px solid #AA76D2;
+    margin-right: 10px;
+}
+.reply_img img {
+    margin-right: 5px;
+}
+.reply_content_block{display: flex;}
+.reply_content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 14px;
+}
+.reply_content_text{
+    
+}
+.reply_content_count_img{
+    margin-top: 10px;
+}
+/* reply block end */
+
 /* media */
 @media (max-width:900px){
     .message_content_other{

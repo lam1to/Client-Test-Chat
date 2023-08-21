@@ -7,12 +7,15 @@ import { useFuncMessage } from "../../../../Hooks/useFuncMessage";
 import { useDataMessage } from "../../../../Hooks/useDataMessage";
 import OneMessageWithImg from "./OneMessageWithImg";
 import { useTranslation } from "react-i18next";
+import BlockMessageWasAnswered from "./BlockMessageWasAnswered";
 
 export interface IPropsOneMessageOther {
   message: IMessage;
   setOverflow: Dispatch<SetStateAction<string>>;
   socket: Socket;
   userWho: IuserChat;
+  setReplyMessage: Dispatch<SetStateAction<IMessage>>;
+  contentRef: React.MutableRefObject<HTMLInputElement>;
 }
 
 export const OneMessageOther: FC<IPropsOneMessageOther> = ({
@@ -20,6 +23,8 @@ export const OneMessageOther: FC<IPropsOneMessageOther> = ({
   socket,
   setOverflow,
   userWho,
+  setReplyMessage,
+  contentRef,
 }) => {
   const funcMessage = useFuncMessage();
   const dataMessage = useDataMessage(setOverflow);
@@ -50,10 +55,15 @@ export const OneMessageOther: FC<IPropsOneMessageOther> = ({
           }}
           className={st.message_content_other}
         >
+          {message.messageWasAnswered &&
+            Object.keys(message.messageWasAnswered).length !== 0 && (
+              <BlockMessageWasAnswered message={message.messageWasAnswered} />
+            )}
           {message.contentImg &&
             Object.keys(message.contentImg).length !== 0 && (
               <OneMessageWithImg contentImg={message.contentImg} />
             )}
+
           <div>{message.content}</div>
           <div className={st.message_content_time}>
             {funcMessage.getTimeMessage(message)}
@@ -67,12 +77,19 @@ export const OneMessageOther: FC<IPropsOneMessageOther> = ({
               className={st.message_block_dropdown}
             >
               <ul className={st.message_block_dropdown_row}>
-                {/* <li
-                      onClick={editF}
-                      className={st.message_block_dropdown_item}
-                    >
-                      edit
-              </li> */}
+                <li
+                  onClick={(e) =>
+                    funcMessage.replyMessage(
+                      setOverflow,
+                      contentRef,
+                      message,
+                      setReplyMessage
+                    )
+                  }
+                  className={st.message_block_dropdown_item}
+                >
+                  {t("mainChatContent.replyMessage")}
+                </li>
                 <li
                   onClick={(e) =>
                     funcMessage.deleteF(

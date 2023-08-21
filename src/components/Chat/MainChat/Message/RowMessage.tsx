@@ -25,6 +25,7 @@ interface PropsRowImessage {
   contentRef: React.MutableRefObject<HTMLInputElement>;
   socket: Socket;
   setEditMessage: Dispatch<SetStateAction<IMessage>>;
+  setReplyMessage: Dispatch<SetStateAction<IMessage>>;
   isLoadingMessage: boolean;
   isLoadingImgs: IMessageLoadingImgs[];
   messagesFilter: IMessage[];
@@ -35,6 +36,7 @@ const RowMessage: FC<PropsRowImessage> = ({
   contentRef,
   socket,
   setEditMessage,
+  setReplyMessage,
   isLoadingMessage,
   copySelectFile,
   isLoadingImgs,
@@ -90,6 +92,7 @@ const RowMessage: FC<PropsRowImessage> = ({
             key={oneMessage.id}
           >
             <OneMessage
+              setReplyMessage={setReplyMessage}
               setEditMessage={setEditMessage}
               socket={socket}
               contentRef={contentRef}
@@ -100,6 +103,12 @@ const RowMessage: FC<PropsRowImessage> = ({
           </motion.div>
         );
       })}
+
+      {/* {Object.keys(isLoadingImgs).length !== 0 &&
+        isLoadingImgs[isLoadingImgs.length - 1].isLoading &&
+        copySelectFile.map((oneSelectFile, i) => (
+          <div key={i}>{isLoadingImgs[i].isLoading && <div>axui</div>}</div>
+        ))} */}
 
       {isLoadingMessage && (
         <OneMessageWithImgLoading

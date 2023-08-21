@@ -13,7 +13,7 @@ import {
   IMessage,
   IMessageLoadingImgs,
 } from "../../../../types/IMessage";
-import pencilImg from "../../../../public/pencil.png";
+
 import InputBlackList from "./InputBlackList";
 import InputLeft from "./InputLeft";
 import { useTranslation } from "react-i18next";
@@ -21,6 +21,9 @@ import { useFuncMessage } from "../../../../Hooks/useFuncMessage";
 import clipPng from "../../../../public/paper-clip.png";
 import SelectFile from "./SelectFile";
 import SelectFileEdit from "./SelectFileEdit";
+import InputReply from "./InputReply";
+import InputEdit from "./InputEdit";
+import InputEmoji from "./InputEmoji";
 // import InputEmoji from "./InputEmoji";
 export interface PropsMainChatInput {
   setCopySelectFile: Dispatch<SetStateAction<ISelectFile[]>>;
@@ -34,6 +37,8 @@ export interface PropsMainChatInput {
   setIsLoadingMessage: Dispatch<SetStateAction<boolean>>;
   isLoadingImgs: IMessageLoadingImgs[];
   setIsLoadingImgs: Dispatch<SetStateAction<IMessageLoadingImgs[]>>;
+  replyMessage: IMessage;
+  setReplyMessage: Dispatch<SetStateAction<IMessage>>;
 }
 export interface ISelectFile {
   id: number;
@@ -51,6 +56,8 @@ const Input: FC<PropsMainChatInput> = ({
   isLeft,
   setIsLoadingMessage,
   setIsLoadingImgs,
+  replyMessage,
+  setReplyMessage,
   isLoadingImgs,
 }) => {
   useEffect(() => {}, []);
@@ -128,48 +135,23 @@ const Input: FC<PropsMainChatInput> = ({
   return (
     <div className={st.main_chat_input}>
       {Object.keys(editMessage).length !== 0 && (
-        <div
-          className={`${
-            editMessage.contentImg &&
-            Object.keys(editMessage.contentImg).length !== 0
-              ? st.main_chat_input_edit_block_with_img
-              : st.main_chat_input_edit_block_without_img
-          } ${st.main_chat_input_edit_block}`}
-        >
-          <div className={st.main_chat_input_edit_block_message_content}>
-            <div className={st.main_chat_input_edit_container}>
-              <div className={st.main_chat_input_edit_img}>
-                <img src={pencilImg} alt="" />
-              </div>
-              <div className={st.main_chat_input_edit_title}>
-                {t("mainChatInput.editMessage") + editMessage.content}
-              </div>
-            </div>
-
-            <div
-              onClick={() => {
-                setEditMessage({} as IMessage);
-                contentRef.current.value = "";
-              }}
-              className={st.main_chat_input_edit_close}
-            >
-              {t("mainChatInput.closeEdit")}
-            </div>
-          </div>
-
-          <div className={st.main_chat_input_edit_row_img}>
-            {editMessage.contentImg &&
-              Object.keys(editMessage.contentImg).length !== 0 && (
-                <SelectFileEdit
-                  selectFile={selectFile}
-                  setSelectFile={setSelectFile}
-                  editMessage={editMessage}
-                  setCopyContentImg={setCopyContentImg}
-                  copyContentImg={copyContentImg}
-                />
-              )}
-          </div>
-        </div>
+        <InputEdit
+          editMessage={editMessage}
+          setEditMessage={setEditMessage}
+          setCopyContentImg={setCopyContentImg}
+          selectFile={selectFile}
+          setSelectFile={setSelectFile}
+          contentRef={contentRef}
+          copyContentImg={copyContentImg}
+        />
+      )}
+      {Object.keys(replyMessage).length !== 0 && (
+        <InputReply
+          setSelectFile={setSelectFile}
+          replyMessage={replyMessage}
+          setReplyMessage={setReplyMessage}
+          contentRef={contentRef}
+        />
       )}
       {/* <InputEmoji contentRef={contentRef} /> */}
 
@@ -236,6 +218,17 @@ const Input: FC<PropsMainChatInput> = ({
                       editMessage,
                       setEditMessage
                     )
+                  : Object.keys(replyMessage).length !== 0
+                  ? funcMessage.replyMessageF(
+                      selectFile,
+                      setSelectFile,
+                      socket,
+                      contentRef,
+                      chatId,
+                      replyMessage,
+                      setReplyMessage,
+                      setIsLoadingImgs
+                    )
                   : createMessage();
               }
             }}
@@ -261,6 +254,17 @@ const Input: FC<PropsMainChatInput> = ({
                     chatId,
                     editMessage,
                     setEditMessage
+                  )
+                : Object.keys(replyMessage).length !== 0
+                ? funcMessage.replyMessageF(
+                    selectFile,
+                    setSelectFile,
+                    socket,
+                    contentRef,
+                    chatId,
+                    replyMessage,
+                    setReplyMessage,
+                    setIsLoadingImgs
                   )
                 : createMessage();
             }}

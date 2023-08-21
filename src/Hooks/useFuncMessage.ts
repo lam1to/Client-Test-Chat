@@ -144,8 +144,10 @@ export const useFuncMessage = () => {
     setOverflow: Dispatch<SetStateAction<string>>,
     contentRef: React.MutableRefObject<HTMLInputElement>,
     message: IMessage,
-    setEditMessage: Dispatch<SetStateAction<IMessage>>
+    setEditMessage: Dispatch<SetStateAction<IMessage>>,
+    setReplyMessage: Dispatch<SetStateAction<IMessage>>
   ) => {
+    setReplyMessage({} as IMessage);
     setOverflow("auto");
     contentRef.current.focus();
     contentRef.current.value = message.content;
@@ -174,6 +176,80 @@ export const useFuncMessage = () => {
       chatId: message.chatId,
     });
   };
+
+  const replyMessage = (
+    setOverflow: Dispatch<SetStateAction<string>>,
+    contentRef: React.MutableRefObject<HTMLInputElement>,
+    message: IMessage,
+    setReplyMessage: Dispatch<SetStateAction<IMessage>>,
+    setEditMessage?: Dispatch<SetStateAction<IMessage>>
+  ) => {
+    if (setEditMessage) setEditMessage({} as IMessage);
+    console.log("ответить в funcMessage");
+    setOverflow("auto");
+    contentRef.current.focus();
+    // contentRef.current.value = message.content;
+    setReplyMessage(message);
+  };
+
+  const replyMessageF = async (
+    selectFile: ISelectFile[],
+    setSelectFile: Dispatch<SetStateAction<ISelectFile[]>>,
+    socket: Socket,
+    contentRef: React.MutableRefObject<HTMLInputElement>,
+    chatId: string,
+    replyMessage: IMessage,
+    setReplyMessage: Dispatch<SetStateAction<IMessage>>,
+    setIsLoadingImgs: Dispatch<SetStateAction<IMessageLoadingImgs[]>>
+  ) => {
+    console.log("выполнили ответ в input ");
+    if (Object.keys(selectFile).length !== 0) {
+      let masUrl: IStorageUrl[] = [] as IStorageUrl[];
+      const formData = new FormData();
+      const copySelectFile: ISelectFile[] = selectFile;
+      setSelectFile([] as ISelectFile[]);
+      const content = contentRef.current.value;
+      contentRef.current.value = "";
+      for (let i = 0; i < selectFile.length; i++) {
+        formData.append("file", copySelectFile[i].file);
+        await uploadFile(formData).then((data) => {
+          masUrl = [...masUrl, data];
+          console.log("загрузило файл = ", selectFile[i]);
+          setIsLoadingImgs((isLoadingImgs) =>
+            isLoadingImgs.map((oneLoadingImgs) => {
+              oneLoadingImgs.id === i && (oneLoadingImgs.isLoading = false);
+              return oneLoadingImgs;
+            })
+          );
+        });
+        formData.delete("file");
+      }
+      socket.emit("createReplyMessageWithImg", {
+        userId: user.user.id,
+        chatId: chatId,
+        content: content,
+        masUrl: masUrl,
+        messageIdWasAnswered: replyMessage.id,
+      });
+      contentRef.current.value = "";
+    } else {
+      if (
+        contentRef.current?.value == "" &&
+        Object.keys(selectFile).length === 0
+      )
+        return;
+      else
+        socket.emit("createReplyMessage", {
+          userId: user.user.id,
+          chatId: chatId,
+          content: contentRef.current?.value,
+          messageIdWasAnswered: replyMessage.id,
+        });
+      contentRef.current.value = "";
+      console.log("penis");
+    }
+    setReplyMessage({} as IMessage);
+  };
   return {
     FilterMessages: FilterMessages,
     editMessageF: editMessageF,
@@ -183,5 +259,7 @@ export const useFuncMessage = () => {
     deleteF: deleteF,
     getTimeMessage: getTimeMessage,
     editMessageWithImg: editMessageWithImg,
+    replyMessage: replyMessage,
+    replyMessageF: replyMessageF,
   };
 };

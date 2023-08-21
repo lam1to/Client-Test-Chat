@@ -52,6 +52,39 @@ export function useSocketMessage(
       )
     );
   };
+  const messageDeleteWasAnswered = (idMessageWasAnswered: string) => {
+    console.log("данные что пришли = ", idMessageWasAnswered);
+    SetMessages((messages) => {
+      return [
+        ...messages.map((oneMessage) => {
+          if (
+            oneMessage.messageWasAnswered &&
+            Object.keys(oneMessage.messageWasAnswered).length !== 0 &&
+            oneMessage.messageWasAnswered.id === idMessageWasAnswered
+          )
+            oneMessage.messageWasAnswered = {} as IMessage;
+          return oneMessage;
+        }),
+      ];
+    });
+  };
+
+  const messageUpdateWasAnswered = (messageWasAnswered: IMessage) => {
+    SetMessages((messages) => {
+      return [
+        ...messages.map((oneMessage) => {
+          if (
+            oneMessage.messageWasAnswered &&
+            Object.keys(oneMessage.messageWasAnswered).length !== 0 &&
+            oneMessage.messageWasAnswered.id === messageWasAnswered.id
+          ) {
+            oneMessage.messageWasAnswered = messageWasAnswered;
+          }
+          return oneMessage;
+        }),
+      ];
+    });
+  };
 
   useEffect(() => {
     getFirstMessages();
@@ -59,10 +92,16 @@ export function useSocketMessage(
       socket.on(`message${chat.id}`, message);
       socket.on(`messageDelete${chat.id}`, messageDelete);
       socket.on(`messageUpdate${chat.id}`, messageUpdate);
+      socket.on(`deleteMessageWasAnswered${chat.id}`, messageDeleteWasAnswered);
+      socket.on(`editWasAnswered${chat.id}`, messageUpdateWasAnswered);
       return () => {
         socket.off(`message${chat.id}`, message);
         socket.off(`messageDelete${chat.id}`, messageDelete);
         socket.off(`messageUpdate${chat.id}`, messageUpdate);
+        socket.off(
+          `deleteMessageWasAnswered${chat.id}`,
+          messageDeleteWasAnswered
+        );
       };
     }
   }, [chat, isLeft]);

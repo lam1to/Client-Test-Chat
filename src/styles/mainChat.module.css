@@ -170,6 +170,65 @@
     margin-right: 10px;
 }
 
+/* reply block start  */
+
+.main_chat_input_reply_block{
+    top: -50px;
+    height: 50px;
+    position: absolute;
+    left: 0;
+    z-index: 15;
+    background-color: #160E2D;
+    width: 100%;
+}
+.main_chat_input_reply_block_message_content{
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+    /* wi */
+}
+.main_chat_input_reply_container{
+    display: flex;
+}
+.main_chat_input_reply_img{
+    margin: 0px 10px 0px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 2px solid #AA76D2;
+    padding-right: 10px;
+}
+.main_chat_input_reply_attachments{
+    font-size: 14px;
+    color: #AA76D2;
+    margin-top: 5px;
+}
+.main_chat_input_reply_title_block{
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: center;
+    height: 100%;
+}
+.main_chat_input_reply_title{
+    color: #6EFFB1;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+}
+.main_chat_input_reply_close{
+    color: red;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+    
+}
+
+/* reply block end */
+
 /* edit block start */
 .main_chat_input_edit_block_without_img{
     top: -30px;
