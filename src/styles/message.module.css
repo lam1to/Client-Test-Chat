@@ -46,12 +46,16 @@
     background-color: #6EFFB1;
     transition: 1s;
 }
+.message_content_self_activ{
+    background-color: #00d764;
+}
 .message_content_self:hover{
     color: black;
     transition: 1s;
     background-color: #00d764;
     border: 3px solid #0E0B1D;
 }
+
 .message_content_other{
     border: 3px solid black;
     border-radius: 10px;
@@ -65,6 +69,9 @@
     background-color: #0E0B1D;
     transition: 1s;
     position: relative;
+}
+.message_content_other_activ{
+    background-color:black;
 }
 .message_content_other:hover{
     color: #45f798;
@@ -210,6 +217,49 @@
 }
 /* reply block end */
 
+
+
+/* forward message start  */
+.forward_container{
+    display: flex;
+    min-width: 100px;
+    margin-top: 10px;
+}
+.forward_arrow{
+    display: flex;
+    align-items: center;
+}
+
+.forward_row{
+    border-left: 1px solid #AA76D2;
+    margin-left: 2px;
+    padding-left: 5px;
+}
+.forward_row_item_name{
+    font-size: 16px;
+    color: red
+}
+.forward_row_item_content{
+    margin-top: 5px;
+    padding-left: 5px;
+    font-size: 14px;
+    display: flex;
+}
+.forward_row_item:not(:last-child){
+    margin-bottom: 5px;
+}
+.forward_row_item_content_text{
+    display: flex;
+    align-items: center;
+}
+.forward_row_item_content_img{
+    width: 25px;
+    margin-right: 10px;
+}
+.forward_row_item_content_img img{
+    width: 100%;
+}
+/* forward message end */
 /* media */
 @media (max-width:900px){
     .message_content_other{

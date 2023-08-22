@@ -92,6 +92,10 @@ const Chat: FC = () => {
         )}
 
         <MainChat
+          chats={chats.masT}
+          blocked={blocked}
+          blocker={blocker}
+          setSelectChat={setSelectChats}
           blackList={funcChat.isBlockedOrBlockerF(
             selectChats,
             blocked,
@@ -99,6 +103,7 @@ const Chat: FC = () => {
           )}
           socket={socket}
           chat={selectChats}
+          leftChat={leftChat}
           isLeft={funcChat.isLeft(leftChat, selectChats)}
           editLeftChat={chats.editLeftChat}
         />

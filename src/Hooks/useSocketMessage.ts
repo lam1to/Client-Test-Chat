@@ -21,7 +21,7 @@ export function useSocketMessage(
 ) {
   const user = useAppSelector(selectUser);
   const [messages, SetMessages] = useState<IMessage[]>([]);
-  const [isNewMessage, setIsNewMessage] = useState<boolean>(false);
+  const [isNewMessage, setIsNewMessage] = useState<boolean>(true);
   const message = (content: IMessage) => {
     SetMessages((messages) => {
       if (
@@ -86,14 +86,34 @@ export function useSocketMessage(
     });
   };
 
+  const deleteForward = (forwardId: string) => {
+    SetMessages((messages) => {
+      return [
+        ...messages.map((oneMessage) => {
+          if (
+            oneMessage.forwardMessages &&
+            Object.keys(oneMessage.forwardMessages).length !== 0
+          ) {
+            oneMessage.forwardMessages = oneMessage.forwardMessages.filter(
+              (oneForward) => oneForward.id !== forwardId
+            );
+          }
+          return oneMessage;
+        }),
+      ];
+    });
+  };
+
   useEffect(() => {
     getFirstMessages();
     if (!isLeft) {
+      // deleteForward
       socket.on(`message${chat.id}`, message);
       socket.on(`messageDelete${chat.id}`, messageDelete);
       socket.on(`messageUpdate${chat.id}`, messageUpdate);
       socket.on(`deleteMessageWasAnswered${chat.id}`, messageDeleteWasAnswered);
       socket.on(`editWasAnswered${chat.id}`, messageUpdateWasAnswered);
+      socket.on(`deleteForward${chat.id}`, deleteForward);
       return () => {
         socket.off(`message${chat.id}`, message);
         socket.off(`messageDelete${chat.id}`, messageDelete);
@@ -102,6 +122,7 @@ export function useSocketMessage(
           `deleteMessageWasAnswered${chat.id}`,
           messageDeleteWasAnswered
         );
+        socket.off(`deleteForward${chat.id}`, deleteForward);
       };
     }
   }, [chat, isLeft]);
@@ -118,12 +139,11 @@ export function useSocketMessage(
       await getOnePartMessage(chat.id, "1")
         .then((data) => {
           SetMessages(data.messages);
-
+          setIsNewMessage(true);
           setAllPart(data.allPart);
         })
         .finally(() => {
           setLoading(false);
-          setFetching(false);
           setCurrentPart(1);
         });
   };

@@ -6,6 +6,7 @@ export interface IMessage {
   createdAt: string;
   contentImg?: IContentImg[];
   messageWasAnswered?: IMessage;
+  forwardMessages?: ILastMessage[];
 }
 
 export interface ILastMessage extends IMessage {

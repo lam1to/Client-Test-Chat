@@ -24,6 +24,7 @@ import SelectFileEdit from "./SelectFileEdit";
 import InputReply from "./InputReply";
 import InputEdit from "./InputEdit";
 import InputEmoji from "./InputEmoji";
+import InputForwardMessage from "./InputForwardMessage";
 // import InputEmoji from "./InputEmoji";
 export interface PropsMainChatInput {
   setCopySelectFile: Dispatch<SetStateAction<ISelectFile[]>>;
@@ -39,6 +40,8 @@ export interface PropsMainChatInput {
   setIsLoadingImgs: Dispatch<SetStateAction<IMessageLoadingImgs[]>>;
   replyMessage: IMessage;
   setReplyMessage: Dispatch<SetStateAction<IMessage>>;
+  setCopySelectForwardMessage: Dispatch<SetStateAction<IMessage[]>>;
+  copySelectForwardMessage: IMessage[];
 }
 export interface ISelectFile {
   id: number;
@@ -59,6 +62,8 @@ const Input: FC<PropsMainChatInput> = ({
   replyMessage,
   setReplyMessage,
   isLoadingImgs,
+  setCopySelectForwardMessage,
+  copySelectForwardMessage,
 }) => {
   useEffect(() => {}, []);
   const [t, i18n] = useTranslation();
@@ -153,6 +158,14 @@ const Input: FC<PropsMainChatInput> = ({
           contentRef={contentRef}
         />
       )}
+      {Object.keys(copySelectForwardMessage).length !== 0 && (
+        <InputForwardMessage
+          setSelectFile={setSelectFile}
+          contentRef={contentRef}
+          setCopySelectForwardMessage={setCopySelectForwardMessage}
+          copySelectForwardMessage={copySelectForwardMessage}
+        />
+      )}
       {/* <InputEmoji contentRef={contentRef} /> */}
 
       {Object.keys(selectFile).length !== 0 &&
@@ -229,6 +242,17 @@ const Input: FC<PropsMainChatInput> = ({
                       setReplyMessage,
                       setIsLoadingImgs
                     )
+                  : Object.keys(copySelectForwardMessage).length !== 0
+                  ? funcMessage.forwardMessageF(
+                      copySelectForwardMessage,
+                      setCopySelectForwardMessage,
+                      contentRef,
+                      selectFile,
+                      setSelectFile,
+                      socket,
+                      chatId,
+                      setIsLoadingImgs
+                    )
                   : createMessage();
               }
             }}
@@ -264,6 +288,17 @@ const Input: FC<PropsMainChatInput> = ({
                     chatId,
                     replyMessage,
                     setReplyMessage,
+                    setIsLoadingImgs
+                  )
+                : Object.keys(copySelectForwardMessage).length !== 0
+                ? funcMessage.forwardMessageF(
+                    copySelectForwardMessage,
+                    setCopySelectForwardMessage,
+                    contentRef,
+                    selectFile,
+                    setSelectFile,
+                    socket,
+                    chatId,
                     setIsLoadingImgs
                   )
                 : createMessage();

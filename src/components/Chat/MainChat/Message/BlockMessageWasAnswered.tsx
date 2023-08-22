@@ -23,8 +23,8 @@ const BlockMessageWasAnswered: FC<IBlockMessageWasAnswered> = ({ message }) => {
         )}
         <div className={st.reply_content}>
           <div className={st.reply_content_text}>
-            {message.content.length > 10
-              ? message.content.slice(0, 10)
+            {message.content.length > 20
+              ? message.content.slice(0, 20)
               : message.content}
           </div>
           {message.contentImg && Object(message.contentImg).length !== 0 && (

@@ -16,6 +16,8 @@ interface PropsOneMessage {
   socket: Socket;
   setEditMessage: Dispatch<SetStateAction<IMessage>>;
   setReplyMessage: Dispatch<SetStateAction<IMessage>>;
+  setSelectForwardMessage: Dispatch<SetStateAction<IMessage[]>>;
+  selectForwardMessage: IMessage[];
 }
 
 const OneMessage: FC<PropsOneMessage> = ({
@@ -26,6 +28,8 @@ const OneMessage: FC<PropsOneMessage> = ({
   socket,
   setEditMessage,
   setReplyMessage,
+  setSelectForwardMessage,
+  selectForwardMessage,
 }) => {
   const user = useAppSelector(selectUser);
   return (
@@ -36,6 +40,8 @@ const OneMessage: FC<PropsOneMessage> = ({
         </div>
       ) : user.user.id == message.userId ? (
         <OneMessageSelf
+          setSelectForwardMessage={setSelectForwardMessage}
+          selectForwardMessage={selectForwardMessage}
           setReplyMessage={setReplyMessage}
           message={message}
           contentRef={contentRef}
@@ -45,6 +51,8 @@ const OneMessage: FC<PropsOneMessage> = ({
         />
       ) : (
         <OneMessageOther
+          setSelectForwardMessage={setSelectForwardMessage}
+          selectForwardMessage={selectForwardMessage}
           contentRef={contentRef}
           setReplyMessage={setReplyMessage}
           message={message}

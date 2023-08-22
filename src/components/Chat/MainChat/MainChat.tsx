@@ -23,6 +23,10 @@ import { useTranslation } from "react-i18next";
 import { useFuncMessage } from "../../../Hooks/useFuncMessage";
 import { lastMessage } from "../../../http/message.service";
 import { useSocketLastMessage } from "../../../Hooks/useSocketLastMessage";
+import SelectForwardBlock from "./Message/SelectForwardBlock";
+import { AnimatePresence, motion } from "framer-motion";
+import { ModalForwardMessage } from "../../Modal/ModalForwardMessage";
+import { IUseSocket } from "../Chat";
 
 export interface PropsUseSocketMessage {
   messages: IMessage[];
@@ -44,6 +48,11 @@ export interface PropsMainChat {
   blackList: string;
   isLeft: boolean;
   editLeftChat: (oneLeftChat: ILeftChatUser, flag: boolean) => void;
+  chats: IChatWithUser[];
+  blocked: IUseSocket<string>;
+  blocker: IUseSocket<string>;
+  setSelectChat: Dispatch<SetStateAction<IChatWithUser>>;
+  leftChat: IUseSocket<string>;
 }
 const MainChat: FC<PropsMainChat> = ({
   chat,
@@ -51,6 +60,11 @@ const MainChat: FC<PropsMainChat> = ({
   blackList,
   isLeft,
   editLeftChat,
+  chats,
+  setSelectChat,
+  leftChat,
+  blocked,
+  blocker,
 }) => {
   const messages: PropsUseSocketMessage = useSocketMessage(
     socket,
@@ -71,8 +85,29 @@ const MainChat: FC<PropsMainChat> = ({
   const [copySelectFile, setCopySelectFile] = useState<ISelectFile[]>(
     [] as ISelectFile[]
   );
+  const [selectForwardMessage, setSelectForwardMessage] = useState<IMessage[]>(
+    [] as IMessage[]
+  );
+  const [visible, setVisible] = useState<boolean>(false);
+  const [copySelectForwardMessage, setCopySelectForwardMessage] = useState<
+    IMessage[]
+  >([] as IMessage[]);
   return (
     <div className={st.main_chat_container}>
+      <ModalForwardMessage
+        blocked={blocked}
+        blocker={blocker}
+        setCopySelectForwardMessage={setCopySelectForwardMessage}
+        selectForwardMessage={selectForwardMessage}
+        leftChat={leftChat}
+        chats={chats}
+        setSelectChat={setSelectChat}
+        onClose={() => {
+          setVisible(false);
+          setSelectForwardMessage([] as IMessage[]);
+        }}
+        visible={visible}
+      />
       {chat.id ? (
         <div className={st.main_chat}>
           <Header
@@ -84,11 +119,29 @@ const MainChat: FC<PropsMainChat> = ({
             chat={chat}
             leftIsChat={isLeft}
           />
+          <AnimatePresence>
+            {Object.keys(selectForwardMessage).length !== 0 && (
+              <motion.div
+                initial={{ position: "absolute", top: -700, opacity: 0 }}
+                animate={{ position: "relative", top: 0, opacity: 1 }}
+                exit={{ position: "absolute", top: -700, opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <SelectForwardBlock
+                  setVisible={setVisible}
+                  selectForwardMessage={selectForwardMessage}
+                  setSelectForwardMessage={setSelectForwardMessage}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
           <div className={st.main_chat_content}>
             {messages.loading ? (
               <Loader width={50} height={50} />
             ) : (
               <RowMessage
+                setSelectForwardMessage={setSelectForwardMessage}
+                selectForwardMessage={selectForwardMessage}
                 messages={messages}
                 copySelectFile={copySelectFile}
                 isLoadingMessage={isLoadingMessage}
@@ -103,6 +156,8 @@ const MainChat: FC<PropsMainChat> = ({
             )}
           </div>
           <Input
+            setCopySelectForwardMessage={setCopySelectForwardMessage}
+            copySelectForwardMessage={copySelectForwardMessage}
             setCopySelectFile={setCopySelectFile}
             setIsLoadingMessage={setIsLoadingMessage}
             isLeft={isLeft}

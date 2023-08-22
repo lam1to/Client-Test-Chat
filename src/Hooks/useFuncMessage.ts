@@ -44,26 +44,13 @@ export const useFuncMessage = () => {
   ) => {
     if (Object.keys(selectFile).length !== 0) {
       setIsLoadingMessage(true);
-      let masUrl: IStorageUrl[] = [] as IStorageUrl[];
-      const formData = new FormData();
-      const copySelectFile: ISelectFile[] = selectFile;
-      setSelectFile([] as ISelectFile[]);
+      let masUrl: IStorageUrl[] = await laodFile(
+        selectFile,
+        setSelectFile,
+        setIsLoadingImgs
+      );
       const content = contentRef.current.value;
       contentRef.current.value = "";
-      for (let i = 0; i < selectFile.length; i++) {
-        formData.append("file", copySelectFile[i].file);
-        await uploadFile(formData).then((data) => {
-          masUrl = [...masUrl, data];
-          console.log("загрузило файл = ", selectFile[i]);
-          setIsLoadingImgs((isLoadingImgs) =>
-            isLoadingImgs.map((oneLoadingImgs) => {
-              oneLoadingImgs.id === i && (oneLoadingImgs.isLoading = false);
-              return oneLoadingImgs;
-            })
-          );
-        });
-        formData.delete("file");
-      }
       socket.emit("createMessageWithImg", {
         userId: user.user.id,
         chatId: chatId,
@@ -121,6 +108,32 @@ export const useFuncMessage = () => {
     });
     setEditMessage({} as IMessage);
     contentRef.current.value = "";
+  };
+
+  const laodFile = async (
+    selectFile: ISelectFile[],
+    setSelectFile: Dispatch<SetStateAction<ISelectFile[]>>,
+    setIsLoadingImgs: Dispatch<SetStateAction<IMessageLoadingImgs[]>>
+  ) => {
+    let masUrl: IStorageUrl[] = [] as IStorageUrl[];
+    const formData = new FormData();
+    const copySelectFile: ISelectFile[] = selectFile;
+    setSelectFile([] as ISelectFile[]);
+    for (let i = 0; i < selectFile.length; i++) {
+      formData.append("file", copySelectFile[i].file);
+      await uploadFile(formData).then((data) => {
+        masUrl = [...masUrl, data];
+        console.log("загрузило файл = ", selectFile[i]);
+        setIsLoadingImgs((isLoadingImgs) =>
+          isLoadingImgs.map((oneLoadingImgs) => {
+            oneLoadingImgs.id === i && (oneLoadingImgs.isLoading = false);
+            return oneLoadingImgs;
+          })
+        );
+      });
+      formData.delete("file");
+    }
+    return masUrl;
   };
 
   const onVisible = (
@@ -185,10 +198,8 @@ export const useFuncMessage = () => {
     setEditMessage?: Dispatch<SetStateAction<IMessage>>
   ) => {
     if (setEditMessage) setEditMessage({} as IMessage);
-    console.log("ответить в funcMessage");
     setOverflow("auto");
     contentRef.current.focus();
-    // contentRef.current.value = message.content;
     setReplyMessage(message);
   };
 
@@ -204,26 +215,13 @@ export const useFuncMessage = () => {
   ) => {
     console.log("выполнили ответ в input ");
     if (Object.keys(selectFile).length !== 0) {
-      let masUrl: IStorageUrl[] = [] as IStorageUrl[];
-      const formData = new FormData();
-      const copySelectFile: ISelectFile[] = selectFile;
-      setSelectFile([] as ISelectFile[]);
+      const masUrl: IStorageUrl[] = await laodFile(
+        selectFile,
+        setSelectFile,
+        setIsLoadingImgs
+      );
       const content = contentRef.current.value;
       contentRef.current.value = "";
-      for (let i = 0; i < selectFile.length; i++) {
-        formData.append("file", copySelectFile[i].file);
-        await uploadFile(formData).then((data) => {
-          masUrl = [...masUrl, data];
-          console.log("загрузило файл = ", selectFile[i]);
-          setIsLoadingImgs((isLoadingImgs) =>
-            isLoadingImgs.map((oneLoadingImgs) => {
-              oneLoadingImgs.id === i && (oneLoadingImgs.isLoading = false);
-              return oneLoadingImgs;
-            })
-          );
-        });
-        formData.delete("file");
-      }
       socket.emit("createReplyMessageWithImg", {
         userId: user.user.id,
         chatId: chatId,
@@ -246,10 +244,86 @@ export const useFuncMessage = () => {
           messageIdWasAnswered: replyMessage.id,
         });
       contentRef.current.value = "";
-      console.log("penis");
     }
     setReplyMessage({} as IMessage);
   };
+
+  const selectForward = async (
+    setSelectForwardMessage: Dispatch<SetStateAction<IMessage[]>>,
+    selectForwardMessage: IMessage[],
+    message: IMessage,
+    setOverflow: Dispatch<SetStateAction<string>>,
+    setIsSelect: Dispatch<SetStateAction<boolean>>
+  ) => {
+    setOverflow("auto");
+    console.log("зашли в forward");
+    const isExist: boolean = selectForwardMessage.some(
+      (oneItem) => oneItem.id === message.id
+    );
+
+    setSelectForwardMessage((selectForwardMessage) => {
+      if (isExist) {
+        setIsSelect((isSelect) => {
+          console.log("isSelect in f");
+          isSelect = false;
+          return isSelect;
+        });
+        return [
+          ...selectForwardMessage.filter(
+            (oneSelect) => oneSelect.id !== message.id
+          ),
+        ];
+      } else {
+        setIsSelect((isSelect) => (isSelect = true));
+        return [...selectForwardMessage, message];
+      }
+    });
+  };
+
+  const forwardMessageF = async (
+    copySelectForwardMessage: IMessage[],
+    setCopySelectForwardMessage: Dispatch<SetStateAction<IMessage[]>>,
+    contentRef: React.MutableRefObject<HTMLInputElement>,
+    selectFile: ISelectFile[],
+    setSelectFile: Dispatch<SetStateAction<ISelectFile[]>>,
+    socket: Socket,
+    chatId: string,
+    setIsLoadingImgs: Dispatch<SetStateAction<IMessageLoadingImgs[]>>
+  ) => {
+    if (Object.keys(selectFile).length !== 0) {
+      let masUrl: IStorageUrl[] = await laodFile(
+        selectFile,
+        setSelectFile,
+        setIsLoadingImgs
+      );
+      const content = contentRef.current.value;
+      contentRef.current.value = "";
+      socket.emit("createForwardMessageWithImg", {
+        userId: user.user.id,
+        chatId: chatId,
+        content: content,
+        masUrl: masUrl,
+        forwardMessages: copySelectForwardMessage,
+      });
+    } else {
+      if (
+        contentRef.current?.value == "" &&
+        Object.keys(selectFile).length === 0
+      )
+        return;
+      else {
+        socket.emit("createForwardMessage", {
+          userId: user.user.id,
+          chatId: chatId,
+          content: contentRef.current?.value,
+          forwardMessages: copySelectForwardMessage,
+        });
+        contentRef.current.value = "";
+      }
+    }
+    setCopySelectForwardMessage([] as IMessage[]);
+  };
+
   return {
     FilterMessages: FilterMessages,
     editMessageF: editMessageF,
@@ -261,5 +335,7 @@ export const useFuncMessage = () => {
     editMessageWithImg: editMessageWithImg,
     replyMessage: replyMessage,
     replyMessageF: replyMessageF,
+    selectForward: selectForward,
+    forwardMessageF: forwardMessageF,
   };
 };

@@ -18,6 +18,7 @@ import { Socket } from "socket.io-client";
 import OneUser from "../OneUser";
 import { useFuncChat } from "../../../Hooks/useFuncChat";
 import { AnimatePresence, motion } from "framer-motion";
+import { IMessage } from "../../../types/IMessage";
 
 interface PropsMainChatHeader {
   chat: IChatWithUser;

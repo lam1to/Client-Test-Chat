@@ -12,6 +12,7 @@ export interface IChat {
   createdAt: string;
   name: string;
   userWhoCreateId: string;
+  avatarUrl: string;
 }
 export interface IChatUser {
   id: string;

@@ -29,6 +29,8 @@ interface PropsRowImessage {
   isLoadingMessage: boolean;
   isLoadingImgs: IMessageLoadingImgs[];
   messagesFilter: IMessage[];
+  setSelectForwardMessage: Dispatch<SetStateAction<IMessage[]>>;
+  selectForwardMessage: IMessage[];
 }
 const RowMessage: FC<PropsRowImessage> = ({
   messages,
@@ -41,6 +43,8 @@ const RowMessage: FC<PropsRowImessage> = ({
   copySelectFile,
   isLoadingImgs,
   messagesFilter,
+  setSelectForwardMessage,
+  selectForwardMessage,
 }) => {
   useEffect(() => {
     if (messages.isNewMessage) {
@@ -48,6 +52,11 @@ const RowMessage: FC<PropsRowImessage> = ({
       messages.setIsNewMessage(false);
     }
   }, [messages]);
+  useEffect(() => {
+    scrollToBottom();
+    messages.setIsNewMessage(false);
+  }, []);
+
   const scrollRef = useRef<HTMLDivElement>(null);
   const scrollToBottom = () => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -92,6 +101,8 @@ const RowMessage: FC<PropsRowImessage> = ({
             key={oneMessage.id}
           >
             <OneMessage
+              setSelectForwardMessage={setSelectForwardMessage}
+              selectForwardMessage={selectForwardMessage}
               setReplyMessage={setReplyMessage}
               setEditMessage={setEditMessage}
               socket={socket}
