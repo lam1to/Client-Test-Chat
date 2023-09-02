@@ -40,7 +40,9 @@ export function useSocketChats(
     };
   }, []);
   const getChat = async () => {
-    await findCharForUser().then((data) => setChats(data));
+    await findCharForUser().then((data) => { 
+      console.log("data = ",data)
+      setChats(data)});
   };
   const editLeftChat = (oneLeftChat: ILeftChatUser, flag: boolean) => {
     if (flag) {

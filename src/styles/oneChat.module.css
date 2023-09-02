@@ -81,6 +81,8 @@
 /* last message start  */
 
 .onechat_block_last_message{
+    display: flex;
+    justify-content: space-between;
     color:#37473e;
     margin-top: 10px;
     font-size: 11px;
@@ -102,8 +104,24 @@
 .onechat_block_last_message_block_content{
     display: flex;
     height: 100%;
-    align-items: end;
+    align-items: center;
 
+}
+.count_unread_message{
+    width: 15px;
+    height: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #AA76D2;
+    border-radius: 50%;
+    background-color: #AA76D2;
+    color: #6EFFB1;
+}
+.count_unread_message_container{
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 /* last message end */
 @media (max-width:1000px) {

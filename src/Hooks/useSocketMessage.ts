@@ -7,23 +7,27 @@ import {
   findUserWhoBlockedMe,
   findUserWhoWasBlockedMe,
 } from "../http/blockUser.services";
-import { ILastMessage, IMessage } from "../types/IMessage";
+import { ILastMessage, IMessage, IMessageRead } from "../types/IMessage";
 import { IChatWithUser } from "../types/IChat";
 import {
   getAllMessageForChat,
   getOnePartMessage,
 } from "../http/message.service";
+import { IUseChatSocket, IUseUnreadMessage } from "../types/IUse";
 
 export function useSocketMessage(
   socket: Socket,
   isLeft: boolean,
-  chat: IChatWithUser
+  chat: IChatWithUser,
+  chats: IUseChatSocket
 ) {
   const user = useAppSelector(selectUser);
   const [messages, SetMessages] = useState<IMessage[]>([]);
   const [isNewMessage, setIsNewMessage] = useState<boolean>(true);
   const message = (content: IMessage) => {
+    // socket.emit("updateIsReadMessage", { messageId: content.id });
     SetMessages((messages) => {
+      console.log("пришло сообщение в чате = ", chat.id);
       if (
         messages.length > 0 &&
         content.id === messages[messages.length - 1].id
@@ -53,7 +57,6 @@ export function useSocketMessage(
     );
   };
   const messageDeleteWasAnswered = (idMessageWasAnswered: string) => {
-    console.log("данные что пришли = ", idMessageWasAnswered);
     SetMessages((messages) => {
       return [
         ...messages.map((oneMessage) => {
@@ -134,10 +137,27 @@ export function useSocketMessage(
     getMessages();
   }, [fetching]);
 
+  // const readMessage = (data: IMessage[]) => {
+  //   console.log("данные что зашли", data);
+  //   for (let i = 0; i < data.length; i++) {
+  //     if (data[i].isRead === false) {
+  //       socket.emit("updateIsReadMessage", { messageId: data[i].id });
+  //       unReadMessage.setIsReadCount((isReadCount) => {
+  //         return isReadCount.map((oneItem) => {
+  //           if (oneItem.chatId === data[i].chatId) {
+  //             if (oneItem.count > 0) oneItem.count -= 1;
+  //           }
+  //           return oneItem;
+  //         });
+  //       });
+  //     }
+  //   }
+  // };
   const getFirstMessages = async () => {
     if (chat.id)
       await getOnePartMessage(chat.id, "1")
         .then((data) => {
+          // readMessage(data.messages);
           SetMessages(data.messages);
           setIsNewMessage(true);
           setAllPart(data.allPart);
@@ -146,6 +166,14 @@ export function useSocketMessage(
           setLoading(false);
           setCurrentPart(1);
         });
+    chats.setMasT((masT) => {
+      return masT.map((oneItem) => {
+        if (chat.id === oneItem.id) {
+          oneItem.countUnreadMessage = 0;
+        }
+        return oneItem;
+      });
+    });
   };
   const getMessages = async () => {
     if (Object.keys(chat).length !== 0 && chat.id && fetching) {

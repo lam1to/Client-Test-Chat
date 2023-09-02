@@ -13,6 +13,7 @@ import {
   ILastMessage,
   IMessage,
   IMessageLoadingImgs,
+  IMessageRead,
 } from "../../../types/IMessage";
 import RowMessage from "./Message/RowMessage";
 import Input, { ISelectFile } from "./Input/Input";
@@ -26,7 +27,8 @@ import { useSocketLastMessage } from "../../../Hooks/useSocketLastMessage";
 import SelectForwardBlock from "./Message/SelectForwardBlock";
 import { AnimatePresence, motion } from "framer-motion";
 import { ModalForwardMessage } from "../../Modal/ModalForwardMessage";
-import { IUseSocket } from "../Chat";
+import { IUseSocket, IUseSocketChat } from "../Chat";
+import { IUseChatSocket, IUseUnreadMessage } from "../../../types/IUse";
 
 export interface PropsUseSocketMessage {
   messages: IMessage[];
@@ -48,7 +50,7 @@ export interface PropsMainChat {
   blackList: string;
   isLeft: boolean;
   editLeftChat: (oneLeftChat: ILeftChatUser, flag: boolean) => void;
-  chats: IChatWithUser[];
+  chats: IUseChatSocket;
   blocked: IUseSocket<string>;
   blocker: IUseSocket<string>;
   setSelectChat: Dispatch<SetStateAction<IChatWithUser>>;
@@ -69,7 +71,8 @@ const MainChat: FC<PropsMainChat> = ({
   const messages: PropsUseSocketMessage = useSocketMessage(
     socket,
     isLeft,
-    chat
+    chat,
+    chats
   );
 
   const [filter, setFilter] = useState<string>("");
@@ -100,7 +103,7 @@ const MainChat: FC<PropsMainChat> = ({
         setCopySelectForwardMessage={setCopySelectForwardMessage}
         selectForwardMessage={selectForwardMessage}
         leftChat={leftChat}
-        chats={chats}
+        chats={chats.masT}
         setSelectChat={setSelectChat}
         onClose={() => {
           setVisible(false);

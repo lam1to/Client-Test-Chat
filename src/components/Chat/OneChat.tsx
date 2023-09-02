@@ -13,10 +13,11 @@ import { useOutsideClick } from "outsideclick-react";
 import { useAppSelector } from "../../Hooks/redux";
 import { selectUser } from "../../store/Reducers/UserSlice";
 import { useTranslation } from "react-i18next";
-import { ILastMessage } from "../../types/IMessage";
+import { ILastMessage, IMessageRead } from "../../types/IMessage";
 import { useSocketLastMessage } from "../../Hooks/useSocketLastMessage";
 import { IUseSocket } from "./Chat";
 import { useFuncChat } from "../../Hooks/useFuncChat";
+import { IUseChatSocket } from "../../types/IUse";
 
 export interface PropsOneChat {
   oneChat: IChatWithUser;
@@ -24,7 +25,6 @@ export interface PropsOneChat {
   setHidden?: Dispatch<SetStateAction<boolean>>;
   lastMessage: ILastMessage;
   socket: Socket;
-  lastMessageChat: ILastMessage[];
   setLastMessageChat: Dispatch<SetStateAction<ILastMessage[]>>;
   leftChat: IUseSocket<string>;
 }
@@ -34,20 +34,17 @@ const OneChat: FC<PropsOneChat> = ({
   setHidden,
   lastMessage,
   socket,
-  lastMessageChat,
   setLastMessageChat,
   leftChat,
 }) => {
   const funcChat = useFuncChat();
   const lastMessageSocket = useSocketLastMessage(
     socket,
-    lastMessageChat,
     setLastMessageChat,
     oneChat,
     funcChat.isLeft(leftChat, oneChat)
   );
   const { user } = useAppSelector(selectUser);
-
   return (
     <div
       onClick={() => {
@@ -96,6 +93,20 @@ const OneChat: FC<PropsOneChat> = ({
                 )}
               </div>
             )}
+            {oneChat.countUnreadMessage !== 0 && (
+              <div className={st.count_unread_message_container}>
+                <div className={st.count_unread_message}>
+                  {oneChat.countUnreadMessage}
+                </div>
+              </div>
+            )}
+            {/* {unreadMessageOne && unreadMessageOne.count > 0 && (
+              <div className={st.count_unread_message_container}>
+                <div className={st.count_unread_message}>
+                  {unreadMessageOne.count}
+                </div>
+              </div>
+            )} */}
           </div>
         )}
       </div>

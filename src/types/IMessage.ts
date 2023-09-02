@@ -3,10 +3,16 @@ export interface IMessage {
   content: string;
   chatId: string;
   userId: string;
+  isRead: boolean;
   createdAt: string;
   contentImg?: IContentImg[];
   messageWasAnswered?: IMessage;
   forwardMessages?: ILastMessage[];
+}
+
+export interface IMessageRead {
+  chatId: string;
+  count: number;
 }
 
 export interface ILastMessage extends IMessage {

@@ -43,3 +43,8 @@ export const lastMessage = async () => {
   const { data } = await $authHost.get("api/message/lastMessage");
   if (data) return data;
 };
+
+export const getAllCountUnreadMessage = async () => {
+  const { data } = await $authHost.get("api/message/getAllCountUnreadMessage");
+  return data;
+};

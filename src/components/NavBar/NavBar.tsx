@@ -21,7 +21,9 @@ const NavBar: FC = () => {
       <div className={`${styles.navbar_container} _container`}>
         <div className={styles.navbar_title}>
           <button
-            onClick={() => navigate(CHAT_ROUTE)}
+            onClick={() => {
+              navigate(CHAT_ROUTE);
+            }}
             className={styles.link_button}
           >
             TestChat

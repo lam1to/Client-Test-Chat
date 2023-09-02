@@ -18,6 +18,10 @@ import { useSocket } from "../../Hooks/useSocket";
 import { useSocketChats } from "../../Hooks/useSocketChats";
 import { useFuncChat } from "../../Hooks/useFuncChat";
 import { useLastMessage } from "../../Hooks/useLastMessage";
+import { IMessageRead } from "../../types/IMessage";
+import { getAllCountUnreadMessage } from "../../http/message.service";
+import { useUnreadMessage } from "../../Hooks/useUnreadMessage";
+import { IUseUnreadMessage } from "../../types/IUse";
 
 const socket = io("http://localhost:4200/chatSocket");
 
@@ -37,6 +41,7 @@ const Chat: FC = () => {
 
   const lastMessage = useLastMessage(socket);
   const chats: IUseSocketChat = useSocketChats(socket, setSelectChats);
+
   const blocked: IUseSocket<string> = useSocket<string>(
     "newBlockedUser",
     "deleteBlockedUser",
@@ -58,6 +63,12 @@ const Chat: FC = () => {
   );
   const funcChat = useFuncChat();
   const [hidden, setHidden] = useState<boolean>(true);
+  const unreadMessage = useUnreadMessage(
+    socket,
+    chats,
+    selectChats,
+    funcChat.isLeft(leftChat, selectChats)
+  );
   return (
     <div className={`${st.chat} chat`}>
       <div className={st.func_block}>
@@ -77,7 +88,7 @@ const Chat: FC = () => {
           lastMessageChat={lastMessage.lastMessageChat}
           setLastMessageChat={lastMessage.setLastMessageChat}
           socket={socket}
-          chats={chats.masT}
+          chats={chats}
           setSelectChats={setSelectChats}
         />
         {hidden && (
@@ -86,13 +97,13 @@ const Chat: FC = () => {
             lastMessageChat={lastMessage.lastMessageChat}
             setLastMessageChat={lastMessage.setLastMessageChat}
             socket={socket}
-            chats={chats.masT}
+            chats={chats}
             setSelectChats={setSelectChats}
           />
         )}
 
         <MainChat
-          chats={chats.masT}
+          chats={chats}
           blocked={blocked}
           blocker={blocker}
           setSelectChat={setSelectChats}

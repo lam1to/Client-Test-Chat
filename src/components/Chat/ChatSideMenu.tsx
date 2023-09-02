@@ -4,10 +4,11 @@ import ChatSearch from "./ChatSearch";
 import ChatRow from "./ChatRow";
 import { IChatWithUser } from "../../types/IChat";
 import st from "../../styles/chat.module.css";
-import { ILastMessage } from "../../types/IMessage";
+import { ILastMessage, IMessageRead } from "../../types/IMessage";
 import { IUseSocket } from "./Chat";
+import { IUseChatSocket, IUseUnreadMessage } from "../../types/IUse";
 export interface PropsChatSideMenu {
-  chats: IChatWithUser[];
+  chats: IUseChatSocket;
   setSelectChats: Dispatch<SetStateAction<IChatWithUser>>;
   socket: Socket;
   setLastMessageChat: Dispatch<SetStateAction<ILastMessage[]>>;

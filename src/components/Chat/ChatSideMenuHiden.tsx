@@ -7,10 +7,11 @@ import ChatSideMenu from "./ChatSideMenu";
 import ChatSearch from "./ChatSearch";
 import ChatRow from "./ChatRow";
 import closeImg from "../../public/close.png";
-import { ILastMessage } from "../../types/IMessage";
+import { ILastMessage, IMessageRead } from "../../types/IMessage";
 import { IUseSocket } from "./Chat";
+import { IUseChatSocket, IUseUnreadMessage } from "../../types/IUse";
 export interface PropsChatSideMenu {
-  chats: IChatWithUser[];
+  chats: IUseChatSocket;
   setSelectChats: Dispatch<SetStateAction<IChatWithUser>>;
   socket: Socket;
   lastMessageChat: ILastMessage[];

@@ -22,6 +22,7 @@ export interface IChatUser {
 
 export interface IChatWithUser extends IChat {
   users: IuserChat[];
+  countUnreadMessage: number;
 }
 export interface ILeftChatUser extends LeftChat {
   user?: IuserChat;

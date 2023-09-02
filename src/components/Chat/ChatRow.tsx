@@ -6,9 +6,10 @@ import { Socket } from "socket.io-client";
 import { useTranslation } from "react-i18next";
 import { ILastMessage } from "../../types/IMessage";
 import { IUseSocket } from "./Chat";
+import { IUseChatSocket, IUseUnreadMessage } from "../../types/IUse";
 
 export interface PoropsChatRow {
-  chats: IChatWithUser[];
+  chats: IUseChatSocket;
   setSelectChats: Dispatch<SetStateAction<IChatWithUser>>;
   setHidden?: Dispatch<SetStateAction<boolean>>;
   lastMessageChat: ILastMessage[];
@@ -29,15 +30,14 @@ const ChatRow: FC<PoropsChatRow> = ({
 
   return (
     <div className={st.chatrow}>
-      {chats.length !== 0 ? (
-        chats?.map((one, i) => {
+      {chats.masT.length !== 0 ? (
+        chats.masT?.map((one, i) => {
           const lastMessage = lastMessageChat.filter(
             (oneLastMessage) => oneLastMessage.chatId === one.id
           )[0];
           return (
             <OneChat
               setLastMessageChat={setLastMessageChat}
-              lastMessageChat={lastMessageChat}
               socket={socket}
               lastMessage={lastMessage}
               setHidden={setHidden}
